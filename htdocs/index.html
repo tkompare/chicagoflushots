@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1 minimum-scale=1">
+<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+<style type="text/css">
+@import "css/jquery.icalendar.css";
+body {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+.padded {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#map img {
+	max-width: none;
+}
+.blue {
+	color: #3a87ad;
+}
+.red {
+	color: #b94a48;
+}
+@media only screen and (max-width:767px) {
+	#map-ratio {
+		margin-top:80%;
+	}
+}
+@media only screen and (min-width:768px) {
+	#map-ratio {
+		margin-top:100%;
+	}
+}
+</style>
+<title>Flu Shot Clinics - Department of Public Health</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span6">
+				<div class="row-fluid" style="text-align:center">
+					<img src="img/flu_logo_720.png" alt="Get A Flu Shot" />
+				</div>
+				<p class="padded" style="margin-bottom:1.25em; margin-top:1.0em">Every year, the <b>Chicago Department of Public Health</b> offers dozens of free flu shot clinic events throughout Chicago. Find 2012 events convenient to you.</p>
+				<div id="theform">
+					<div id="grp-location" class="control-group span12 padded">
+						<label class="control-label span12" for="location"><b>Where are you?</b></label>
+						<div class="controls">
+								<input id="location" class="span12" type="text" placeholder="123 W StreetName, City, State, ZipCode" />
+							<div>
+								<button id="btn-map-location" class="btn btn-info btn-small span6 btn-map" type="button" style="margin-bottom:0.5em">Let me click on the map</button>
+								<button id="btn-gps-location" class="btn btn-info btn-small span6 btn-gps hide" type="button" style="margin-bottom:0.5em">Find Me</button>
+							</div>
+						</div>
+					</div>
+					<div id="grp-find" class="control-group span12 padded hide">
+						<label class="control-label" for="find"><b>Find Events...</b></label>
+						<div id="find" class="btn-block btn-group-vertical">
+							<button id="search" type="button" class="btn btn-block search" style="margin-top:0.5em">Near Me</button>
+							<button id="week" type="button" class="btn btn-block">In The Next 7 Days</button>
+							<button id="btn-by-day" type="button" class="btn btn-block">By Days Of The Week</button>
+						</div>
+						<p class="text-info" style="margin-bottom:0.25em">Event Selected: <span id="eventselected">None</span></p>
+						<div id="div-ical" class="span12" style="margin:0em"><span id="icalr"></span><span id="ical"></span><span id="ical-file"></span></div>
+					</div>
+					<div id="grp-day" class="control-group span12 padded hide">
+						<div id="day" class="btn-group btn-block btn-group-vertical">
+							<button id="btn-day-mo" type="button" class="btn day btn-block search" data-toggle="button">Monday</button>
+							<button id="btn-day-tu" type="button" class="btn day btn-block search" data-toggle="button">Tuesday</button>
+							<button id="btn-day-we" type="button" class="btn day btn-block search" data-toggle="button">Wednesday</button>
+							<button id="btn-day-th" type="button" class="btn day btn-block search" data-toggle="button">Thursday</button>
+							<button id="btn-day-fr" type="button" class="btn day btn-block search" data-toggle="button">Friday</button>
+							<button id="btn-day-sa" type="button" class="btn day btn-block search" data-toggle="button">Saturday</button>
+							<button id="btn-day-su" type="button" class="btn day btn-block search" data-toggle="button">Sunday</button>
+						</div>
+					</div>
+					<div id="grp-cta" class="control-group span12 padded hide" style="margin-top:0.5em">
+						<label class="control-label" for="ctaroute"><b>Take CTA/Metra</b></label>
+						<div id="ctaroute" class="btn-group-vertical btn-block">
+							<button id="ctaroutenow" class="btn btn-primary cta">Leave Now</button>
+							<button id="ctarouteevent" class="btn btn-primary cta">Be On Time</button>
+						</div>
+					</div>
+				</div>
+				<div id="span-cta" class="padded hide">
+					<div id="timetoleave" class=""></div>
+					<div id="directions" class=""></div>
+				</div>
+				<div class="padded">
+					<button id="reset-map" type="button" class="btn pull-right" style="margin-bottom:1.5em; margin-bottom:0.5em">Start Over</button>
+				</div>
+			</div>
+			<div id="span-map" class="span6">
+				<div style="display:inline-block; position:relative; width:100%;">
+					<div id="map-ratio">
+						<div id="map" style="position:absolute; top:0; bottom:0; left:0; right:0;">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12 padded">
+					<hr />
+					<footer>
+						<div class="row-fluid">
+							<div class="span6">
+								<p><a href="http://www.cityofchicago.org/city/en/depts/cdph.html">Chicago Department of Public Health</a></p>
+								<p><a href="tel:+13127479884">312.747.9884</a> or TTY: <a href="tel:+13127472374">312.747.2374</a></p>
+							</div>
+							<div class="span6">
+								<p class="pull-right muted"><small>This tool was not developed by the 
+									City and the City makes no representations as to the accuracy 
+									of the information provided by the apps. Developed by <a href="http://www.meetup.com/OpenGovChicago/">Open 
+									Gov Chicago</a> and hosted by the <a href="http://www.smartchicagocollaborative.org/">Smart Chicago 
+									Collaborative</a></small></p>
+								<p class="pull-right"><small><a href="about.html">About</a></small></p>
+							</div>
+						</div>
+					</footer>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDSsF3PvoKMpZrHJ3uR9rtVKg8_OeuSTcs&sensor=true"></script>
+	<script src="js/date.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/touchtest.min.js"></script>
+	<script src="js/library.js"></script>
+<!--
+	<script src="js/jquery.icalendar.min.js"></script>
+	<script src="js/tkmap.4.0.0.js"></script>
+	<script src="js/tkmapfusionlayer.3.0.0.js"></script>
+	<script src="js/main.js"></script>
+-->
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34788712-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>
