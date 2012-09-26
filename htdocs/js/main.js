@@ -133,6 +133,7 @@ $(document).ready(function()
 			{
 				$('#grp-cta').show();
 			}
+			$('#grp-reset').show();
 		});
 	}
 	/**
@@ -289,6 +290,11 @@ $(document).ready(function()
 		{
 			locationMarker.setMap(null);
 		}
+		if(Circle !== null)
+		{
+			Circle.setMap(null);
+			Circle = null;
+		}
 		locationMarker = new google.maps.Marker({
 			position:latlng,
 			map: Map.Map
@@ -307,6 +313,7 @@ $(document).ready(function()
 		FluShotsLayer.showLayer({where:where});
 		fluShotLayerListener();
 		$('#grp-find').show(500);
+		$('#grp-reset').show();
 		if(eventSelected === true)
 		{
 			$('#grp-cta').show();
@@ -482,9 +489,8 @@ $(document).ready(function()
 	 * Next 7 Days button listener
 	 */
 	$('#week').click(function() {
-		$('.day').removeClass('active');
+		$('.day,#btn-date-all').removeClass('active');
 		$('#grp-day').hide(500);
-		$('#btn-date-all').removeClass('active');
 		$('#btn-date-available').addClass('active');
 		findWeek();
 	});
@@ -493,7 +499,7 @@ $(document).ready(function()
 	 */
 	$('#reset-map').click(function() {
 		$('.day').removeClass('active marked');
-		$('#grp-day,#grp-find,#grp-cta,#span-cta,#grp-ical').hide(500);
+		$('#grp-day,#grp-find,#grp-cta,#span-cta,#grp-ical,#grp-reset').hide(500);
 		$('#ical,#ical-file,#eventselected,#timetoleave,#directions').html('');
 		$('#location').val('');
 		$('#theform').show(500);

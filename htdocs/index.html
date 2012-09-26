@@ -57,10 +57,10 @@ body {
 						</label>
 						<div class="controls">
 							<input id="location" class="span12" type="text" placeholder="Enter an address" />
-							<button id="btn-search-location" class="btn btn-info btn-map pull-right" type="button" style="margin-bottom:0.5em">Search</button>
 						</div>
+						<button id="btn-search-location" class="btn btn-primary btn-map pull-right" type="button" style="margin-bottom:0.5em">Search</button>
 					</div>
-					<div id="grp-find" class="control-group padded hide">
+					<div id="grp-find" class="control-group padded hide" style="margin-top:2em">
 						<label class="control-label" for="find"><b>Find All Events...</b></label>
 						<div id="find" class="btn-block btn-group-vertical">
 							<button id="week" type="button" class="btn btn-block">In The Next 7 Days</button>
@@ -87,8 +87,8 @@ body {
 					<div id="grp-cta" class="control-group padded hide" style="margin-top:0.5em">
 						<label class="control-label" for="ctaroute"><b>Take CTA/Metra</b></label>
 						<div id="ctaroute" class="btn-group-vertical btn-block">
-							<button id="ctaroutenow" class="btn btn-primary cta">Leave Now</button>
-							<button id="ctarouteevent" class="btn btn-primary cta">Be On Time</button>
+							<button id="ctaroutenow" class="btn btn-info cta">Leave Now</button>
+							<button id="ctarouteevent" class="btn btn-info cta">Be On Time</button>
 						</div>
 					</div>
 				</div>
@@ -96,7 +96,7 @@ body {
 					<div id="timetoleave" class=""></div>
 					<div id="directions" class=""></div>
 				</div>
-				<div class="padded">
+				<div id="grp-reset" class="padded hide">
 					<button id="reset-map" type="button" class="btn" style="margin-bottom:1.5em; margin-bottom:0.5em">Start Over</button>
 				</div>
 			</div>
