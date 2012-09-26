@@ -4,8 +4,8 @@ $(document).ready(function()
 	var gps = navigator.geolocation;
 	var defaultLat = 41.85;
 	var defaultLng = -87.675;
-	var locationLatLng = {};
 	var locationMarker = null;
+	var eventSelected = false;
 	var Circle = null;
 	var lastFluShotLocationClicked = null;
 	var DirectionsService = new google.maps.DirectionsService();
@@ -17,7 +17,7 @@ $(document).ready(function()
 		lat:defaultLat,
 		lng:defaultLng,
 		styles:'grey',
-		zoom:12
+		zoom:11
 	});
 	// Get today's date
 	var d = new Date();
@@ -38,18 +38,10 @@ $(document).ready(function()
 	var FluShotsLayer = new TkMapFusionLayer({
 		geo:'Location',
 		map:Map.Map,
-		tableid:'5171986',
+		tableid:'5313521',
 		where:defaultWhere
 	});
 	fluShotLayerListener();
-	/*
-	 * Tooltips
-	 */
-	var placement = 'left';
-	if(window.innerWidth > 760)
-	{
-		placement = 'bottom';
-	}
 	/*---------------------------------------------------------------------------
 	 * FUNCTIONS
 	 *--------------------------------------------------------------------------*/
@@ -78,7 +70,6 @@ $(document).ready(function()
 		}
 		else
 		{
-			$('#icalr').html('<small class="text-info">Calendar Reminder For This Event</small>');
 			$('#ical').icalendar(
 				{
 					start: startDate,
@@ -87,7 +78,8 @@ $(document).ready(function()
 					summary: 'CDPH Free Flu Shot Event',
 					description: description,
 					location: location,
-					icons: 'img/icalendar.png',
+					//icons: 'img/icalendar.png',
+					iconSize: 0,
 					sites: ['google','yahoo']
 				}
 			);
@@ -100,7 +92,8 @@ $(document).ready(function()
 					summary: 'CDPH Free Flu Shot Event',
 					description: description,
 					location: location,
-					icons: 'img/icalendar.png',
+					//icons: 'img/icalendar.png',
+					iconSize: 0,
 					sites: ['icalendar','outlook'], 
 					echoUrl: 'ical.php'
 				}
@@ -132,9 +125,11 @@ $(document).ready(function()
 			var eMinute = eTime[1].split(' ');
 			var startDate = new Date(DateArray[2], DateArray[0]-1, DateArray[1], sTime[0], sMinute[0], 00);
 			var endDate = new Date(DateArray[2], DateArray[0]-1, DateArray[1], eTime[0], eMinute[0], 00);
+			$('#grp-ical').show(500);
 			setIcal(startDate,endDate,lastFluShotLocationClicked.Name.value,lastFluShotLocationClicked.Location.value);
+			eventSelected = true;
 			$('#eventselected').html('<b>'+lastFluShotLocationClicked.Name.value+'</b>');
-			if(typeof locationLatLng.lat !== 'undefined')
+			if(locationMarker !== null)
 			{
 				$('#grp-cta').show();
 			}
@@ -181,51 +176,21 @@ $(document).ready(function()
 			}
 		});
 	}
-	function setLocation()
-	{
-		var geocoder = new google.maps.Geocoder();
-		geocoder.geocode(
-			{address:$('#location').val()},
-			function(results,status)
-			{
-				if (status == google.maps.GeocoderStatus.OK)
-				{
-					if (results[0])
-					{
-						Map.Map.panTo(results[0].geometry.location);
-						locationLatLng.lat = results[0].geometry.location.lat();
-						locationLatLng.lng = results[0].geometry.location.lng();
-						if(locationMarker !== null)
-						{
-							locationMarker.setMap(null);
-						}
-						locationMarker = new google.maps.Marker({
-							position:results[0].geometry.location,
-							map: Map.Map
-						});
-						$('#grp-find').show(0);
-						if(lastFluShotLocationClicked !== null)
-						{
-							$('#grp-cta').show();
-						}
-					}
-					else
-					{
-						alert("We're sorry. We could not locate this address. Please doublecheck your address and make sure to include your city, state and zip code.");
-					}
-				}
-				else
-				{
-					alert("We're sorry. We could not locate this address. Please doublecheck your address and make sure to include your city, state and zip code.");
-				}
-			}
-		);
-	}
 	function setLocationQuery()
 	{
+		if(locationMarker !== null)
+		{
+			locationMarker.setMap(null);
+		}
+		if(Circle !== null)
+		{
+			Circle.setMap(null);
+		}
+		$('#grp-day').hide(500);
+		$('.day').removeClass('marked active');
 		var geocoder = new google.maps.Geocoder();
 		geocoder.geocode(
-			{address:$('#location').val()},
+			{address:$('#location').val()+', Chicago, IL'},
 			function(results, status)
 			{
 				if (status == google.maps.GeocoderStatus.OK)
@@ -233,39 +198,16 @@ $(document).ready(function()
 					if (results[0])
 					{
 						Map.Map.panTo(results[0].geometry.location);
-						locationLatLng.lat = results[0].geometry.location.lat();
-						locationLatLng.lng = results[0].geometry.location.lng();
-						if(locationMarker !== null)
-						{
-							locationMarker.setMap(null);
-						}
-						locationMarker = new google.maps.Marker({
-							position:results[0].geometry.location,
-							map: Map.Map
-						});
-						var where = defaultWhere+' AND ST_INTERSECTS(Location, CIRCLE(LATLNG('+locationLatLng.lat+','+locationLatLng.lng+'), 5000))';
-						var center = new google.maps.LatLng(locationLatLng.lat,locationLatLng.lng);
-						Circle = new google.maps.Circle({
-							center:center,
-							clickable:false,
-							fillOpacity:0.10,
-							map:Map.Map,
-							radius:5000,
-							strokeWeight:2
-						});
-						Map.Map.panToBounds(Circle.getBounds());
-						Map.Map.fitBounds(Circle.getBounds());
-						FluShotsLayer.showLayer({where:where});
-						fluShotLayerListener();
+						placeMarker(results[0].geometry.location);
 					}
 					else
 					{
-						alert("We're sorry. We could not locate this address. Please doublecheck your address and make sure to include your city, state and zip code.");
+						alert("We're sorry. We could not locate this address. Please doublecheck you've entered your address correctly");
 					}
 				}
 				else
 				{
-					alert("We're sorry. We could not locate this address. Please doublecheck your address and make sure to include your city, state and zip code.");
+					alert("We're sorry. We could not locate this address. Please doublecheck you've entered your address correctly");
 				}
 			}
 		);
@@ -341,10 +283,39 @@ $(document).ready(function()
 			$('#alert-gpsfail').removeClass('hide');
 		}
 	}
+	function placeMarker(latlng)
+	{
+		if(locationMarker !== null)
+		{
+			locationMarker.setMap(null);
+		}
+		locationMarker = new google.maps.Marker({
+			position:latlng,
+			map: Map.Map
+		});
+		var where = defaultWhere+' AND ST_INTERSECTS(Location, CIRCLE(LATLNG('+latlng.lat()+','+latlng.lng()+'), 5000))';
+		Circle = new google.maps.Circle({
+			center:latlng,
+			clickable:false,
+			fillOpacity:0.075,
+			map:Map.Map,
+			radius:5000,
+			strokeWeight:1
+		});
+		Map.Map.panToBounds(Circle.getBounds());
+		Map.Map.fitBounds(Circle.getBounds());
+		FluShotsLayer.showLayer({where:where});
+		fluShotLayerListener();
+		$('#grp-find').show(500);
+		if(eventSelected === true)
+		{
+			$('#grp-cta').show();
+		}
+	}
 	/*
 	 * The Geocoder function
 	 */
-	function codeLatLng(latlng,id)
+	function codeLatLng(latlng)
 	{
 		var geocoder = new google.maps.Geocoder();
 		geocoder.geocode(
@@ -355,7 +326,8 @@ $(document).ready(function()
 				{
 					if (results[1])
 					{
-						$('#'+id).val(results[0].formatted_address);
+						var formattedAddress = results[0].formatted_address.split(',');
+						$('#location').val(formattedAddress[0]);
 						if(lastFluShotLocationClicked !== null)
 						{
 							$('#grp-cta').show();
@@ -363,12 +335,12 @@ $(document).ready(function()
 					}
 					else
 					{
-						alert("We're sorry. We could not locate you. Please make sure your device's locator is working properly or you've clicked on the map at an addressable location.");
+						alert("We're sorry. We could not locate you. Please make sure your device's locator is working properly.");
 					}
 				}
 				else
 				{
-					alert("We're sorry. We could not locate you. Please make sure your device's locator is working properly or you've clicked on the map at an addressable location.");
+					alert("We're sorry. We could not locate you. Please make sure your device's locator is working properly.");
 				}
 			}
 		);
@@ -376,7 +348,7 @@ $(document).ready(function()
 	// Test for GPS
 	if(gps)
 	{
-		$('.btn-gps').removeClass('hide');
+		$('#btn-gps-location').removeClass('hide');
 	}
 	// Test for touch to set pan/zoom default
 	if (touch)
@@ -391,8 +363,6 @@ $(document).ready(function()
 	}
 	else
 	{
-//	Map.setPanZoom(true);
-//	Map.setTouchScroll(false);
 		RendererOptions = {
 			draggable: true,
 			suppressInfoWindows: true,
@@ -412,15 +382,11 @@ $(document).ready(function()
 	 * Location listener
 	 */
 	$('#location').keyup(function(theKey){
-		if($('#location').val().length > 0)
+		if($(this).val().length > 0)
 		{
 			if (theKey.which == 13) {
-				setLocation();
+				setLocationQuery();
 			}
-		}
-		else
-		{
-			$('#grp-find').hide(0);
 		}
 	});
 	/*
@@ -499,35 +465,18 @@ $(document).ready(function()
 		$('#grp-day').show(500);
 	});
 	/*
-	 * Search button listener
+	 * Search by days listener
 	 */
 	$('.search').click(function(){
-		if($(this).attr('id') == 'search')
+		if($(this).hasClass('marked'))
 		{
-			if(locationMarker !== null)
-			{
-				locationMarker.setMap(null);
-			}
-			if(Circle !== null)
-			{
-				Circle.setMap(null);
-			}
-			$('#grp-day').hide(500);
-			$('.day').removeClass('marked active');
-			setLocationQuery();
+			$(this).removeClass('marked');
 		}
 		else
 		{
-			if($(this).hasClass('marked'))
-			{
-				$(this).removeClass('marked');
-			}
-			else
-			{
-				$(this).addClass('marked');
-			}
-			setQuery();
+			$(this).addClass('marked');
 		}
+		setQuery();
 	});
 	/*
 	 * Next 7 Days button listener
@@ -539,32 +488,32 @@ $(document).ready(function()
 		$('#btn-date-available').addClass('active');
 		findWeek();
 	});
+	/*
+	 * Start over button
+	 */
 	$('#reset-map').click(function() {
 		$('.day').removeClass('active marked');
-		$('#grp-day').hide(500);
-		$('#grp-find').hide(500);
-		$('#grp-cta').hide(500);
+		$('#grp-day,#grp-find,#grp-cta,#span-cta,#grp-ical').hide(500);
+		$('#ical,#ical-file,#eventselected,#timetoleave,#directions').html('');
 		$('#location').val('');
-		locationLatLng = {};
+		$('#theform').show(500);
 		lastFluShotLocationClicked = null;
 		setQuery();
 		if(locationMarker !== null)
 		{
 			locationMarker.setMap(null);
+			locationMarker = null;
 		}
 		if(Circle !== null)
 		{
 			Circle.setMap(null);
+			Circle = null;
 		}
 		if(typeof DirectionsRenderer !== 'undefined')
 		{
 			DirectionsRenderer.setMap(null);
 		}
-		$('#theform').show(500);
-		$('#span-cta').hide(500);
-		$('#timetoleave').html('');
-		$('#directions').html('');
-		$('#gen-info').show();
+		eventSelected = false;
 		Map.Map.setZoom(11);
 		var latlng = new google.maps.LatLng(defaultLat,defaultLng);
 		Map.Map.panTo(latlng);
@@ -572,34 +521,19 @@ $(document).ready(function()
 	/*
 	 * GPS listener
 	 */
-	$('.btn-gps').click(function(){
+	$('#btn-gps-location').click(function(){
 		if(gps)
 		{
-			var thisArray = this.id.split('-');
 			navigator.geolocation.getCurrentPosition(
 				function(position)
 				{
-					pos = new google.maps.LatLng(
+					var pos = new google.maps.LatLng(
 						position.coords.latitude,
 						position.coords.longitude
 					);
-					$('#grp-find').show(0);
 					Map.Map.panTo(pos);
-					codeLatLng(pos,thisArray[2]);
-					if(thisArray[2] == 'location')
-					{
-						locationLatLng.lat = position.coords.latitude;
-						locationLatLng.lng = position.coords.longitude;
-						var thisLatLng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-						if(locationMarker !== null)
-						{
-							locationMarker.setMap(null);
-						}
-						locationMarker = new google.maps.Marker({
-							position: thisLatLng,
-							map: Map.Map
-						});
-					}
+					codeLatLng(pos);
+					placeMarker(pos);
 				}, 
 				function()
 				{
@@ -614,48 +548,18 @@ $(document).ready(function()
 		}
 	});
 	/*
-	 * Map Button listener
-	 * If a map button is clicked, set a listener on the map for a click and fill
-	 * in the associated address input.
+	 * Address Search Button listener
 	 */
-	$('.btn-map').click(function(){
-		var thisButton = $(this).attr('id');
-		google.maps.event.clearListeners(Map.Map, 'click');
-		var domobject = thisButton.split('-')[2];
-		$('#grp-'+domobject).addClass('error');
-		$('#'+domobject).val('');
-		$('#'+domobject).attr('placeholder','Click the map at your location');
-		google.maps.event.addListenerOnce(Map.Map, 'click', function(event){
-			pos = new google.maps.LatLng(
-				event.latLng.lat(),
-				event.latLng.lng()
-			);
-			Map.Map.panTo(pos);
-			codeLatLng(pos,domobject);
-			if(domobject == 'location')
-			{
-				locationLatLng.lat = event.latLng.lat();
-				locationLatLng.lng = event.latLng.lng();
-				var thisLatLng = new google.maps.LatLng(event.latLng.lat(),event.latLng.lng());
-				if(locationMarker !== null)
-				{
-					locationMarker.setMap(null);
-				}
-				locationMarker = new google.maps.Marker({
-					position: thisLatLng,
-					map: Map.Map
-				});
-			}
-			$('#grp-'+domobject).removeClass('error');
-			$('#'+domobject).attr('placeholder','123 W StreetName, City, State, ZipCode');
-			$('#grp-find').show(0);
-			fluShotLayerListener();
-		});
+	$('#btn-search-location').click(function(){
+		if($('#location').val().length > 0)
+		{
+			setLocationQuery();
+		}
 	});
 	$('#location').focusout(function(){
 		if($('#location').val().length > 0)
 		{
-			setLocation();
+			setLocationQuery();
 		}
 	});
 });

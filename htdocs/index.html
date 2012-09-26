@@ -45,33 +45,29 @@ body {
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span6">
+			<div class="span5">
 				<div class="row-fluid" style="text-align:center">
 					<img src="img/flu_logo_720.png" alt="Get A Flu Shot" />
 				</div>
 				<p class="padded" style="margin-bottom:1.25em; margin-top:1.0em">The <b>Chicago Department of Public Health</b> is offering dozens of free flu shot clinic events this year. Find one near you.
 				<div id="theform">
-					<div id="grp-location" class="control-group span12 padded">
-						<label class="control-label span12" for="location"><b>Where are you?</b></label>
+					<div id="grp-location" class="control-group padded">
+						<label class="control-label" for="location"><b>Where are you?</b>&nbsp;&nbsp;
+							<button id="btn-gps-location" class="btn btn-link btn-small hide" type="button">Find Me</button>
+						</label>
 						<div class="controls">
-								<input id="location" class="span12" type="text" placeholder="123 W StreetName, City, State, ZipCode" />
-							<div>
-								<button id="btn-map-location" class="btn btn-info btn-small span6 btn-map" type="button" style="margin-bottom:0.5em">Click On The Map</button>
-								<button id="btn-gps-location" class="btn btn-info btn-small span6 btn-gps hide" type="button" style="margin-bottom:0.5em">Find Me</button>
-							</div>
+							<input id="location" class="span12" type="text" placeholder="Enter an address" />
+							<button id="btn-search-location" class="btn btn-info btn-map pull-right" type="button" style="margin-bottom:0.5em">Search</button>
 						</div>
 					</div>
-					<div id="grp-find" class="control-group span12 padded hide">
-						<label class="control-label" for="find"><b>Find Events...</b></label>
+					<div id="grp-find" class="control-group padded hide">
+						<label class="control-label" for="find"><b>Find All Events...</b></label>
 						<div id="find" class="btn-block btn-group-vertical">
-							<button id="search" type="button" class="btn btn-block search" style="margin-top:0.5em">Near Me</button>
 							<button id="week" type="button" class="btn btn-block">In The Next 7 Days</button>
 							<button id="btn-by-day" type="button" class="btn btn-block">By Days Of The Week</button>
 						</div>
-                        <label class="control-label" for="ctaroute"><b>Add <span id="eventselected">Event</span> to Calendar</b></label>
-						<div id="div-ical" class="span12" style="margin:0em"><span id="icalr"></span><span id="ical"></span><span id="ical-file"></span></div>
 					</div>
-					<div id="grp-day" class="control-group span12 padded hide">
+					<div id="grp-day" class="control-group padded hide">
 						<div id="day" class="btn-group btn-block btn-group-vertical">
 							<button id="btn-day-mo" type="button" class="btn day btn-block search" data-toggle="button">Monday</button>
 							<button id="btn-day-tu" type="button" class="btn day btn-block search" data-toggle="button">Tuesday</button>
@@ -82,7 +78,13 @@ body {
 							<button id="btn-day-su" type="button" class="btn day btn-block search" data-toggle="button">Sunday</button>
 						</div>
 					</div>
-					<div id="grp-cta" class="control-group span12 padded hide" style="margin-top:0.5em">
+					<div id="grp-ical" class="control-group span12 padded hide" style="margin-left:0em; margin-top:1em">
+						<label class="control-label" for="div-ical"><b>Add <span id="eventselected">Event</span> to Calendar</b></label>
+						<div id="div-ical" class="span12" style="margin-left:0em">
+							<span id="ical"></span><span id="ical-file"></span>
+						</div>
+					</div>
+					<div id="grp-cta" class="control-group padded hide" style="margin-top:0.5em">
 						<label class="control-label" for="ctaroute"><b>Take CTA/Metra</b></label>
 						<div id="ctaroute" class="btn-group-vertical btn-block">
 							<button id="ctaroutenow" class="btn btn-primary cta">Leave Now</button>
@@ -95,10 +97,10 @@ body {
 					<div id="directions" class=""></div>
 				</div>
 				<div class="padded">
-					<button id="reset-map" type="button" class="btn pull-right" style="margin-bottom:1.5em; margin-bottom:0.5em">Start Over</button>
+					<button id="reset-map" type="button" class="btn" style="margin-bottom:1.5em; margin-bottom:0.5em">Start Over</button>
 				</div>
 			</div>
-			<div id="span-map" class="span6">
+			<div id="span-map" class="span7">
 				<div style="display:inline-block; position:relative; width:100%;">
 					<div id="map-ratio">
 						<div id="map" style="position:absolute; top:0; bottom:0; left:0; right:0;">
@@ -130,7 +132,7 @@ body {
 		</div>
 	</div>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDSsF3PvoKMpZrHJ3uR9rtVKg8_OeuSTcs&sensor=true"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCgLuPh5k9eKka2uHJXxov4OCCRaMTQUa8&sensor=true"></script>
 	<script src="js/date.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/touchtest.min.js"></script>
@@ -142,17 +144,14 @@ body {
 	<script src="js/main.js"></script>
 -->
 	<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-34788712-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-34997880-1']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
 </script>
 </body>
 </html>

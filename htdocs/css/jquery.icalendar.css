@@ -64,7 +64,7 @@ html:first-child .icalendar_list {  /* Opera */
 }
 .icalendar_list span {
 	display: inline-block;
-	width: 16px;
+	width: 0px;
 	height: 16px;
 }
 .icalendar_list img {
