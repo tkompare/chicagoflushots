@@ -335,6 +335,7 @@ $(document).ready(function()
 					{
 						var formattedAddress = results[0].formatted_address.split(',');
 						$('#location').val(formattedAddress[0]);
+						$('#location').blur();
 						if(lastFluShotLocationClicked !== null)
 						{
 							$('#grp-cta').show();
@@ -557,12 +558,6 @@ $(document).ready(function()
 	 * Address Search Button listener
 	 */
 	$('#btn-search-location').click(function(){
-		if($('#location').val().length > 0)
-		{
-			setLocationQuery();
-		}
-	});
-	$('#location').focusout(function(){
 		if($('#location').val().length > 0)
 		{
 			setLocationQuery();
