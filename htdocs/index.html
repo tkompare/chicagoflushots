@@ -30,19 +30,20 @@ body {
 	color: #b94a48;
 }
 @media only screen and (max-width:767px) {
-	#map-ratio {
-		margin-top:80%;
-	}
+	#map-ratio { margin-top:80%; }
+	#chicago { font-size:75%; }
 }
 @media only screen and (min-width:768px) {
-	#map-ratio {
-		margin-top:100%;
-	}
+	#map-ratio { margin-top:100%; }
 }
 </style>
 <title>Flu Shot Clinics - Department of Public Health</title>
 </head>
 <body>
+	<div class="alert alert-info hide" style="margin:0em; text-align:center">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		<span id="chicago">You just came from the City of Chicago website.</span>
+	</div>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span5">

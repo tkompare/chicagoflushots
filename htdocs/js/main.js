@@ -1,5 +1,10 @@
 $(document).ready(function()
 {
+	var city =  document.referrer.match(/cityofchicago\.org/);
+	if(city !== null)
+	{
+		$('#chicago').show();
+	}
 	var touch = Modernizr.touch;
 	var gps = navigator.geolocation;
 	var defaultLat = 41.85;
