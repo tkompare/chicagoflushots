@@ -426,7 +426,7 @@ $(document).ready(function()
 		$('#directions').html('');
 		DirectionsRenderer.setPanel(document.getElementById('directions'));
 		var RouteRequest = {
-			origin : $('#location').val(),
+			origin : $('#location').val()+', Chicago, IL',
 			destination : lastFluShotLocationClicked.Location.value,
 			transitOptions : transitOptions,
 			travelMode: google.maps.TravelMode.TRANSIT
