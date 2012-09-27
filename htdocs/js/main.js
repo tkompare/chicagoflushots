@@ -304,7 +304,7 @@ $(document).ready(function()
 			position:latlng,
 			map: Map.Map
 		});
-		var where = defaultWhere+' AND ST_INTERSECTS(Location, CIRCLE(LATLNG('+latlng.lat()+','+latlng.lng()+'), 5000))';
+		//var where = defaultWhere+' AND ST_INTERSECTS(Location, CIRCLE(LATLNG('+latlng.lat()+','+latlng.lng()+'), 5000))';
 		Circle = new google.maps.Circle({
 			center:latlng,
 			clickable:false,
@@ -315,7 +315,7 @@ $(document).ready(function()
 		});
 		Map.Map.panToBounds(Circle.getBounds());
 		Map.Map.fitBounds(Circle.getBounds());
-		FluShotsLayer.showLayer({where:where});
+		FluShotsLayer.showLayer({where:defaultWhere});
 		fluShotLayerListener();
 		$('#grp-find').show(500);
 		$('#grp-reset').show();
