@@ -2,6 +2,8 @@ This application was developed for the Chicago Deparment of Public Health (CDPH)
 to help Chicago residents locate and find public transporation to CDPH's free
 flu shot clinic events.
 
+http://flushots.311services.org/
+
 BACKGROUND
 I went to a weekly meeting of civic coders where several city agencies 
 presented. They asked for our help in building interesting application around
@@ -25,7 +27,8 @@ https://www.google.com/fusiontables/DataSource?snapid=S705126nZTU
 
 MADD PROPZ
 This web application could not have been as well executed without the sage 
-feedback and assistance of Juan-Pablo Velez and Derek Eder.
+feedback and assistance of Juan-Pablo Velez and Derek Eder. Thanks also to Smart
+Chicago Collaborative for hosting this web application.
 
 ERRATA
 'flu_lgo_720.png' image file is for the City of Chicago's own use and does not
