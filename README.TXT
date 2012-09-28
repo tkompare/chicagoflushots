@@ -6,12 +6,13 @@ http://flushots.311services.org/
 
 BACKGROUND
 I went to a weekly meeting of civic coders where several city agencies 
-presented. They asked for our help in building interesting application around
-their available data. I was interested in Flu CLinic locations since flu
-season was coming up fast, and I had attended a free flu shot event in the past.
+presented. They asked for our help in building interesting applications around
+their available data. I was interested in the free flu shot clinic locations
+since flu season was coming up fast, and I had attended a free flu shot event
+in the past.
 
-I built a prototype application and advertised it via twitter. CDPH, the
-mayor's office, and a few other civic coders, namely Juan-Pablo Velez, noticed 
+I built a prototype application and advertised it via Twitter. CDPH, the
+mayor's office, and a few other civic coders, mainly Juan-Pablo Velez, noticed 
 the tweet. Before I knew it, Juan-Pablo brokered a meeting between CDPH, the
 Mayor's office, and ourselves. The meeting was positive and I began in ernest
 to polish up the application.
