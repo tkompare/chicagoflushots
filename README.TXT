@@ -1,5 +1,5 @@
 This application was developed for the Chicago Department of Public Health (CDPH)
-to help Chicago residents locate and find public transporation to CDPH's free
+to help Chicago residents locate and find public transportation to CDPH's free
 flu shot clinic events.
 
 http://flushots.311services.org/
