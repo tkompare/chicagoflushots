@@ -32,7 +32,7 @@ feedback and assistance of Juan-Pablo Velez and Derek Eder. Thanks also to Smart
 Chicago Collaborative for hosting this web application.
 
 ERRATA
-'flu_lgo_720.png' image file is for the City of Chicago's own use and does not
+'flu_logo_720.png' image file is for the City of Chicago's own use and does not
 fall under the license found on LICENSE.TXT. You must replace it in your own
 implementation. It is left here to help you use this code.
 
