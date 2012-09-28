@@ -27,6 +27,11 @@ MADD PROPZ
 This web application could not have been as well executed without the sage 
 feedback and assistance of Juan-Pablo Velez and Derek Eder.
 
+ERRATA
+'flu_lgo_720.png' image file is for the City of Chicago's own use and does not
+fall under the license found on LICENSE.TXT. You must replace it in your own
+implementation. It is left here to help you use this code.
+
 This code should be fairly easy to take and use by other government agencies
 offering flu shot clinic events. If you would like any advice on implementing 
 this code, drop me a line.
