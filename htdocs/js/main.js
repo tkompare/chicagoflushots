@@ -1,7 +1,6 @@
 $(document).ready(function()
 {
-	var city =  document.referrer.match(/cityofchicago\.org/);
-	if(city !== null)
+	if(document.referrer.match(/cityofchicago\.org/) !== null)
 	{
 		$('#chicago').show();
 	}
@@ -13,8 +12,6 @@ $(document).ready(function()
 	var eventSelected = false;
 	var Circle = null;
 	var lastFluShotLocationClicked = null;
-	var DirectionsService = new google.maps.DirectionsService();
-	var RendererOptions = {};
 	// Render the map
 	var Map = new TkMap({
 		domid:'map',
@@ -46,10 +43,41 @@ $(document).ready(function()
 		tableid:'5313521',
 		where:defaultWhere
 	});
+	var RendererOptions = {
+		suppressInfoWindows: true,
+		polylineOptions: {
+			strokeColor:'#0954cf',
+			strokeWeight:'5',
+			strokeOpacity: '0.85'
+		}
+	};
+	// start up the google directions service and renderer
+	var DirectionsService = new google.maps.DirectionsService();
+	var DirectionsRenderer = new google.maps.DirectionsRenderer(RendererOptions);
+	// Test for GPS
+	if(gps)
+	{
+		$('#btn-gps-location').removeClass('hide');
+	}
+	// Test for touch to set pan/zoom default
+	if (touch)
+	{
+		Map.setPanZoom(false);
+		Map.setTouchScroll(true);
+		// Set Pan/Zoom Control
+		var PanZoomControlDiv = document.createElement('div');
+		var panZoomControl = new PanZoomControl(PanZoomControlDiv, Map.Map);
+		PanZoomControlDiv.index = 1;
+		Map.Map.controls[google.maps.ControlPosition.TOP_RIGHT].push(PanZoomControlDiv);
+	}
+	// start listening for a click on the flu shot locations
 	fluShotLayerListener();
 	/*---------------------------------------------------------------------------
 	 * FUNCTIONS
 	 *--------------------------------------------------------------------------*/
+	/**
+	 * Set ical event reminder object
+	 */
 	function setIcal(startDate,endDate,description,location){
 		if($('#ical').hasClass('hasICalendar'))
 		{
@@ -83,7 +111,6 @@ $(document).ready(function()
 					summary: 'CDPH Free Flu Shot Event',
 					description: description,
 					location: location,
-					//icons: 'img/icalendar.png',
 					iconSize: 0,
 					sites: ['google','yahoo']
 				}
@@ -97,7 +124,6 @@ $(document).ready(function()
 					summary: 'CDPH Free Flu Shot Event',
 					description: description,
 					location: location,
-					//icons: 'img/icalendar.png',
 					iconSize: 0,
 					sites: ['icalendar','outlook'], 
 					echoUrl: 'ical.php'
@@ -110,39 +136,40 @@ $(document).ready(function()
 	 * and retrieve the data from the FT.
 	 */
 	function fluShotLayerListener() {
-		google.maps.event.addListener(FluShotsLayer.Layer, "click", function(e) {
-			lastFluShotLocationClicked = e.row;
+		google.maps.event.addListener(FluShotsLayer.Layer, "click", function(event) {
+			lastFluShotLocationClicked = event.row;
 			var DateArray = lastFluShotLocationClicked.Date.value.split('/');
-			var HoursArray = lastFluShotLocationClicked.Hours.value.split(' - ');
-			var sTime = HoursArray[0].split(':');
-			var eTime = HoursArray[1].split(':');
-			var sPM = sTime[1].match(/PM/i);
-			if(sPM !== null && sTime[0] != 12)
+			lastFluShotLocationClicked.Hours.value.replace(/\s/g, '');
+			var HoursArray = lastFluShotLocationClicked.Hours.value.split('-');
+			var startTime = HoursArray[0].split(':');
+			var endTime = HoursArray[1].split(':');
+			var startPM = startTime[1].match(/PM/i);
+			if(startPM !== null && startTime[0] != 12)
 			{
-				sTime[0] = parseInt(sTime[0],10) + 12;
+				startTime[0] = parseInt(startTime[0],10) + 12;
 			}
-			var ePM = eTime[1].match(/PM/i);
-			if(ePM !== null && eTime != 12)
+			var endPM = endTime[1].match(/PM/i);
+			if(endPM !== null && endTime != 12)
 			{
-				eTime[0] = parseInt(eTime[0],10) + 12;
+				endTime[0] = parseInt(endTime[0],10) + 12;
 			}
-			var sMinute = sTime[1].split(' ');
-			var eMinute = eTime[1].split(' ');
-			var startDate = new Date(DateArray[2], DateArray[0]-1, DateArray[1], sTime[0], sMinute[0], 00);
-			var endDate = new Date(DateArray[2], DateArray[0]-1, DateArray[1], eTime[0], eMinute[0], 00);
+			var startMinute = startTime[1].match(/^[0-9]{2}/);
+			var endMinute = endTime[1].split(/^[0-9]{2}/);
+			var startDate = new Date(DateArray[2], DateArray[0]-1, DateArray[1], startTime[0], startMinute[0], 00);
+			var endDate = new Date(DateArray[2], DateArray[0]-1, DateArray[1], endTime[0], endMinute[0], 00);
 			$('#grp-ical').show(500);
 			setIcal(startDate,endDate,lastFluShotLocationClicked.Name.value,lastFluShotLocationClicked.Location.value);
 			eventSelected = true;
 			$('#eventselected').html('<b>'+lastFluShotLocationClicked.Name.value+'</b>');
 			if(locationMarker !== null)
 			{
-				$('#grp-cta').show();
+				$('#grp-cta').show(750);
 			}
 			$('#grp-reset').show();
 		});
 	}
 	/**
-	 * Put a pan/zoom button on the Google map
+	 * Put an enable/disable pan/zoom button on the Google map
 	 */
 	function PanZoomControl(controlDiv, map) {
 		// Set CSS styles for the DIV containing the control
@@ -160,7 +187,7 @@ $(document).ready(function()
 		controlDiv.appendChild(controlUI);
 		// Set CSS for the control interior.
 		var controlText = document.createElement('div');
-		controlText.style.fontFamily = 'Arial,sans-serif';
+		controlText.style.fontFamily = 'sans-serif';
 		controlText.style.fontSize = '12px';
 		controlText.style.paddingLeft = '4px';
 		controlText.style.paddingRight = '4px';
@@ -182,6 +209,9 @@ $(document).ready(function()
 			}
 		});
 	}
+	/**
+	 * Find where the user is and put a map pin on it
+	 */
 	function setLocationQuery()
 	{
 		if(locationMarker !== null)
@@ -192,7 +222,7 @@ $(document).ready(function()
 		{
 			Circle.setMap(null);
 		}
-		$('#grp-day').hide(500);
+		$('#grp-day').hide(750);
 		$('.day').removeClass('marked active');
 		var geocoder = new google.maps.Geocoder();
 		geocoder.geocode(
@@ -208,16 +238,26 @@ $(document).ready(function()
 					}
 					else
 					{
-						alert("We're sorry. We could not locate this address. Please doublecheck you've entered your address correctly");
+						addressError();
 					}
 				}
 				else
 				{
-					alert("We're sorry. We could not locate this address. Please doublecheck you've entered your address correctly");
+					addressError();
 				}
 			}
 		);
 	}
+	/**
+	 * show an addressing error
+	 */
+	function addressError()
+	{
+		alert('We\'re sorry. We could not locate this address. Please doublecheck you\'ve entered your address correctly.');
+	}
+	/**
+	 * Fun little query builder to find event by the days of the week the user clicked on.
+	 */
 	function setQuery()
 	{
 		var where = defaultWhere;
@@ -266,6 +306,9 @@ $(document).ready(function()
 		FluShotsLayer.showLayer({where:where});
 		fluShotLayerListener();
 	}
+	/**
+	 * Find events in the next seven days
+	 */
 	function findWeek()
 	{
 		var where = "Date >= '"+year +'.'+ (month<=9?'0'+month:month) +'.'+ (date<=9?'0'+date:date)+"'";
@@ -273,22 +316,23 @@ $(document).ready(function()
 		FluShotsLayer.showLayer({where:where});
 		fluShotLayerListener();
 	}
-	/*
+	/**
 	 * No GPS?
 	 */
 	function handleNoGeolocation(errorFlag)
 	{
 		if (errorFlag)
 		{
-			$('#gpsfail').text('Error: The Geolocation service failed.');
-			$('#alert-gpsfail').removeClass('hide');
+			alert('We\'re sorry. Your browser\'s geolocation service failed.');
 		}
 		else
 		{
-			$('#gpsfail').text('Error: Your browser doesn\'t support geolocation.');
-			$('#alert-gpsfail').removeClass('hide');
+			alert('We\'re sorry! Your browser does not support geolocation.');
 		}
 	}
+	/**
+	 * Put the marker on the map
+	 */
 	function placeMarker(latlng)
 	{
 		if(locationMarker !== null)
@@ -304,7 +348,6 @@ $(document).ready(function()
 			position:latlng,
 			map: Map.Map
 		});
-		//var where = defaultWhere+' AND ST_INTERSECTS(Location, CIRCLE(LATLNG('+latlng.lat()+','+latlng.lng()+'), 5000))';
 		Circle = new google.maps.Circle({
 			center:latlng,
 			clickable:false,
@@ -317,15 +360,15 @@ $(document).ready(function()
 		Map.Map.fitBounds(Circle.getBounds());
 		FluShotsLayer.showLayer({where:defaultWhere});
 		fluShotLayerListener();
-		$('#grp-find').show(500);
+		$('#grp-find').show(750);
 		$('#grp-reset').show();
 		if(eventSelected === true)
 		{
-			$('#grp-cta').show();
+			$('#grp-cta').show(750);
 		}
 	}
-	/*
-	 * The Geocoder function
+	/**
+	 * Find the address of a lat lng pair.
 	 */
 	function codeLatLng(latlng)
 	{
@@ -343,55 +386,25 @@ $(document).ready(function()
 						$('#location').blur();
 						if(lastFluShotLocationClicked !== null)
 						{
-							$('#grp-cta').show();
+							$('#grp-cta').show(750);
 						}
 					}
 					else
 					{
-						alert("We're sorry. We could not locate you. Please make sure your device's locator is working properly.");
+						alert('We\'re sorry. We could not find an address for this location.');
 					}
 				}
 				else
 				{
-					alert("We're sorry. We could not locate you. Please make sure your device's locator is working properly.");
+					alert('We\'re sorry. We could not find an address for this location.');
 				}
 			}
 		);
 	}
-	// Test for GPS
-	if(gps)
-	{
-		$('#btn-gps-location').removeClass('hide');
-	}
-	// Test for touch to set pan/zoom default
-	if (touch)
-	{
-		Map.setPanZoom(false);
-		Map.setTouchScroll(true);
-		// Set Pan/Zoom Control
-		var PanZoomControlDiv = document.createElement('div');
-		var panZoomControl = new PanZoomControl(PanZoomControlDiv, Map.Map);
-		PanZoomControlDiv.index = 1;
-		Map.Map.controls[google.maps.ControlPosition.TOP_RIGHT].push(PanZoomControlDiv);
-	}
-	else
-	{
-		RendererOptions = {
-			draggable: true,
-			suppressInfoWindows: true,
-			suppressMarkers : false,
-			polylineOptions: {
-				strokeColor:'#0954cf',
-				strokeWeight:'5',
-				strokeOpacity: '0.85'
-			}
-		};
-	}
-	var DirectionsRenderer = new google.maps.DirectionsRenderer(RendererOptions);
-	/************************************
+	/*---------------------------------------------------------------------------
 	 * LISTENERS
-	 ***********************************/
-	/*
+	 *--------------------------------------------------------------------------*/
+	/**
 	 * Location listener
 	 */
 	$('#location').keyup(function(theKey){
@@ -402,8 +415,8 @@ $(document).ready(function()
 			}
 		}
 	});
-	/*
-	 * Location search button listener
+	/**
+	 * Listen for a the CTA route buttons
 	 */
 	$('.cta').click(function()
 	{
@@ -411,8 +424,9 @@ $(document).ready(function()
 		var transitOptions = {};
 		if(buttonClicked == 'ctarouteevent')
 		{
-			var time = lastFluShotLocationClicked.Hours.value.split(' - ');
-			if(time[0] == '12:00 PM')
+			lastFluShotLocationClicked.Hours.value.replace(/\s/g, '');
+			var time = lastFluShotLocationClicked.Hours.value.split('-');
+			if(time[0] == '12:00PM')
 			{
 				time[0] = '12:00';
 			}
@@ -435,8 +449,8 @@ $(document).ready(function()
 		{
 			if (Status == google.maps.DirectionsStatus.OK)
 			{
-				$('#theform').hide(500);
-				$('#span-cta').show(500);
+				$('#theform').hide(750);
+				$('#span-cta').show(750);
 				delete Response.routes[0].warnings;
 				Response.routes[0].copyrights = '';
 				$('#directions').html();
@@ -457,27 +471,21 @@ $(document).ready(function()
 				{
 					DirectionsRenderer.setMap(null);
 				}
-				$('#theform').hide(500);
-				$('#span-cta').show(500);
+				$('#theform').hide(750);
+				$('#span-cta').show(750);
 				$('#timetoleave').html('<p class="lead">CTA/Metra Directions</p>');
 				$('#directions').html('<p><b>We are sorry. We cannot route you to this clinic.</b> It is likely that the CTA or Metra has not released schedule times for the date of your travel yet. Please check back soon.</p>');
 			}
 		});
 		fluShotLayerListener();
 	});
-	$('#btn-by-loc').click(function(){
-		$('#grp-day').hide(500);
-		$('.day').removeClass('marked active');
-		$('#grp-location').show(500);
-		setQuery();
-	});
-	/*
+	/**
 	 * Day search button listener
 	 */
 	$('#btn-by-day').click(function(){
-		$('#grp-day').show(500);
+		$('#grp-day').show(750);
 	});
-	/*
+	/**
 	 * Search by days listener
 	 */
 	$('.search').click(function(){
@@ -491,24 +499,24 @@ $(document).ready(function()
 		}
 		setQuery();
 	});
-	/*
+	/**
 	 * Next 7 Days button listener
 	 */
 	$('#week').click(function() {
 		$('.day,#btn-date-all').removeClass('active');
-		$('#grp-day').hide(500);
+		$('#grp-day').hide(750);
 		$('#btn-date-available').addClass('active');
 		findWeek();
 	});
-	/*
+	/**
 	 * Start over button
 	 */
 	$('#reset-map').click(function() {
 		$('.day').removeClass('active marked');
-		$('#grp-day,#grp-find,#grp-cta,#span-cta,#grp-ical,#grp-reset').hide(500);
+		$('#grp-day,#grp-find,#grp-cta,#span-cta,#grp-ical,#grp-reset').hide(750);
 		$('#ical,#ical-file,#eventselected,#timetoleave,#directions').html('');
 		$('#location').val('');
-		$('#theform').show(500);
+		$('#theform').show(750);
 		lastFluShotLocationClicked = null;
 		setQuery();
 		if(locationMarker !== null)
@@ -530,7 +538,7 @@ $(document).ready(function()
 		var latlng = new google.maps.LatLng(defaultLat,defaultLng);
 		Map.Map.panTo(latlng);
 	});
-	/*
+	/**
 	 * GPS listener
 	 */
 	$('#btn-gps-location').click(function(){
@@ -559,7 +567,7 @@ $(document).ready(function()
 			handleNoGeolocation(false);
 		}
 	});
-	/*
+	/**
 	 * Address Search Button listener
 	 */
 	$('#btn-search-location').click(function(){
