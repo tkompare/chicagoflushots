@@ -1,4 +1,4 @@
-This application was developed for the Chicago Deparment of Public Health (CDPH)
+This application was developed for the Chicago Department of Public Health (CDPH)
 to help Chicago residents locate and find public transporation to CDPH's free
 flu shot clinic events.
 
