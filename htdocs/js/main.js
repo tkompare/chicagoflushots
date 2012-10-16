@@ -1,9 +1,5 @@
 $(document).ready(function()
 {
-	if(document.referrer.match(/cityofchicago\.org/) !== null)
-	{
-		$('#chicago').show();
-	}
 	var touch = Modernizr.touch;
 	var gps = navigator.geolocation;
 	var defaultLat = 41.85;
@@ -12,6 +8,11 @@ $(document).ready(function()
 	var eventSelected = false;
 	var Circle = null;
 	var lastFluShotLocationClicked = null;
+	// If this is iframed, hide the footer.
+	if (window.frames.length != parent.frames.length)
+	{
+		$('#footer').hide();
+	}
 	// Render the map
 	var Map = new TkMap({
 		domid:'map',
