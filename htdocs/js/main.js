@@ -1,4 +1,4 @@
-$(document).ready(function()
+$(function()
 {
 	var touch = Modernizr.touch;
 	var gps = navigator.geolocation;
@@ -166,7 +166,7 @@ $(document).ready(function()
 			{
 				$('#grp-cta').show(750);
 			}
-			$('#grp-reset').show();
+			$('#grp-reset').show(750);
 		});
 	}
 	/**
@@ -444,6 +444,7 @@ $(document).ready(function()
 			origin : $('#location').val()+', Chicago, IL',
 			destination : lastFluShotLocationClicked.Location.value,
 			transitOptions : transitOptions,
+			
 			travelMode: google.maps.TravelMode.TRANSIT
 		};
 		DirectionsService.route(RouteRequest, function(Response, Status)
@@ -452,18 +453,30 @@ $(document).ready(function()
 			{
 				$('#theform').hide(750);
 				$('#span-cta').show(750);
-				delete Response.routes[0].warnings;
-				Response.routes[0].copyrights = '';
+				var transitroute = 0;
+				for(var i=0; i<Response.routes.length; i++)
+				{	
+					for(var j=0; j<Response.routes[i].legs[0].steps.length; j++)
+					{
+						if(Response.routes[i].legs[0].steps[j].travel_mode == 'TRANSIT')
+						{
+							transitroute = i;
+							break;
+						}
+					}
+					delete Response.routes[i].warnings;
+					Response.routes[i].copyrights = '';
+				}
 				$('#directions').html();
 				$('#timetoleave').html();
 				DirectionsRenderer.setDirections(Response);
 				if(buttonClicked == 'ctarouteevent')
 				{
-					$('#timetoleave').html('<p class="lead">CTA/Metra Directions<br><b>Leave by '+Response.routes[0].legs[0].departure_time.text+' on '+lastFluShotLocationClicked.Date.value+'</b></p>');
+					$('#timetoleave').html('<p class="lead">CTA/Metra Directions<br><b>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+' on '+lastFluShotLocationClicked.Date.value+'</b></p>');
 				}
 				else
 				{
-					$('#timetoleave').html('<p class="lead">CTA/Metra Directions<br><b>Leave by '+Response.routes[0].legs[0].departure_time.text+'</b></p>');
+					$('#timetoleave').html('<p class="lead">CTA/Metra Directions<br><b>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+'</b></p>');
 				}
 			}
 			else
