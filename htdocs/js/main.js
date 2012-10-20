@@ -126,14 +126,14 @@ $(function()
 					description: description,
 					location: location,
 					iconSize: 0,
-					sites: ['icalendar','outlook'], 
+					sites: ['icalendar','outlook'],
 					echoUrl: 'ical.php'
 				}
 			);
 		}
 	}
 	/**
-	 * Listen for a click on a flu shot clinic location 
+	 * Listen for a click on a flu shot clinic location
 	 * and retrieve the data from the FT.
 	 */
 	function fluShotLayerListener() {
@@ -444,7 +444,7 @@ $(function()
 			origin : $('#location').val()+', Chicago, IL',
 			destination : lastFluShotLocationClicked.Location.value,
 			transitOptions : transitOptions,
-			
+
 			travelMode: google.maps.TravelMode.TRANSIT
 		};
 		DirectionsService.route(RouteRequest, function(Response, Status)
@@ -455,7 +455,7 @@ $(function()
 				$('#span-cta').show(750);
 				var transitroute = 0;
 				for(var i=0; i<Response.routes.length; i++)
-				{	
+				{
 					for(var j=0; j<Response.routes[i].legs[0].steps.length; j++)
 					{
 						if(Response.routes[i].legs[0].steps[j].travel_mode == 'TRANSIT')
@@ -472,11 +472,11 @@ $(function()
 				DirectionsRenderer.setDirections(Response);
 				if(buttonClicked == 'ctarouteevent')
 				{
-					$('#timetoleave').html('<p class="lead">CTA/Metra Directions<br><b>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+' on '+lastFluShotLocationClicked.Date.value+'</b></p>');
+					$('#timetoleave').html('<b>CTA/Metra Directions</b><span class="label label-important">Leave by '+Response.routes[transitroute].legs[0].departure_time.text+' on '+lastFluShotLocationClicked.Date.value+'</span></p>');
 				}
 				else
 				{
-					$('#timetoleave').html('<p class="lead">CTA/Metra Directions<br><b>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+'</b></p>');
+					$('#timetoleave').html('<b>CTA/Metra Directions</b><span class="label label-important">Leave by '+Response.routes[transitroute].legs[0].departure_time.text+'</span></p>');
 				}
 			}
 			else
@@ -568,7 +568,7 @@ $(function()
 					Map.Map.panTo(pos);
 					codeLatLng(pos);
 					placeMarker(pos);
-				}, 
+				},
 				function()
 				{
 					handleNoGeolocation(true);
