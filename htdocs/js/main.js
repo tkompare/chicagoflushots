@@ -431,9 +431,7 @@ $(function()
 			{
 				time[0] = '12:00';
 			}
-			console.log("'"+time[0]+"'");
 			var datetoparse = lastFluShotLocationClicked.Date.value+' '+time[0];
-			console.log(lastFluShotLocationClicked.Date.value);
 			var unixtime = Date.parse(datetoparse).getTime();
 			transitOptions = {
 				arrivalTime : new Date(unixtime)
@@ -474,19 +472,11 @@ $(function()
 				DirectionsRenderer.setDirections(Response);
 				if(buttonClicked == 'ctarouteevent')
 				{
-<<<<<<< HEAD
-					$('#timetoleave').html('<b>CTA/Metra Directions</b><span class="label label-important">Leave by '+Response.routes[transitroute].legs[0].departure_time.text+' on '+lastFluShotLocationClicked.Date.value+'</span></p>');
-				}
-				else
-				{
-					$('#timetoleave').html('<b>CTA/Metra Directions</b><span class="label label-important">Leave by '+Response.routes[transitroute].legs[0].departure_time.text+'</span></p>');
-=======
 					$('#timetoleave').html('<b>CTA/Metra Directions</b><br>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+' on '+lastFluShotLocationClicked.Date.value+'</p>');
 				}
 				else
 				{
 					$('#timetoleave').html('<b>CTA/Metra Directions</b><br>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+'</p>');
->>>>>>> [flushots] various fixes
 				}
 			}
 			else
