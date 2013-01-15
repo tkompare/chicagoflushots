@@ -1,55 +1,67 @@
-$(function()
-{
-	var touch = Modernizr.touch;
-	var gps = navigator.geolocation;
-	var defaultLat = 41.85;
-	var defaultLng = -87.675;
-	var locationMarker = null;
-	var eventSelected = false;
-	var Circle = null;
-	var lastFluShotLocationClicked = null;
+function loadScript() {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "http://maps.googleapis.com/maps/api/js?key=" + config["api_key"] + "&sensor=true&callback=initialize";
+  document.body.appendChild(script);
+}
+
+window.onload = loadScript;
+
+function initialize() {
+	var touch = Modernizr.touch,
+		gps = navigator.geolocation,
+		locationMarker = null,
+		eventSelected = false,
+		Circle = null,
+		lastFluShotLocationClicked = null;
+
 	// If this is iframed, hide the footer.
 	if (window.frames.length != parent.frames.length)
 	{
 		$('#footer').hide();
 	}
+
 	// Render the map
 	var Map = new TkMap({
 		domid:'map',
 		init:true,
-		lat:defaultLat,
-		lng:defaultLng,
-		styles:'grey',
-		zoom:11
+		lat:config["default_lat"],
+		lng:config["default_lng"],
+		styles:config["map_style"],
+		zoom:config["initial_zoom"]
 	});
+
 	// Get today's date
-	var d = new Date();
-	var date = d.getDate();
-	//Months are zero based
-	var month = d.getMonth() + 1;
-	var year = d.getFullYear();
+	var d = new Date(),
+		date = d.getDate(),
+		month = d.getMonth() + 1, // zero-based
+		year = d.getFullYear();
+
 	// Get seven days from today
 	var d7 = new Date(d);
 	d7.setDate(d7.getDate()+7);
 	var date7 = d7.getDate();
+
 	//Months are zero based
 	var month7 = d7.getMonth() + 1;
 	var year7 = d7.getFullYear();
+
 	// Google FT likes dot-based dates
 	var defaultWhere = "Date >= '"+year +'.'+ (month<=9?'0'+month:month) +'.'+ (date<=9?'0'+date:date)+"'";
+	
 	// Render the Flu shot clinic locations on the map
 	var FluShotsLayer = new TkMapFusionLayer({
 		geo:'Location',
 		map:Map.Map,
-		tableid:'5313521',
+		tableid: config["table_id"],
 		where:defaultWhere
 	});
 	var RendererOptions = {
 		suppressInfoWindows: true,
 		polylineOptions: {
-			strokeColor:'#0954cf',
-			strokeWeight:'5',
-			strokeOpacity: '0.85'
+			strokeColor:config["stroke_color"],
+			strokeWeight:config["stroke_weight"],
+			strokeOpacity: config["stroke_opacity"]
 		}
 	};
 	// start up the google directions service and renderer
@@ -108,8 +120,8 @@ $(function()
 				{
 					start: startDate,
 					end: endDate,
-					title: 'CDPH Free Flu Shot Event',
-					summary: 'CDPH Free Flu Shot Event',
+					title: config["cal_title"],
+					summary: config["cal_summary"],
 					description: description,
 					location: location,
 					iconSize: 0,
@@ -121,8 +133,8 @@ $(function()
 				{
 					start: startDate,
 					end: endDate,
-					title: 'CDPH Free Flu Shot Event',
-					summary: 'CDPH Free Flu Shot Event',
+					title: config["cal_title"],
+					summary: config["cal_summary"],
 					description: description,
 					location: location,
 					iconSize: 0,
@@ -227,7 +239,7 @@ $(function()
 		$('.day').removeClass('marked active');
 		var geocoder = new google.maps.Geocoder();
 		geocoder.geocode(
-			{address:$('#location').val()+', Chicago, IL'},
+			{address:$('#location').val()+', ' + config["city"] + ', ' + config["state"]},
 			function(results, status)
 			{
 				if (status == google.maps.GeocoderStatus.OK)
@@ -417,7 +429,7 @@ $(function()
 		}
 	});
 	/**
-	 * Listen for a the CTA route buttons
+	 * Listen for the route buttons
 	 */
 	$('.cta').click(function()
 	{
@@ -441,7 +453,7 @@ $(function()
 		$('#directions').html('');
 		DirectionsRenderer.setPanel(document.getElementById('directions'));
 		var RouteRequest = {
-			origin : $('#location').val()+', Chicago, IL',
+			origin : $('#location').val()+', ' + config['city'] + ', ' + config['state'],
 			destination : lastFluShotLocationClicked.Location.value,
 			transitOptions : transitOptions,
 
@@ -472,11 +484,11 @@ $(function()
 				DirectionsRenderer.setDirections(Response);
 				if(buttonClicked == 'ctarouteevent')
 				{
-					$('#timetoleave').html('<b>CTA/Metra Directions</b><br>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+' on '+lastFluShotLocationClicked.Date.value+'</p>');
+					$('#timetoleave').html('<b>Directions</b><br>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+' on '+lastFluShotLocationClicked.Date.value+'</p>');
 				}
 				else
 				{
-					$('#timetoleave').html('<b>CTA/Metra Directions</b><br>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+'</p>');
+					$('#timetoleave').html('<b>Directions</b><br>Leave by '+Response.routes[transitroute].legs[0].departure_time.text+'</p>');
 				}
 			}
 			else
@@ -487,8 +499,8 @@ $(function()
 				}
 				$('#theform').hide(750);
 				$('#span-cta').show(750);
-				$('#timetoleave').html('<p class="lead">CTA/Metra Directions</p>');
-				$('#directions').html('<p><b>We are sorry. We cannot route you to this clinic.</b> It is likely that the CTA or Metra has not released schedule times for the date of your travel yet. Please check back soon.</p>');
+				$('#timetoleave').html('<p class="lead">Directions</p>');
+				$('#directions').html('<p><b>We are sorry. We cannot route you to this clinic.</b> It is likely that your local transit authority has not released schedule times for the date of your travel yet. Please check back soon.</p>');
 			}
 		});
 		fluShotLayerListener();
@@ -590,4 +602,4 @@ $(function()
 			setLocationQuery();
 		}
 	});
-});
+}
