@@ -11,7 +11,7 @@ var config = {
     "stroke_color": "#0954cf",
     "stroke_weight": "5",
     "stroke_opacity": ".85",
-    "cal_title":"BPHC Free Flu Shot Event",
-    "cal_summary":"BPHC Free Flu Shot Event",
+    "cal_title":"CDPH Free Flu Shot Event",
+    "cal_summary":"CDPH Free Flu Shot Event",
     "transit_name":"CTA"
 }

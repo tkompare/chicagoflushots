@@ -631,8 +631,4 @@ function initialize() {
 			setLocationQuery();
 		}
 	});
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> [flushots] max/min touch map control
