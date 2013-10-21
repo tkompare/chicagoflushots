@@ -1,3 +1,6 @@
+NOTICE: The Flu Shots app was rewritten for the 2013-14 flu season. The updated 
+code is here: https://github.com/tkompare/flushots2013
+
 This application was developed for the Chicago Department of Public Health (CDPH)
 to help Chicago residents locate and find public transportation to CDPH's free
 flu shot clinic events.
