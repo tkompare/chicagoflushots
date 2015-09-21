@@ -1,7 +1,6 @@
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-NOTICE: THE FLU SHOTS APP WAS REWRITTEN FOR THE 2013-14 SEASON.  THE UPDATED CODE
-IS HERE: https://github.com/tkompare/flushots2013
+NOTICE: THE FLU SHOTS APP WAS REWRITTEN FOR THE 2015-16 SEASON.
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -9,7 +8,7 @@ This application was developed for the Chicago Department of Public Health (CDPH
 to help Chicago residents locate and find public transportation to CDPH's free
 flu shot clinic events.
 
-http://flushots.311services.org/
+http://chicagoflushots.org/
 
 BACKGROUND
 I went to a weekly meeting of civic coders where several city agencies 
@@ -28,18 +27,18 @@ BITS AND BYTES
 These events were published by the CDPH via their web site (subsequently
 published on the Chicago Data Portal). Other events were given directly by
 CDPH. These events data are published to a Google Fusion Table, where the code
-uses the Google Maps API to retrive those events.
+uses the Google Maps API to retrieve those events.
 
 The Fusion Table:
-https://www.google.com/fusiontables/DataSource?snapid=S705126nZTU
+https://www.google.com/fusiontables/DataSource?docid=1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4
 
 MADD PROPZ
-This web application could not have been as well executed without the sage 
+This web application could not have been originally as well executed without the sage
 feedback and assistance of Juan-Pablo Velez and Derek Eder. Thanks also to Smart
-Chicago Collaborative for hosting this web application.
+Chicago for hosting this web application.
 
 ERRATA
-'flu_logo_720.png' image file is for the City of Chicago's own use and does not
+'CDPH_HC_Logo.jpg' image file is for the City of Chicago's own use and does not
 fall under the license found on LICENSE.TXT. You must replace it in your own
 implementation. It is left here to help you use this code.
 
