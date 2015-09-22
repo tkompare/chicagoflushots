@@ -32,6 +32,14 @@
 		.navbar-inverse .navbar-nav .open .dropdown-menu > li > a { color: #dddddd; }
 		a { color: #cf1115; text-decoration: none; }
 		a:hover, a:focus { color:#cf1115; text-decoration:underline; }
+		.navigate {
+			background-color:#13b5ea;
+			color:#ffffff;
+		}
+		.form-control::-webkit-input-placeholder { color:#ffffff; }
+		.form-control::-moz-placeholder { color:#ffffff; } /* firefox 19+ */
+		.form-control:-ms-input-placeholder { color:#ffffff; } /* ie */
+		input.form-control:-moz-placeholder { color:#ffffff; }
 	</style>
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
@@ -87,9 +95,10 @@
 			</ul>
 			<form class="navbar-form navbar-left" onSubmit="$('#nav-go').click(); return false;" role="search">
 				<div class="form-group">
-					<input id="nav-address" type="text" class="form-control input-sm" placeholder="Enter an address">
+					<input id="nav-address" type="text" class="form-control input-sm navigate"
+						   placeholder="Enter an address">
 				</div>
-				<button id="nav-go" class="btn btn-default btn-sm" type="button">Go</button>
+				<button id="nav-go" class="btn btn-default btn-sm navigate" type="button">Go</button>
 			</form>
 			<a id="nav-agency" class="navbar-text pull-right" data-toggle="modal" href="#modal-cdph"><small>Chicago Department of Public Health</small></a>
 		</div>
