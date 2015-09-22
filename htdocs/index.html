@@ -12,7 +12,7 @@
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<style>
-		body { padding-bottom: 75px; color:#0d7ea3; }
+		body { padding-bottom: 75px; }
 		.google-map-canvas,
 		.google-map-canvas * { .box-sizing(content-box); }
 		#map img { max-width: none; }
@@ -143,16 +143,16 @@
 		</div>
 	</div>
 
-	<!-- iCal DatePicker Modal -->
-	<div class="modal fade" id="modal-ical" tabindex="-1">
+	<!-- Event Modal -->
+	<div class="modal fade" id="modal-event" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">When should we remind you?</h4>
+					<h4 id="modal-event-title" class="modal-title"></h4>
 				</div>
 				<div class="modal-body">
-					<small>When should we remind you to get your flu shot?</small>
+					<span id="modal-body-span"></span>
 					<p><br><button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
 				</div>
 			</div>

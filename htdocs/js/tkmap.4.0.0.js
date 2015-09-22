@@ -7,7 +7,6 @@
 var TkMap = (function($){
 	var constructor = function(Args)
 	{
-		console.log(Args);
 		/*
 		 * PROPERTIES ***************************************************************
 		 */

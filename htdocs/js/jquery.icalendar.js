@@ -167,7 +167,7 @@ $.extend(iCalendar.prototype, {
 			var url = (site.url == 'echo' ? '#' : url);
 			var item = $('<span></span>');
 			var anchor = $('<a href="' + url + '" title="' + settings.tipPrefix + site.display + '"' +
-				(site.url == 'echo' ? '' : ' target="' + settings._target + '"') + 'style="color:#22f;"></a>');
+				(site.url == 'echo' ? '' : ' target="' + settings._target + '"') + 'class="btn btn-default"></a>');
 			if (site.url == 'echo') {
 				anchor.click(function() {
 					// Record a Calendar Reminder
@@ -440,10 +440,8 @@ function makeICalendar(event) {
 		out += text;
 		return out;
 	};
-	console.log('END:'+event.end+":");
 	if(event.end == '' || event.end == null)
 	{
-		console.log('here!');
 		var startdate = $.icalendar.formatDateTime(event.start);
 		var n = startdate.indexOf('T');
 		startdate = startdate.substring(0, n != -1 ? n : startdate.length);

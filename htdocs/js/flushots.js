@@ -35,11 +35,6 @@ var Flushots = (function($) {
 		this.chooseDate = function(Event)
 		{
 			return function() {
-				// $('#modal-ical').modal('toggle');
-				//$('#ical-' + Event.data.id).text(
-				//	" Hello World"
-				//);
-				console.log(Date.parse('today'));
 				$('#ical-'+Event.data.id).icalendar({
 					start: new Date(Date.parse('today')),
 					//end: new Date(Date.parse('today')),
@@ -84,10 +79,10 @@ var Flushots = (function($) {
 				// Make the info box
 				this.Events[i].infobox = new InfoBox(infoboxoptions);
 			}
+
 			for(var i in this.Events)
 			{
-				// Listen for marker clicks
-				google.maps.event.addListener(this.Events[i].marker, 'click', this.Events[i].toggleInfoBox(Map.Map,this.Events[i]));
+				google.maps.event.addListener(this.Events[i].marker,'click',this.Events[i].openModal(this.Events[i]));
 				// If it is a one-day event, add the ical link.
 				if(this.Events[i].data.begin_date === this.Events[i].data.end_date)
 				{
