@@ -31,24 +31,6 @@ var Flushots = (function($) {
 				});
 			};
 		};
-
-		this.chooseDate = function(Event)
-		{
-			return function() {
-				$('#ical-'+Event.data.id).icalendar({
-					start: new Date(Date.parse('today')),
-					//end: new Date(Date.parse('today')),
-					title: 'Get Your Flu Shot',
-					summary: 'Get Your Flu Shot',
-					description: Event.data.hours+" "+Event.data.cost+" Please remember to bring your" +
-					" immunization/shot records with you.",
-					location: Event.data.facility_name+' - '+Event.data.street1+' - '+Event.data.city+' '+Event.data.state+' '+Event.data.postal_code,
-					iconSize: 16,
-					sites: ['icalendar'],
-					echoUrl: '//flushots.smartchicagoapps.org/ical.php'
-				});
-			};
-		};
 		
 		this.getEvents = function(columns,rows,Map)
 		{
@@ -76,22 +58,11 @@ var Flushots = (function($) {
 					shadow:'img/shadow.png',
 					clickable:true
 				});
-				// Make the info box
-				this.Events[i].infobox = new InfoBox(infoboxoptions);
 			}
 
 			for(var i in this.Events)
 			{
 				google.maps.event.addListener(this.Events[i].marker,'click',this.Events[i].openModal(this.Events[i]));
-				// If it is a one-day event, add the ical link.
-				if(this.Events[i].data.begin_date === this.Events[i].data.end_date)
-				{
-					google.maps.event.addListener(this.Events[i].infobox, 'domready', this.setIcal(this.Events[i]));
-				}
-				else
-				{
-					google.maps.event.addListener(this.Events[i].infobox, 'domready', this.chooseDate(this.Events[i]));
-				}
 			}
 		};
 		
