@@ -17,7 +17,7 @@ var Flushots = (function($) {
 		this.setIcal = function(Event)
 		{
 			return function(){
-				$('#ical-'+Event.data.id).icalendar({
+				$('#ical-'+Event.data.facility_id).icalendar({
 					start: new Date(Date._parse(Event.data.begin_date+' '+Event.data.begin_time)),
 					end: new Date(Date._parse(Event.data.begin_date+' '+Event.data.end_time)),
 					title: 'Get Your Flu Shot',

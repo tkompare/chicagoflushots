@@ -55,13 +55,13 @@ var Event = (function($){
 						' btn-default">More Information</a>';
 				}
 				if(ThisEvent.data.begin_date === ThisEvent.data.end_date) {
-					ThisEvent.infoboxtext += '<span id="ical-' + ThisEvent.data.id + '" class="ical"></span>';
+					ThisEvent.infoboxtext += '<span id="ical-' + ThisEvent.data.facility_id + '" class="ical"></span>';
 				}
 
 				$('#modal-event-title').text(ThisEvent.data.facility_name);
 				$('#modal-body-span').html(ThisEvent.infoboxtext);
 
-					$('#ical-'+ThisEvent.data.id).icalendar({
+					$('#ical-'+ThisEvent.data.facility_id).icalendar({
 						start: new Date(Date._parse(ThisEvent.data.begin_date+' '+ThisEvent.data.begin_time)),
 						end: new Date(Date._parse(ThisEvent.data.begin_date+' '+ThisEvent.data.end_time)),
 						title: 'Get Your Flu Shot',
