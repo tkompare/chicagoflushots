@@ -20,28 +20,18 @@
 		iconfree:'/img/blue.png',
 		// Icon for your location
 		iconlocation:'/img/yellow-dot.png',
-		// infobox.js options
-		infoboxoptions:{
-			disableAutoPan: false,
-			maxWidth: 0,
-			pixelOffset: new google.maps.Size(-121, 0),
-			zIndex: null,
-			boxStyle: {
-				background: "url('img/tipbox.gif') no-repeat",
-				opacity: 0.92,
-				width: "240px"
-			},
-			closeBoxMargin: "11px 4px 4px 4px",
-			closeBoxURL: "img/close_x.png",
-			infoBoxClearance: new google.maps.Size(25, 60),
-			visible: false,
-			pane: "floatPane",
-			enableEventPropagation: false
-		},
+		// Icon for past events
+		iconpast:'/img/grey-transparent.png',
+		// Icon for selected location
+		iconselected:'/img/yellow.png',
 		// Start center latutude of the Google map
 		lat:41.875,
 		// Start center longitude of the Google map
 		lng:-87.6425,
+		// Selected event icon
+		selectedeventicon:null,
+		// Selected event id
+		selectedeventid:null,
 		// State
 		state:'Illinois',
 		// Defined style types passed to TkMap
@@ -73,7 +63,12 @@
 		/**
 		 * The Flushot application object
 		 */
-		var Flu = new Flushots(Default.infoboxoptions);
+		var Flu = new Flushots(Default);
+
+		var LogoDiv = document.createElement('div');
+		Flu.setMapLogo(LogoDiv);
+		LogoDiv.index = 1;
+		Map.Map.controls[google.maps.ControlPosition.TOP_CENTER].push(LogoDiv);
 		
 		var LegendDiv = document.createElement('div');
 		Flu.setMapLegend(LegendDiv,Map,Flu,Default);

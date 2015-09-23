@@ -3,7 +3,7 @@
  * @class - Flushot
  */
 var Flushots = (function($) {
-	var constructor = function(infoboxoptions){
+	var constructor = function(Default){
 		this.AddressMarker = null;
 		
 		// Now
@@ -46,23 +46,22 @@ var Flushots = (function($) {
 				// Create the Google LatLng object
 				this.Events[i].latlng = new google.maps.LatLng(this.Events[i].data.latitude,this.Events[i].data.longitude);
 				// Create the markers for each event
-				var icon = 'img/red.png';
+				var icon = Default.iconfee;
 				if($.trim(this.Events[i].data.cost.toLowerCase()).search(/no cost/) > -1 && $.trim(this.Events[i].data.cost.toLowerCase()).length > 0)
 				{
-					icon = 'img/blue.png';
+					icon = Default.iconfree;
 				}
 				this.Events[i].marker = new google.maps.Marker({
 					position: this.Events[i].latlng,
 					map: Map.Map,
 					icon:icon,
-					shadow:'img/shadow.png',
 					clickable:true
 				});
 			}
 
 			for(var i in this.Events)
 			{
-				google.maps.event.addListener(this.Events[i].marker,'click',this.Events[i].openModal(this.Events[i]));
+				google.maps.event.addListener(this.Events[i].marker,'click',this.Events[i].openModal(this.Events,this.Events[i],Default));
 			}
 		};
 		
@@ -195,6 +194,31 @@ var Flushots = (function($) {
 				}
 			});
 		};
+
+		this.setMapLogo = function(controlDiv)
+		{
+			// Set CSS styles for the DIV containing the control
+			// Setting padding to 5 px will offset the control
+			// from the edge of the map.
+			controlDiv.style.padding = '0.5em';
+			// Set CSS for the control border.
+			var controlUI = document.createElement('div');
+			controlUI.style.backgroundColor = 'rgba(255,255,255,0)';
+			controlUI.style.color = '#333';
+			controlUI.style.borderStyle = 'solid';
+			controlUI.style.borderWidth = '0px';
+			controlUI.style.borderRadius = '0px';
+			//controlUI.title = 'Click to learn more.';
+			controlDiv.appendChild(controlUI);
+			// Set CSS for the control interior.
+			var controlText = document.createElement('div');
+			controlText.style.paddingLeft = '.0em';
+			controlText.style.paddingRight = '.0em';
+			controlText.style.paddingTop = '.0em';
+			controlText.style.paddingBottom = '.0em';
+			controlText.innerHTML = '<img src="img/healthychicago_small_trans_bw.png">';
+			controlUI.appendChild(controlText);
+		}
 		
 		this.setMapLegend = function(controlDiv,Map,Flu,Default)
 		{
@@ -222,7 +246,7 @@ var Flushots = (function($) {
 			controlText.style.paddingRight = '.6em';
 			controlText.style.paddingTop = '.4em';
 			controlText.style.paddingBottom = '.4em';
-			controlText.innerHTML = '<div><a class="map-legend" data-toggle="modal" href="#modal-fee">No Cost To You</a><img src="img/blue.png" /></div>';
+			controlText.innerHTML = '<div><a class="map-legend" data-toggle="modal" href="#modal-fee">No Cost To You</a><img src="'+Default.iconfree+'" /></div>';
 			controlUI.appendChild(controlText);
 		};
 
@@ -302,12 +326,12 @@ var Flushots = (function($) {
 					// See if it is a free event
 					if($.trim(this.Events[i].data.cost.toLowerCase()).search(/no cost/) > -1 && $.trim(this.Events[i].data.cost.toLowerCase()).length > 0)
 					{
-						this.Events[i].marker.setIcon('img/blue.png');
+						this.Events[i].marker.setIcon(Default.iconfree);
 					}
 					else
 					{
 						// Hand over some dead presidents.
-						this.Events[i].marker.setIcon('img/red.png');
+						this.Events[i].marker.setIcon(Default.iconfee);
 					}
 				}
 				else if
@@ -342,17 +366,17 @@ var Flushots = (function($) {
 					// See if it is a free event
 					if($.trim(this.Events[i].data.cost.toLowerCase()).search(/no cost/) > -1 && $.trim(this.Events[i].data.cost.toLowerCase()).length > 0)
 					{
-						this.Events[i].marker.setIcon('img/blue.png');
+						this.Events[i].marker.setIcon(Default.iconfree);
 					}
 					else
 					{
 						// Hand over some dead presidents.
-						this.Events[i].marker.setIcon('img/red.png');
+						this.Events[i].marker.setIcon(Default.iconfee);
 					}
 				}
 				else
 				{
-					this.Events[i].marker.setIcon('img/grey-transparent.png');
+					this.Events[i].marker.setIcon(Default.iconpast);
 				}
 			}
 		};

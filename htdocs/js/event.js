@@ -16,9 +16,23 @@ var Event = (function($){
 			|| navigator.userAgent.match(/iemobile/i)
 			|| navigator.userAgent.match(/Windows Phone/i)) ? true : false;
 
-		this.openModal = function(ThisEvent)
+		this.openModal = function(TheseEvents,ThisEvent,Default)
 		{
 			return function(){
+				// Highlight the marker
+				if(Default.selectedeventid !== null) {
+					for (var i in TheseEvents) {
+						if (Default.selectedeventid == TheseEvents[i].data.facility_id) {
+							TheseEvents[i].marker.setIcon(Default.selectedeventicon);
+							break;
+						}
+					}
+				}
+				console.log(ThisEvent);
+				Default.selectedeventicon = ThisEvent.marker.icon;
+				Default.selectedeventid = ThisEvent.data.facility_id;
+				ThisEvent.marker.setIcon(Default.iconselected);
+
 				ThisEvent.infoboxtext = '<p>';
 				if(ThisEvent.data.begin_date === ThisEvent.data.end_date) {
 					ThisEvent.infoboxtext += Date.parse(ThisEvent.data.begin_date).toString('dddd, MMMM d, yyyy');

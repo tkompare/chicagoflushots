@@ -180,12 +180,7 @@ $.extend(iCalendar.prototype, {
 			var html = '';
 			if (site.icon != null) {
 				if (typeof site.icon == 'number') {
-					html += '<span style="background: ' +
-						'transparent url(' + settings.icons + ') no-repeat -' +
-						(site.icon * settings.iconSize) + 'px 0px;' +
-						($.browser.mozilla && $.browser.version < '1.9' ?
-						' padding-left: ' + settings.iconSize + 'px; padding-bottom: ' +
-						Math.max(0, (settings.iconSize / 2) - 5) + 'px;' : '') + '"></span>';
+					html += '';
 				}
 				else {
 					html += '<img src="' + site.icon + '"' +
