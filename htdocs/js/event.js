@@ -28,7 +28,6 @@ var Event = (function($){
 						}
 					}
 				}
-				console.log(ThisEvent);
 				Default.selectedeventicon = ThisEvent.marker.icon;
 				Default.selectedeventid = ThisEvent.data.facility_id;
 				ThisEvent.marker.setIcon(Default.iconselected);
