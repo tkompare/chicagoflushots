@@ -4,6 +4,10 @@
 *
 * Written by Keith Wood (kbwood{at}iinet.com.au) July 2008
 * Altered by Tom Kompare (tom@kompare.us) September 2012
+*
+* The purpose of this file is to be able to sed the user's
+* browser an .ical file they can import into their electronic
+* calendar that supports the iCal standard.
 */
 ini_set("display_errors", 1);
 error_reporting(E_ALL & ~E_NOTICE);

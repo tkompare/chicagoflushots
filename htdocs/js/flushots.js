@@ -27,7 +27,7 @@ var Flushots = (function($) {
 					location: Event.data.facility_name+' - '+Event.data.street1+' - '+Event.data.city+' '+Event.data.state+' '+Event.data.postal_code,
 					iconSize: 16,
 					sites: ['icalendar'],
-					echoUrl: '//flushots.smartchicagoapps.org/ical.php'
+					echoUrl: Default.echoUrl
 				});
 			};
 		};

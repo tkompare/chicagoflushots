@@ -8,6 +8,8 @@
 		city:'Chicago',
 		// DOM ID of where the Google Map is to be rendered
 		domid:'map',
+		// Location of the ical.php file.
+		echoUrl: '//flushots.smartchicagoapps.org/ical.php',
 		// Google Fusion Tables SQL-like query string for flu shot location data
 		eventquery:'SELECT * FROM 1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4',
 		// Google Fusion Tables URI

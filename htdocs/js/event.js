@@ -60,7 +60,7 @@ var Event = (function($){
 				ThisEvent.infoboxtext += '</p><a class="directions btn btn-default" href="http://www.google.com/maps?';
 				if($('#nav-address').val() !== '')
 				{
-					ThisEvent.infoboxtext += 'saddr='+$('#nav-address').val()+' Chicago, IL&';
+					ThisEvent.infoboxtext += 'saddr='+$('#nav-address').val()+' '+Default.city+', '+Default.state+'&';
 				}
 				ThisEvent.infoboxtext += 'daddr='+ThisEvent.data.street1+' '+ThisEvent.data.city+', '+ThisEvent.data.state+' '+ThisEvent.data.postal_code+'" target="_blank">Get Directions</a>';
 				if(ThisEvent.data.url !== '') {
@@ -84,7 +84,7 @@ var Event = (function($){
 						location: ThisEvent.data.facility_name+' - '+ThisEvent.data.street1+' - '+ThisEvent.data.city+' '+ThisEvent.data.state+' '+ThisEvent.data.postal_code,
 						iconSize: 16,
 						sites: ['icalendar'],
-						echoUrl: '//flushots.smartchicagoapps.org/ical.php'
+						echoUrl: Default.echoUrl
 					});
 
 				$('#modal-event').modal();

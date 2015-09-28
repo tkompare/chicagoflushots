@@ -42,17 +42,6 @@ also to Smart Chicago for hosting this web application. **Raed Mansour** (of CDP
 has been my advocate and full partner on the inside. Without his advocacy, this
 fairly unique relationship and this application would not work.
 
-##ERRATA
-'CDPH_HC_Logo.jpg', 'healthychicago_small_trans.png', and 
-'healthychicago_small_trans_bw.png' image files are for the City of 
-Chicago's own use and **do not fall under the license found on LICENSE.TXT.** 
-You must replace it in your own implementation. It is left here to help you 
-use this code.
-
-This code should be fairly easy to take and use by other government agencies
-offering flu shot clinic events. If you would like any advice on 
-implementing this code, drop me a line.
-
 ##CODE REPOSITORY NOTES
 I have been exceptionally terrible at organizing the code repository for Chicago Flu
 Shots and it has not gotten proper love over the last few years. I plan on 
@@ -64,6 +53,17 @@ round of updates. **Each's year's updates will be merged back into the 'master'
 branch when development is complete.** This will generally occur in the **late 
 Summer or early Autumn** every year. Smaller bug fix branches may be created
 at anytime and merged back into 'master' when the bug is squashed.
+
+##ERRATA
+'CDPH_HC_Logo.jpg', 'healthychicago_small_trans.png', and 
+'healthychicago_small_trans_bw.png' image files are for the City of 
+Chicago's own use and **do not fall under the license found on LICENSE.TXT.** 
+You must replace it in your own implementation. It is left here to help you 
+use this code.
+
+This code should be fairly easy to take and use by other government agencies
+offering flu shot clinic events. If you would like any advice on 
+implementing this code, drop me a line.
 
 Tom Kompare
 e: tom@kompare.us
