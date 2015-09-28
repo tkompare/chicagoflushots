@@ -4,6 +4,8 @@
 	 * @class - Default
 	 */
 	var Default = {
+		// App tag line
+		apptagline: 'Get a flu shot',
 		// City
 		city:'Chicago',
 		// DOM ID of where the Google Map is to be rendered
@@ -38,6 +40,8 @@
 		state:'Illinois',
 		// Defined style types passed to TkMap
 		styles:'grey minlabels',
+		// The production URL (for display purposes)
+		url: 'http://chicagoflushots.org',
 		// Initial zoom level for the Google map
 		zoom:12,
 		// Zoom for finding address
@@ -78,7 +82,7 @@
 		Map.Map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(LegendDiv);
 
 		var SocialDiv = document.createElement('div');
-		Flu.setMapSocial(SocialDiv);
+		Flu.setMapSocial(SocialDiv,Default);
 		SocialDiv.index = 1;
 		Map.Map.controls[google.maps.ControlPosition.LEFT_TOP].push(SocialDiv);
 

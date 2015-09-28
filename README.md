@@ -42,6 +42,23 @@ also to Smart Chicago for hosting this web application. **Raed Mansour** (of CDP
 has been my advocate and full partner on the inside. Without his advocacy, this
 fairly unique relationship and this application would not work.
 
+##CODE NOTES
+This a HTML/CSS/JavaScript web application. It does have one small PHP (ical.php)
+file to construct an iCal file for users who want a calendar reminder of one-off
+events. This PHP file should be simple enough to rewrite in whatever server-side 
+language is available in your environment.
+
+If you want to reuse this code for your city/county/province/state, a good place
+to start is in main.js and altering the properties of the "Default" object at the 
+top of the file.
+
+You probably also want to change the stuff found in the Flushots.setMapSocial
+function.
+
+I try to use meaningful variable names, so hopefully the code won't be too hard 
+to follow.
+
+
 ##CODE REPOSITORY NOTES
 I have been exceptionally terrible at organizing the code repository for Chicago Flu
 Shots and it has not gotten proper love over the last few years. I plan on 

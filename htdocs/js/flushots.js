@@ -5,6 +5,12 @@
 var Flushots = (function($) {
 	var constructor = function(Default){
 		this.AddressMarker = null;
+
+		// Selected event icon
+		this.selectedeventicon = null;
+
+		// Selected event id
+		this.selectedeventid = null;
 		
 		// Now
 		this.now = Date.parse('now');
@@ -250,7 +256,7 @@ var Flushots = (function($) {
 			controlUI.appendChild(controlText);
 		};
 
-		this.setMapSocial = function(controlDiv,Map,Flu,Default)
+		this.setMapSocial = function(controlDiv,Default)
 		{
 			// Set CSS styles for the DIV containing the control
 			// Setting padding to 5 px will offset the control
@@ -276,8 +282,7 @@ var Flushots = (function($) {
 			controlText.style.paddingRight = '.0em';
 			controlText.style.paddingTop = '.0em';
 			controlText.style.paddingBottom = '.0em';
-			controlText.innerHTML = '<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Get%20a%20flu%20shot.&url=http:%3A%2F%2Fchicagoflushots.org%2F&hashtags=FluChicago"></a><br><div class="fb-share-button" data-href="http://chicagoflushots.org/" data-layout="button"' +
-				' style="margin-left:-20px; margin-top:10px;"></div>';
+			controlText.innerHTML = '<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text='+Default.apptagline+'.&url='+encodeURI(Default.url)+'&hashtags=FluChicago"></a><br><div class="fb-share-button" data-href="'+Default.url+'" data-layout="button"' + ' style="margin-left:-20px; margin-top:10px;"></div>';
 			controlUI.appendChild(controlText);
 		};
 		

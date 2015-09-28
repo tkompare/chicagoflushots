@@ -1,5 +1,6 @@
 /**
- * Event class
+ * @classDescription A class to do flu shot event functions.
+ * @class Event
  */
 var Event = (function($){
 	var constructor = function()
@@ -20,16 +21,16 @@ var Event = (function($){
 		{
 			return function(){
 				// Highlight the marker
-				if(Default.selectedeventid !== null) {
+				if(Flushots.selectedeventid !== null) {
 					for (var i in TheseEvents) {
-						if (Default.selectedeventid == TheseEvents[i].data.facility_id) {
-							TheseEvents[i].marker.setIcon(Default.selectedeventicon);
+						if (Flushots.selectedeventid == TheseEvents[i].data.facility_id) {
+							TheseEvents[i].marker.setIcon(Flushots.selectedeventicon);
 							break;
 						}
 					}
 				}
-				Default.selectedeventicon = ThisEvent.marker.icon;
-				Default.selectedeventid = ThisEvent.data.facility_id;
+				Flushots.selectedeventicon = ThisEvent.marker.icon;
+				Flushots.selectedeventid = ThisEvent.data.facility_id;
 				ThisEvent.marker.setIcon(Default.iconselected);
 
 				ThisEvent.infoboxtext = '<p>';
@@ -62,7 +63,7 @@ var Event = (function($){
 				{
 					ThisEvent.infoboxtext += 'saddr='+$('#nav-address').val()+' '+Default.city+', '+Default.state+'&';
 				}
-				ThisEvent.infoboxtext += 'daddr='+ThisEvent.data.street1+' '+ThisEvent.data.city+', '+ThisEvent.data.state+' '+ThisEvent.data.postal_code+'" target="_blank">Get Directions</a>';
+				ThisEvent.infoboxtext += 'daddr='+ThisEvent.data.street1+' '+ThisEvent.data.city+', '+ThisEvent.data.state+' '+ThisEvent.data.postal_code+'" target="_blank">Get Directions</a>&nbsp;';
 				if(ThisEvent.data.url !== '') {
 					ThisEvent.infoboxtext += '<a href="'+ThisEvent.data.url+'" target="_blank" class="btn' +
 						' btn-default">More Information</a>';
@@ -77,8 +78,8 @@ var Event = (function($){
 					$('#ical-'+ThisEvent.data.facility_id).icalendar({
 						start: new Date(Date._parse(ThisEvent.data.begin_date+' '+ThisEvent.data.begin_time)),
 						end: new Date(Date._parse(ThisEvent.data.begin_date+' '+ThisEvent.data.end_time)),
-						title: 'Get Your Flu Shot',
-						summary: 'Get Your Flu Shot',
+						title: Default.apptagline,
+						summary: Default.apptagline,
 						description: ThisEvent.data.hours+" "+ThisEvent.data.cost+" Please remember to bring your" +
 						" immunization/shot records with you.",
 						location: ThisEvent.data.facility_name+' - '+ThisEvent.data.street1+' - '+ThisEvent.data.city+' '+ThisEvent.data.state+' '+ThisEvent.data.postal_code,
