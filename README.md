@@ -54,6 +54,8 @@ This code should be fairly easy to take and use by other government agencies
 offering flu shot clinic events. If you would like any advice on 
 implementing this code, drop me a line.
 
+CODE REPOSITORY NOTES
+=====================
 I have been exceptionally terrible at organizing the code repository for Chicago Flu
 Shots and it has not gotten proper love over the last few years. I plan on 
 changing my ways.
