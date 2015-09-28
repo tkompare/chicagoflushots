@@ -9,32 +9,31 @@ This application was developed for the Chicago Department of Public Health (CDPH
 to help Chicago residents locate and find public transportation to CDPH's free
 flu shot clinic events.
 
-[link](http://chicagoflushots.org/)
+[http://chicagoflushots.org/](http://chicagoflushots.org/)
 
 BACKGROUND
 ==========
-I went to a weekly meeting of civic coders where several city agencies 
+In mid-2012, I went to a weekly meeting of civic coders where several city agencies 
 presented. They asked for our help in building interesting applications around
 their available data. I was interested in the free flu shot clinic locations
 since flu season was coming up fast, and I had attended a free flu shot event
 in the past.
 
-I built a prototype application and advertised it via Twitter. CDPH, the
-mayor's office, and a few other civic coders, mainly Juan-Pablo Velez, noticed 
-the tweet. Before I knew it, Juan-Pablo brokered a meeting between CDPH, the
-Mayor's office, and ourselves. The meeting was positive and I began in ernest
-to polish up the application.
+I built a prototype application and advertised it via Twitter. the Chicago 
+Department of Public Health (CDPH), the Mayor's Office, and a few other 
+civic coders, mainly Juan-Pablo Velez, noticed the tweet. Before I knew 
+it, Juan-Pablo brokered a meeting between CDPH, the Mayor's Office, and 
+ourselves. The meeting was positive and I began in ernest to polish up 
+the application.
 
 BITS AND BYTES
 ==============
-These events were published by the CDPH via their web site (subsequently
-published on the Chicago Data Portal). Other events were given directly
-by CDPH. These events data are published to a Google Fusion Table, where the 
-code uses the Google Maps API to retrieve those events.
+Chicago Flu Shots events data are maintained and published to a Google Fusion
+Table by CDPH. This code uses the Google Maps API to retrieve those events. 
 
 The Fusion Table:
 -----------------
-https://www.google.com/fusiontables/DataSource?docid=1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4
+[https://www.google.com/fusiontables/DataSource?docid=1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4](https://www.google.com/fusiontables/DataSource?docid=1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4)
 
 MADD PROPZ
 ==========
