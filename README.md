@@ -29,7 +29,13 @@ the application.
 BITS AND BYTES
 ==============
 Chicago Flu Shots events data are maintained and published to a Google Fusion
-Table by CDPH. This code uses the Google Maps API to retrieve those events. 
+Table by CDPH. This code uses the Google Maps API to retrieve those events. We use
+Google Fusion Tables because it is easy to update on demand and there is no
+administrative overhead and delay as there is with the City of Chicago Data Portal.
+Using a Google Fusion Table also make this code more usable by other who do not
+use the same data platform as the City of Chicago.
+
+
 
 The Fusion Table:
 -----------------
