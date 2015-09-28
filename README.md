@@ -67,4 +67,4 @@ at anytime and merged back into 'master' when the bug is squashed.
 
 Tom Kompare
 e: tom@kompare.us
-t: @tomkompare 
+t: [@tomkompare](//twitter.com/tomkompare)
