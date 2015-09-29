@@ -9,54 +9,20 @@
 	<link rel="apple-touch-icon-precomposed" href="img/CDPH_HC_Logo.jpg" />
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<!-- Bootstrap -->
-	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-	<style>
-		body { padding-bottom: 75px; }
-		.google-map-canvas,
-		.google-map-canvas * { .box-sizing(content-box); }
-		#map img { max-width: none; }
-		.dropdown-menu { background-color:#0d7ea3; }
-		.dropdown-menu > li > a { color:#ffffff; }
-		.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus { background-color:#11a3d2; color:#ffffff; text-decoration:none; }
-		a.map-legend { color:#0d7ea3; text-decoration:underline; }
-		.navbar-inverse .navbar-brand { color:#ffffff; text-decoration:underline; }
-		.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form { border-color:#0d7ea3; }
-		.navbar-inverse { background-color:#0d7ea3; border-color:#0d7ea3; }
-		.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus { background-color:#11a3d2; color:#ffffff; }
-		.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus { background-color:#0d7ea3; color:#ffffff; }
-		.navbar-inverse .navbar-nav > li > a { color:#ffffff; }
-		.navbar-inverse .navbar-text { color:#ffffff; text-decoration:underline; }
-		.navbar-inverse .navbar-toggle { border-color: #07485d; }
-		.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:hover:focus { background-color: #11a3d2; }
-		.navbar-inverse .navbar-nav .open .dropdown-menu > li > a { color: #dddddd; }
-		a { color: #cf1115; text-decoration: none; }
-		a:hover, a:focus { color:#880b0e; text-decoration:underline; }
-		.navigate {
-			background-color:#13b5ea;
-			color:#ffffff;
-			border:1px solid #07485d;
-		}
-		.form-control::-webkit-input-placeholder { color:#ffffff; }
-		.form-control::-moz-placeholder { color:#ffffff; } /* firefox 19+ */
-		.form-control:-ms-input-placeholder { color:#ffffff; } /* ie */
-		input.form-control:-moz-placeholder { color:#ffffff; }
-
-	</style>
+	<!-- Bootstrap 3.0.0 (with a breakpoint adjustment to 900px & some custom CSS. Compiled from main.css -->
+	<link href="css/main-min.css" rel="stylesheet" media="screen">
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="js/ltIE9.min.js"></script>
 	<![endif]-->
 </head>
 <body>
-	
-	<div id=map style="position:absolute; top:0; bottom:50px; left:0; right:0;"></div>
-	
+	<div id=map></div>
 	<nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
 		<div class="navbar-header">
-			<button id="navbar-button" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span style="color:white">Menu</span>
+			<button id="navbar-button" type="button" class="navbar-toggle" data-toggle="collapse"
+			        data-target=".navbar-ex1-collapse">
+				<span id="navbar-button-text">Menu</span>
 			</button>
 			<a id="nav-brand" class="navbar-brand" data-toggle="modal" href="#modal-gafs">Get A Flu Shot</a>
 		</div>
@@ -105,9 +71,8 @@
 			<a id="nav-agency" class="navbar-text pull-right" data-toggle="modal" href="#modal-cdph"><small>Chicago Department of Public Health</small></a>
 		</div>
 	</nav>
-
 	<!-- CDPH Modal -->
-	<div class="modal fade" id="modal-cdph" tabindex="-1">
+	<div class="modal fade" id="modal-cdph" data-backdrop="false" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -115,15 +80,14 @@
 					<h4 class="modal-title">Notes</h4>
 				</div>
 				<div class="modal-body">
-					<small>Built by <a href="http://about.me/tomkompare" target="_blank">Tom Kompare</a> in partnership with the <a href="http://www.cityofchicago.org/city/en/depts/cdph.html" target="_blank">Chicago Department of Public Health (CDPH)</a>. This was not developed by CDPH and CDPH makes no representations as to the accuracy of the information provided by this map application. This map application is hosted by the <a href="http://www.smartchicagocollaborative.org/" target="_blank">Smart Chicago Collaborative</a>. <a href="https://github.com/tkompare/chicagoflushots" target="_blank">The code behind this web application</a> is free, open, and under a <a href="https://github.com/tkompare/chicagoflushots/blob/master/LICENSE.TXT"target="_blank">MIT License</a>. Feel free to <a href="https://github.com/tkompare/chicagoflushots/issues" target="_blank">send me comments</a>.</small>
+					<p>Built by <a href="http://about.me/tomkompare" target="_blank">Tom Kompare</a> in partnership with the <a href="http://www.cityofchicago.org/city/en/depts/cdph.html" target="_blank">Chicago Department of Public Health (CDPH)</a>. This was not developed by CDPH and CDPH makes no representations as to the accuracy of the information provided by this map application. This map application is hosted by the <a href="http://www.smartchicagocollaborative.org/" target="_blank">Smart Chicago Collaborative</a>. <a href="https://github.com/tkompare/chicagoflushots" target="_blank">The code behind this web application</a> is free, open, and under a <a href="https://github.com/tkompare/chicagoflushots/blob/master/LICENSE.TXT"target="_blank">MIT License</a>. Feel free to <a href="https://github.com/tkompare/chicagoflushots/issues" target="_blank">send me comments</a>.</p>
 					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 	<!-- Get A Flu Shot Modal -->
-	<div class="modal fade" id="modal-gafs" tabindex="-1">
+	<div class="modal fade" id="modal-gafs" data-backdrop="false" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -131,15 +95,15 @@
 					<h4 class="modal-title">Learn More</h4>
 				</div>
 				<div class="modal-body">
-					<small>Welcome to the flu shot finder. If your device has GPS, you may click on the <b>Find Me</b> button to see locations near you. You may enter your address and click on <b>Go</b> to do the same. Click on <b>All</b>, <b>Next 7 Days</b>, or <b>On A Day</b> of the week to highlight locations available on a certain day. Blue map locations offer free flu shots for anyone six months of age or older.<br><br><a href="http://www.cityofchicago.org/city/en/depts/cdph/provdrs/flu.html" target="_blank">Find out more information about flu shots from the Chicago Department of Public Health's website.</a></small>
+					<p>Welcome to the Chicago flu shot finder. If your device has GPS, you may click on the <b>Find Me</b> button to see locations near you. You may enter your address and click on <b>Go</b> to do the same. You may have to click on the <b>Menu</b>
+						button first, on a tablet or smartphone. Click on <b>All</b>, <b>Next 7 Days</b>, or <b>On A Day</b> of the week to highlight locations available on a certain day. Blue map locations offer free flu shots for anyone six months of age or older.<br><br><a href="http://www.cityofchicago.org/city/en/depts/cdph/provdrs/flu.html" target="_blank">Find out more information about flu shots from the Chicago Department of Public Health's website.</a></p>
 					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<!-- Fee Information Modal -->
-	<div class="modal fade" id="modal-fee" tabindex="-1">
+	<div class="modal fade" id="modal-fee" data-backdrop="false" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -147,15 +111,14 @@
 					<h4 class="modal-title">No Cost Flu Shots</h4>
 				</div>
 				<div class="modal-body">
-					<small>Locations marked with a blue icon are CDPH events. There is no cost to individual. If insured, insurance will be billed.</small>
+					<p>Locations marked with a blue icon are Chicago Department of Public Health (CDPH) clinic events. There is no cost to individual.	If insured, insurance will be billed.</p>
 					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<!-- Event Modal -->
-	<div class="modal fade" id="modal-event" tabindex="-1">
+	<div class="modal fade" id="modal-event" data-backdrop="false" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -169,12 +132,7 @@
 			</div>
 		</div>
 	</div>
-
 	<div id="fb-root"></div>
-	<script>
-
-	</script>
-	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script>
 		window.jQuery
@@ -200,7 +158,6 @@
 		// SCC Analytics
 		_gaq.push(['scc._setAccount', 'UA-37739534-17']);
 		_gaq.push(['scc._trackPageview']);
-	
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';

@@ -1,12 +1,11 @@
 ##Chicago Flu Shots
 
-###aka "Flu Shot Finder"
+**aka "Flu Shot Finder"**
 
 ###NOTICE: THE FLU SHOTS APP WAS REWRITTEN FOR THE 2015-16 SEASON.
 
 This application was developed for the Chicago Department of Public Health (CDPH)
-to help Chicago residents locate and find public transportation to CDPH's free
-flu shot clinic events.
+to help Chicago residents identify a convenient no cost CDPH flu shot event.
 
 [http://chicagoflushots.org/](http://chicagoflushots.org/)
 
