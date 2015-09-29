@@ -1,8 +1,8 @@
-#Chicago Flu Shots
+##Chicago Flu Shots
 
-##aka "Flu Shot Finder"
+###aka "Flu Shot Finder"
 
-##NOTICE: THE FLU SHOTS APP WAS REWRITTEN FOR THE 2015-16 SEASON.
+###NOTICE: THE FLU SHOTS APP WAS REWRITTEN FOR THE 2015-16 SEASON.
 
 This application was developed for the Chicago Department of Public Health (CDPH)
 to help Chicago residents locate and find public transportation to CDPH's free
@@ -10,7 +10,7 @@ flu shot clinic events.
 
 [http://chicagoflushots.org/](http://chicagoflushots.org/)
 
-##BACKGROUND
+###BACKGROUND
 In mid-2012, I went to a weekly meeting of civic coders where several city agencies 
 presented. They asked for our help in building interesting applications around
 their available data. I was interested in the free flu shot clinic locations
@@ -24,7 +24,7 @@ it, Juan-Pablo brokered a meeting between CDPH, the Mayor's Office, and
 ourselves. The meeting was positive and I began in ernest to polish up 
 the application.
 
-##BITS AND BYTES
+###BITS AND BYTES
 Chicago Flu Shots events data are maintained and published to a Google Fusion
 Table by CDPH. This code uses the Google Maps API to retrieve those events. We use
 Google Fusion Tables because it is easy to update on demand and there is no
@@ -32,17 +32,17 @@ administrative overhead and delay as there is with the City of Chicago Data Port
 Using a Google Fusion Table also make this code more usable by other who do not
 use the same data platform as the City of Chicago.
 
-###The Fusion Table:
+####The Fusion Table:
 [https://www.google.com/fusiontables/DataSource?docid=1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4](https://www.google.com/fusiontables/DataSource?docid=1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4)
 
-##MADD PROPZ
+###MADD PROPZ
 This web application could not have been originally as well executed without 
 the sage feedback and assistance of Juan-Pablo Velez and Derek Eder. Thanks 
 also to Smart Chicago for hosting this web application. **Raed Mansour** (of CDPH)
 has been my advocate and full partner on the inside. Without his advocacy, this
 fairly unique relationship and this application would not work.
 
-##CODE NOTES
+###CODE NOTES
 This a HTML/CSS/JavaScript web application. It does have one small PHP (ical.php)
 file to construct an iCal file for users who want a calendar reminder of one-off
 events. This PHP file should be simple enough to rewrite in whatever server-side 
@@ -59,7 +59,7 @@ I try to use meaningful variable names, so hopefully the code won't be too hard
 to follow.
 
 
-##CODE REPOSITORY NOTES
+###CODE REPOSITORY NOTES
 I have been exceptionally terrible at organizing the code repository for Chicago Flu
 Shots and it has not gotten proper love over the last few years. I plan on 
 changing my ways.
@@ -71,7 +71,7 @@ branch when development is complete.** This will generally occur in the **late
 Summer or early Autumn** every year. Smaller bug fix branches may be created
 at anytime and merged back into 'master' when the bug is squashed.
 
-##ERRATA
+###ERRATA
 'CDPH_HC_Logo.jpg', 'healthychicago_small_trans.png', and 
 'healthychicago_small_trans_bw.png' image files are for the City of 
 Chicago's own use and **do not fall under the license found on LICENSE.TXT.** 
