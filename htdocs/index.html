@@ -1,152 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang=en>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1 minimum-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<!--[if lt IE 9]>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
-<style type="text/css">
-@import "css/jquery.icalendar.css";
-body {
-	padding-top: 0px;
-	padding-bottom: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
-}
-.padded {
-	padding-left: 10px;
-	padding-right: 10px;
-}
-#map img { max-width: none; }
-@media only screen and (max-width:767px) {
-	#map-ratio { margin-top:80%; }
-	#chicago { font-size:75%; }
-}
-@media only screen and (min-width:768px) {
-	#map-ratio { margin-top:100%; }
-}
-</style>
-<title>Flu Shot Clinics - Department of Public Health</title>
+	<meta charset=utf-8>
+	<title>Get A Flu Shot</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
+	<meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1" />
+	<link rel="icon" href="img/favicon.ico" type=”image/x-icon”>
+	<link rel="apple-touch-icon-precomposed" href="img/CDPH_HC_Logo.jpg" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<!-- Bootstrap 3.0.0 (with a breakpoint adjustment to 900px & some custom CSS. Compiled from main.css -->
+	<link href="css/main-min.css" rel="stylesheet" media="screen">
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="js/ltIE9.min.js"></script>
+	<![endif]-->
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div id="span-info" class="span5">
-				<div class="row-fluid" style="text-align:center">
-					<img src="img/flu_logo_720.png" alt="Get A Flu Shot" />
+	<div id=map></div>
+	<nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+		<div class="navbar-header">
+			<button id="navbar-button" type="button" class="navbar-toggle" data-toggle="collapse"
+			        data-target=".navbar-ex1-collapse">
+				<span id="navbar-button-text">Menu</span>
+			</button>
+			<a id="nav-brand" class="navbar-brand" data-toggle="modal" href="#modal-gafs">Get A Flu Shot</a>
+		</div>
+		<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<ul class="nav navbar-nav">
+				<li id="nav-li-all" class="active"><a id="nav-all" href="#all">All</a></li>
+				<li id="nav-li-seven"><a id="nav-seven" href="#seven">Next 7 Days</a></li>
+				<li id="nav-li-days" class="dropdown">
+					<a id="nav-days" href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="nav-days-text">On A Day</span><b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#today" id="nav-today" class="day">Today</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a href="#sunday" id="nav-sunday" class="day">Sunday</a>
+						</li>
+						<li>
+							<a href="#monday" id="nav-monday" class="day">Monday</a>
+						</li>
+						<li>
+							<a href="#tuesday" id="nav-tuesday" class="day">Tuesday</a>
+						</li>
+						<li>
+							<a href="#wednesday" id="nav-wednesday" class="day">Wednesday</a>
+						</li>
+						<li>
+							<a href="#thursday" id="nav-thursday" class="day">Thursday</a>
+						</li>
+						<li>
+							<a href="#friday" id="nav-friday" class="day">Friday</a>
+						</li>
+						<li>
+							<a href="#saturday" id="nav-saturday" class="day">Saturday</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<form class="navbar-form navbar-left" onSubmit="$('#nav-go').click(); return false;" role="search">
+				<div class="form-group">
+					<input id="nav-address" type="text" class="form-control navigate"
+						   placeholder="Enter an address">
 				</div>
-				<p class="padded" style="margin-bottom:1.25em; margin-top:1.0em">The <b>Chicago Department of Public Health</b> offers free flu shots at many locations throughout the city. Find one near you.
-				<div id="theform" class="span12">
-					<div id="grp-location" class="control-group padded">
-						<label class="control-label" for="location"><b>Where are you?</b>&nbsp;&nbsp;
-							<button id="btn-gps-location" class="btn btn-link btn-small hide" type="button">Find Me</button>
-						</label>
-						<div class="controls">
-							<input id="location" class="span12" type="text" placeholder="Enter an address" />
-						</div>
-						<button id="btn-search-location" class="btn btn-primary btn-map pull-right" type="button" style="margin-bottom:0.5em">Search</button>
-					</div>
-					<div id="grp-find" class="control-group padded hide" style="margin-top:2em">
-						<label class="control-label" for="find"><b>Find events...</b></label>
-						<div id="find" class="btn-block btn-group-vertical">
-							<button id="week" type="button" class="btn btn-block">In The Next 7 Days</button>
-							<button id="btn-by-day" type="button" class="btn btn-block">By Day Of The Week</button>
-						</div>
-					</div>
-					<div id="grp-day" class="control-group padded hide">
-						<div id="day" class="btn-group btn-block btn-group-vertical">
-							<button id="btn-day-mo" type="button" class="btn day btn-block search" data-toggle="button">Monday</button>
-							<button id="btn-day-tu" type="button" class="btn day btn-block search" data-toggle="button">Tuesday</button>
-							<button id="btn-day-we" type="button" class="btn day btn-block search" data-toggle="button">Wednesday</button>
-							<button id="btn-day-th" type="button" class="btn day btn-block search" data-toggle="button">Thursday</button>
-							<button id="btn-day-fr" type="button" class="btn day btn-block search" data-toggle="button">Friday</button>
-							<button id="btn-day-sa" type="button" class="btn day btn-block search" data-toggle="button">Saturday</button>
-							<button id="btn-day-su" type="button" class="btn day btn-block search" data-toggle="button">Sunday</button>
-						</div>
-					</div>
-					<div id="grp-cta" class="control-group padded hide" style="margin-top:0.5em">
-						<label class="control-label" for="ctaroute"><b>Take CTA/Metra</b></label>
-						<div id="ctaroute" class="btn-group-vertical btn-block">
-							<button id="ctaroutenow" class="btn btn-info cta">Leave Now</button>
-							<button id="ctarouteevent" class="btn btn-info cta">Be On Time</button>
-						</div>
-					</div>
+				<button id="nav-go" class="btn btn-default navigate" type="button">Go</button>
+			</form>
+			<a id="nav-agency" class="navbar-text pull-right" data-toggle="modal" href="#modal-cdph"><small>Chicago Department of Public Health</small></a>
+		</div>
+	</nav>
+	<!-- CDPH Modal -->
+	<div class="modal fade" id="modal-cdph" data-backdrop="false" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Notes</h4>
 				</div>
-				<div id="grp-ical" class="control-group span12 padded hide" style="margin-top:1em">
-					<label class="control-label" for="div-ical"><b>Add the <span id="eventselected"></span> event to your calendar</b></label>
-					<div id="div-ical">
-						<span id="ical"></span><span id="ical-file"></span>
-					</div>
-				</div>
-				<div id="span-cta" class="span12 padded hide">
-					<div id="timetoleave" class=""></div>
-					<div id="directions" class=""></div>
-				</div>
-				<div id="grp-reset" class="span12 padded hide" style="margin-top:1em">
-					<button id="reset-map" type="button" class="btn" style="margin-bottom:1.5em; margin-bottom:0.5em">Start Over</button>
-				</div>
-			</div>
-			<div id="span-map" class="span7">
-				<div id="map-width" style="display:inline-block; position:relative; width:100%;">
-					<div id="map-ratio" style="margin-top:100%;">
-						<div id="map" style="position:absolute; top:0; bottom:0; left:0; right:0;">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div id="footer" class="row-fluid">
-				<div id="span-footer" class="span12 padded">
-					<hr />
-					<footer>
-						<div class="row-fluid">
-							<div class="span6">
-								<p><a href="http://www.cityofchicago.org/city/en/depts/cdph.html">Chicago Department of Public Health</a></p>
-								<p><a href="tel:+13127479884">312.747.9884</a> or TTY: <a href="tel:+13127472374">312.747.2374</a></p>
-							</div>
-							<div class="span6">
-								<p class="pull-right muted"><small>This map was not developed by
-									the City and the City makes no representations as to the 
-									accuracy of the information provided by this map application. 
-									Hosted by the <a href="http://www.smartchicagocollaborative.org/">
-									Smart Chicago Collaborative</a>, built by
-									<a href="http://linkedin.com/in/thomaskompare">Tom Kompare</a>,
-									in collaboration with <a href="http://www.meetup.com/OpenGovChicago/">Open 
-									Gov Chicago</a>.</small></p>
-							</div>
-						</div>
-					</footer>
+				<div class="modal-body">
+					<p>Built by <a href="http://about.me/tomkompare" target="_blank">Tom Kompare</a> in partnership with the <a href="http://www.cityofchicago.org/city/en/depts/cdph.html" target="_blank">Chicago Department of Public Health (CDPH)</a>. This was not developed by CDPH and CDPH makes no representations as to the accuracy of the information provided by this map application. This map application is hosted by the <a href="http://www.smartchicagocollaborative.org/" target="_blank">Smart Chicago Collaborative</a>. <a href="https://github.com/tkompare/chicagoflushots" target="_blank">The code behind this web application</a> is free, open, and under a <a href="https://github.com/tkompare/chicagoflushots/blob/master/LICENSE.TXT"target="_blank">MIT License</a>. Feel free to <a href="https://github.com/tkompare/chicagoflushots/issues" target="_blank">send me comments</a>.</p>
+					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js" type="text/javascript"></script>
-	<script src="js/date.js" type="text/javascript"></script>
-	<script src="js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="js/touchtest.min.js" type="text/javascript"></script>
-	<script src="js/main.min.js" type="text/javascript"></script>
-<!-- These five .js files are minified into 'main.min.js' above.
-	<script src="js/jquery.icalendar.min.js"></script>
+	<!-- Get A Flu Shot Modal -->
+	<div class="modal fade" id="modal-gafs" data-backdrop="false" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Learn More</h4>
+				</div>
+				<div class="modal-body">
+					<p>Welcome to the Chicago flu shot finder. If your device has GPS, you may click on the <b>Find Me</b> button to see locations near you. You may enter your address and click on <b>Go</b> to do the same. You may have to click on the <b>Menu</b>
+						button first, on a tablet or smartphone. Click on <b>All</b>, <b>Next 7 Days</b>, or <b>On A Day</b> of the week to highlight locations available on a certain day. Blue map locations offer free flu shots for anyone six months of age or older.<br><br><a href="http://www.cityofchicago.org/city/en/depts/cdph/provdrs/flu.html" target="_blank">Find out more information about flu shots from the Chicago Department of Public Health's website.</a></p>
+					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Fee Information Modal -->
+	<div class="modal fade" id="modal-fee" data-backdrop="false" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">No Cost Flu Shots</h4>
+				</div>
+				<div class="modal-body">
+					<p>Locations marked with a blue icon are Chicago Department of Public Health (CDPH) clinic events. There is no cost to individual.	If insured, insurance will be billed.</p>
+					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Event Modal -->
+	<div class="modal fade" id="modal-event" data-backdrop="false" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 id="modal-event-title" class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+					<span id="modal-body-span"></span>
+					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="fb-root"></div>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script>
+		window.jQuery
+			|| document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')
+	</script>
+	<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDRVus9kkg8mr6M7EZUmXZsdoM7JSFbvC8&sensor=true"></script>
+	<!-- These scripts are catenated and minified into main-min.js
+	<script src="js/jquery-migrate-1.2.1.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/date.js"></script>
+	<script src="js/jquery.icalendar.js"></script>
 	<script src="js/tkmap.4.0.0.js"></script>
-	<script src="js/tkmapfusionlayer.3.0.0.js"></script>
-	<script src="js/config.js"></script>
+	<script src="js/fusiontable.js"></script>
+	<script src="js/event.js"></script>
+	<script src="js/flushots.js"></script>
 	<script src="js/main.js"></script>
--->
+	-->
+	<script src="js/main-min.js"></script>
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-34997880-1']);
+		_gaq.push(['_setAccount', 'UA-42855450-2']);
 		_gaq.push(['_trackPageview']);
-		// SCC Google Analytics tracker.
-		_gaq.push(['scc._setAccount', 'UA-37739534-2']);
+		// SCC Analytics
+		_gaq.push(['scc._setAccount', 'UA-37739534-17']);
 		_gaq.push(['scc._trackPageview']);
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
-</script>
+	</script>
 </body>
 </html>
