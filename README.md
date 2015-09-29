@@ -83,5 +83,5 @@ offering flu shot clinic events. If you would like any advice on
 implementing this code, drop me a line.
 
 Tom Kompare
-e: tom@kompare.us
+e: [tom@kompare.us](mailto:tom@kompare.us)
 t: [@tomkompare](//twitter.com/tomkompare)
