@@ -34,7 +34,7 @@ I try to use meaningful variable names, so hopefully the code won't be too hard 
 ### CODE REPOSITORY NOTES
 I have been exceptionally terrible at organizing the code repository for Chicago Flu Shots and it has not gotten proper love over the last few years. I plan on changing my ways.
 
-Branches will have a naming convention of 'vYYYY-YY'. For example: 'v2015-16' for the 2015-2016 season's round of updates. **Each's year's branch updates will be merged back into the 'master' branch when development is complete.** This will generally occur in the **late Summer or early Autumn** every year. Smaller bug fix branches may be created at anytime and merged back into 'master' when the bug is squashed.
+Branches will have a naming convention of 'vYYYY-YY'. For example: 'v2018-19' for the 2018-2019 season's round of updates. **Each's year's branch updates will be merged back into the 'master' branch when development is complete.** This will generally occur in the **late Summer or early Autumn**. Smaller bug fix branches may be created at anytime and merged back into 'master' when the bug is squashed.
 
 ### ERRATA
 'CDPH_HC_Logo.jpg', 'healthychicago_small_trans.png', and 'healthychicago_small_trans_bw.png' image files are for the City of Chicago's own use and **do not fall under the license found on LICENSE.TXT.** You must replace it in your own implementation. It is left here to help you use this code.
