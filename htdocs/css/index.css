@@ -1,0 +1,51 @@
+#map-container {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 60px;
+    right: 0;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+#navbar-header {
+    z-index: 100;
+}
+
+.span-footer {
+    color: #ffffff;
+}
+
+.bg-dark {
+    background-color: #800000 !important;
+}
+
+.btn-success {
+    color: #ffffff;
+    background-color: #155f83;
+    background-image: none;
+    border-color: #155f83;
+}
+
+.btn-success:hover {
+    color: #ffffff;
+    background-color: #144e72;
+    background-image: none;
+    border-color: #155f83;
+}
+
+.btn-success:active {
+    color: #ffffff;
+    background-color: #033d61;
+    background-image: none;
+    border-color: #044e72;
+}
+
+.modal-header {
+    color: #ffffff;
+    background-color: #800000 !important;
+}
