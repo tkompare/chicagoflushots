@@ -1,8 +1,8 @@
-## Chicago Flu Shots
+## Vaccinate Me
 
 **aka "Flu Shot Finder"**
 
-### NOTICE: THE FLU SHOTS APP IS BEING REWRITTEN FOR THE 2018-19 SEASON
+### NOTICE: "VACCINATE ME" IS BEING REWRITTEN FOR THE 2018-19 SEASON
 
 This application was developed for the Chicago Department of Public Health (CDPH) to help Chicago residents identify a convenient no cost CDPH flu shot event.
 
@@ -14,13 +14,13 @@ In mid-2012, I went to a weekly meeting of civic coders where several city agenc
 I built a prototype application and advertised it via Twitter. The Chicago Department of Public Health (CDPH), the Mayor's Office, and a few other civic coders, mainly Juan-Pablo Velez, noticed the tweet. Before I knew it, Juan-Pablo brokered a meeting between CDPH, the Mayor's Office, and ourselves. The meeting was positive and I began in ernest to polish up the application.
 
 ### BITS AND BYTES
-Chicago Flu Shots events data are maintained and published to a Google Fusion Table by CDPH. This code uses the Google Maps API to retrieve those events. We use Google Fusion Tables because it is easy to update on demand and there is no administrative overhead and delay as there is with the City of Chicago Data Portal. Using a Google Fusion Table also make this code more usable by other who do not use the same data platform as the City of Chicago.
+Vaccination events data are maintained and published as a Google Sheet. This code uses the Google Sheets API to retrieve event data. We use Google Sheets because it is easy to update on demand and there is no administrative overhead and delay. Using a Google Sheet also make this code more usable by agencies that have little to no technology resources.
 
-#### The Fusion Table:
-[https://www.google.com/fusiontables/DataSource?docid=1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4](https://www.google.com/fusiontables/DataSource?docid=1leqPq9hrsGhnE8NoT00YZn1ITTzhK6BhrF8LNL4)
+#### Google Sheet Example:
+[https://docs.google.com/spreadsheets/d/1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454/edit?usp=sharing)
 
 ### MADD PROPZ
-This web application could not have been originally as well executed without the sage feedback and assistance of Juan-Pablo Velez and Derek Eder. Thanks also to Smart Chicago for hosting this web application. **Raed Mansour** (of CDPH) has been my advocate and full partner on the inside. Without his advocacy, this fairly unique relationship and this application would not work.
+This web application could not have been originally built or executed without the sage feedback and assistance of Juan-Pablo Velez and Derek Eder. Thanks also to Smart Chicago for hosting this web application. **Raed Mansour** (of CDPH) has been my advocate and full partner on the inside. Without his advocacy, this fairly unique relationship and this application would not work.
 
 ### CODE NOTES
 This a HTML/CSS/JavaScript web application. It does have one small PHP (ical.php) file to construct an iCal file for users who want a calendar reminder of one-off events. This PHP file should be simple enough to rewrite in whatever server-side language is available in your environment.
