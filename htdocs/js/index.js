@@ -1,14 +1,8 @@
 function initMap() {
-	var Default = {
+	let Default = {
 		center: {
-			lat: 41.7900,
-			lng: -87.5980
-		},
-		bounds: {
-			minLat: 41.76590,
-			maxLat: 41.8239,
-			minLng: -87.6376,
-			maxLng: -87.5570
+			lat: 41.875,
+			lng: -87.6425
 		},
 		styles: [
 			{
@@ -235,7 +229,7 @@ function initMap() {
 	};
 
 	var Map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 15,
+		zoom: 12,
 		center: Default.center,
 		styles: Default.styles,
 		clickableIcons: false,
@@ -244,11 +238,33 @@ function initMap() {
 		streetViewControl: false,
 		zoomControl: true,
 		maxZoom: 18,
-		minZoom: 13,
+		minZoom: 10,
 		zoomControlOptions: {
 			position: google.maps.ControlPosition.RIGHT_TOP
 		},
 
 		fullscreenControl: false
+	});
+
+	$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454/values/Sheet1!A1:V?majorDimension=ROWS&key=AIzaSyBSenIEykBeHp6g61DUGb3K6BPIR0GGT1I', function(EventData) {
+
+		let infowindow = new google.maps.InfoWindow();
+
+		let marker, i;
+
+		for (i = 0; i < EventData['values'].length; i++) {
+			marker = new google.maps.Marker({
+				position: new google.maps.LatLng(EventData['values'][i][20], EventData['values'][i][21]),
+				map: Map
+			});
+
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				return function() {
+					infowindow.setContent(EventData['values'][i][19]);
+					infowindow.open(Map, marker);
+				}
+			})(marker, i));
+		}
+
 	});
 }
