@@ -26,23 +26,23 @@
 
 .btn-success {
     color: #ffffff;
-    background-color: #155f83;
+    background-color: #075290;
     background-image: none;
-    border-color: #155f83;
+    border-color: #075290;
 }
 
 .btn-success:hover {
     color: #ffffff;
-    background-color: #144e72;
+    background-color: #064180;
     background-image: none;
-    border-color: #155f83;
+    border-color: #075290;
 }
 
 .btn-success:active {
     color: #ffffff;
-    background-color: #033d61;
+    background-color: #073190;
     background-image: none;
-    border-color: #044e72;
+    border-color: #064180;
 }
 
 .modal-header {

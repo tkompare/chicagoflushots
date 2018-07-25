@@ -1,116 +1,61 @@
 function initMap() {
-	let Default = {
-		center: {
-			lat: 41.875,
-			lng: -87.6425
-		},
-		// Map Style from: https://snazzymaps.com/style/24358/blue
-		styles: [
-			{
-				"featureType": "all",
-				"elementType": "all",
-				"stylers": [
-					{
-						"hue": "#075290"
-					}
-				]
-			},
-			{
-				"featureType": "poi",
-				"elementType": "all",
-				"stylers": [
-					{
-						"visibility": "off"
-					}
-				]
-			},
-			{
-				"featureType": "road",
-				"elementType": "all",
-				"stylers": [
-					{
-						"saturation": "0"
-					},
-					{
-						"lightness": "0"
-					}
-				]
-			},
-			{
-				"featureType": "transit",
-				"elementType": "all",
-				"stylers": [
-					{
-						"visibility": "off"
-					}
-				]
-			},
-			{
-				"featureType": "water",
-				"elementType": "all",
-				"stylers": [
-					{
-						"visibility": "simplified"
-					},
-					{
-						"saturation": "-60"
-					},
-					{
-						"lightness": "-20"
-					}
-				]
-			}
-		]
-	},
-	Map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 12,
-		center: Default.center,
-		styles: Default.styles,
-		clickableIcons: false,
-		mapTypeControl: false,
-		panControl: false,
-		streetViewControl: false,
-		zoomControl: true,
-		maxZoom: 18,
-		minZoom: 10,
-		zoomControlOptions: {
-			position: google.maps.ControlPosition.RIGHT_TOP
-		},
-		fullscreenControl: false
-	}),
-	marker,
+	var Map,
+	EventData,
+	Default,
+	Marker,
 	i;
 
-	$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454/values/Sheet1!A1:V?majorDimension=ROWS&key=AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU', function(EventData) {
-
+	$.when(
+		$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454/values/Sheet1!A1:V?majorDimension=ROWS&key=AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU', function(data) {
+			EventData = data;
+		}),
+		$.getJSON("js/configure.js", function(data){
+			Default = data;
+		})
+	).then(function(){
+		Map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 12,
+			center: Default.center,
+			styles: Default.styles,
+			clickableIcons: false,
+			mapTypeControl: false,
+			panControl: false,
+			streetViewControl: false,
+			zoomControl: true,
+			maxZoom: 18,
+			minZoom: 10,
+			zoomControlOptions: {
+				position: google.maps.ControlPosition.RIGHT_TOP
+			},
+			fullscreenControl: false
+		});
 		for (i = 0; i < EventData['values'].length; i++) {
-			marker = new google.maps.Marker({
+			Marker = new google.maps.Marker({
 				position: new google.maps.LatLng(EventData['values'][i][20], EventData['values'][i][21]),
 				map: Map
 			});
-
-			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+			google.maps.event.addListener(Marker, 'click', (function(marker, i) {
 				return function() {
 					$('#modal-event-detail-title').html(EventData['values'][i][6]);
-					let body = '<p>'+EventData['values'][i][0];
+					var body = '<p>'+EventData['values'][i][0];
 					if(EventData['values'][i][1].trim() !== ''){
 						body += ' '+EventData['values'][i][1];
 					}
 					body += '<br>'+EventData['values'][i][2]+', '+EventData['values'][i][3]+' '+EventData['values'][i][4];
-					let beginDate = mdyToDate(EventData['values'][i][10]),
+					var beginDate = mdyToDate(EventData['values'][i][10]),
 						formattedBeginDate = intToDayName(beginDate.getUTCDay())+', '+intToMonthName(beginDate.getUTCMonth())+' '+beginDate.getUTCDate()+', '+beginDate.getUTCFullYear();
 					body += '<hr>'+formattedBeginDate;
 					// Is this a single day event?
 					if(EventData['values'][i][10] === EventData['values'][i][11]) {
 						body += '<hr>Hours: '+EventData['values'][i][12]+' to '+EventData['values'][i][13];
 						// Make the ical! https://github.com/nwcell/ics.js
-						let cal = new ics();
+						var cal = new ics();
 						cal.addEvent(EventData['values'][i][6], EventData['values'][i][18], EventData['values'][i][19], EventData['values'][i][10]+' '+EventData['values'][i][12], EventData['values'][i][11]+' '+EventData['values'][i][13]);
 						$('#modal-event-detail-ical').on('click', function(){
 							cal.download();
 						});
 					} else {
-						let endDate = mdyToDate(EventData['values'][i][11]),
+						var endDate = mdyToDate(EventData['values'][i][11]),
 							formattedEndDate = intToDayName(endDate.getUTCDay())+', '+intToMonthName(endDate.getUTCMonth())+' '+endDate.getUTCDate()+', '+endDate.getUTCFullYear();
 						body += ' to '+formattedEndDate;
 					}
@@ -118,14 +63,13 @@ function initMap() {
 					$('#modal-event-detail-body').html(body);
 					$('#modal-event-detail').modal('show');
 				}
-			})(marker, i));
+			})(Marker, i));
 		}
-
 	});
 }
 
 function mdyToDate(mdy) {
-	let mdyArray = mdy.split("/");
+	var mdyArray = mdy.split("/");
 	return  new Date(mdyArray[2]+'-'+mdyArray[0]+'-'+mdyArray[1]);
 }
 
