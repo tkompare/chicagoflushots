@@ -1,22 +1,19 @@
 function initMap() {
-	var Map
-		,EventData
-		,ConfigData
-		,Marker
-		,i;
+
+	var Vaccinate = {};
 
 	$.when(
 		$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454/values/Sheet1!A1:V?majorDimension=ROWS&key=AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU', function(events) {
-			EventData = events;
+			Vaccinate.Events = events;
 		}),
 		$.getJSON("js/configure.json", function(configs){
-			ConfigData = configs;
+			Vaccinate.Configs = configs;
 		})
 	).then(function(){
-		Map = new google.maps.Map(document.getElementById('map'), {
+		Vaccinate.Map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 12,
-			center: ConfigData.MapCenter,
-			styles: ConfigData.MapStyle,
+			center: Vaccinate.Configs.MapCenter,
+			styles: Vaccinate.Configs.MapStyle,
 			clickableIcons: false,
 			mapTypeControl: false,
 			panControl: false,
@@ -29,33 +26,32 @@ function initMap() {
 			},
 			fullscreenControl: false
 		});
-		for (i = 0; i < EventData['values'].length; i++) {
-			Marker = new google.maps.Marker({
-				position: new google.maps.LatLng(EventData['values'][i][20], EventData['values'][i][21]),
-				map: Map
+		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events['values'].length; Vaccinate.i++) {
+			Vaccinate.Marker = new google.maps.Marker({
+				position: new google.maps.LatLng(Vaccinate.Events['values'][Vaccinate.i][20], Vaccinate.Events['values'][Vaccinate.i][21]),
+				map: Vaccinate.Map
 			});
-			google.maps.event.addListener(Marker, 'click', (function(marker, i) {
+			google.maps.event.addListener(Vaccinate.Marker, 'click', (function(marker, i) {
 				return function() {
-					$('#modal-event-detail-title').html(EventData['values'][i][6]);
-					var body = '<p>'+EventData['values'][i][0];
-					if(EventData['values'][i][1].trim() !== ''){
-						body += ' '+EventData['values'][i][1];
+					$('#modal-event-detail-title').html(Vaccinate.Events['values'][i][6]);
+					var body = '<p>'+Vaccinate.Events['values'][i][0];
+					if(Vaccinate.Events['values'][i][1].trim() !== ''){
+						body += ' '+Vaccinate.Events['values'][i][1];
 					}
-					body += '<br>'+EventData['values'][i][2]+', '+EventData['values'][i][3]+' '+EventData['values'][i][4];
-					var beginDate = mdyToDate(EventData['values'][i][10]),
+					body += '<br>'+Vaccinate.Events['values'][i][2]+', '+Vaccinate.Events['values'][i][3]+' '+Vaccinate.Events['values'][i][4];
+					var beginDate = mdyToDate(Vaccinate.Events['values'][i][10]),
 						formattedBeginDate = intToDayName(beginDate.getUTCDay())+', '+intToMonthName(beginDate.getUTCMonth())+' '+beginDate.getUTCDate()+', '+beginDate.getUTCFullYear();
 					body += '<hr>'+formattedBeginDate;
 					// Is this a single day event?
-					if(EventData['values'][i][10] === EventData['values'][i][11]) {
-						body += '<hr>Hours: '+EventData['values'][i][12]+' to '+EventData['values'][i][13];
-						// Make the ical! https://github.com/nwcell/ics.js
-						var cal = new ics();
-						cal.addEvent(EventData['values'][i][6], EventData['values'][i][18], EventData['values'][i][19], EventData['values'][i][10]+' '+EventData['values'][i][12], EventData['values'][i][11]+' '+EventData['values'][i][13]);
+					if(Vaccinate.Events['values'][i][10] === Vaccinate.Events['values'][i][11]) {
+						body += '<hr>Hours: '+Vaccinate.Events['values'][i][12]+' to '+Vaccinate.Events['values'][i][13];
+						var cal = new ics(); // Make the ical! https://github.com/nwcell/ics.js
+						cal.addEvent(Vaccinate.Events['values'][i][6], Vaccinate.Events['values'][i][18], Vaccinate.Events['values'][i][19], Vaccinate.Events['values'][i][10]+' '+Vaccinate.Events['values'][i][12], Vaccinate.Events['values'][i][11]+' '+Vaccinate.Events['values'][i][13]);
 						$('#modal-event-detail-ical').on('click', function(){
 							cal.download();
 						});
 					} else {
-						var endDate = mdyToDate(EventData['values'][i][11]),
+						var endDate = mdyToDate(Vaccinate.Events['values'][i][11]),
 							formattedEndDate = intToDayName(endDate.getUTCDay())+', '+intToMonthName(endDate.getUTCMonth())+' '+endDate.getUTCDate()+', '+endDate.getUTCFullYear();
 						body += ' to '+formattedEndDate;
 					}
@@ -63,7 +59,7 @@ function initMap() {
 					$('#modal-event-detail-body').html(body);
 					$('#modal-event-detail').modal('show');
 				}
-			})(Marker, i));
+			})(Vaccinate.Marker, Vaccinate.i));
 		}
 	});
 }

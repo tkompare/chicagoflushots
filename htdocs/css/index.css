@@ -1,3 +1,10 @@
+:root {
+    --vaccinate-main-color: #075290;
+    --vaccinate-secondary-color: #064180;
+    --vaccinate-tertiary-color: #073190;
+    --vaccinate-text-color: #ffffff;
+}
+
 #map-container {
     position: fixed;
     top: 60px;
@@ -17,35 +24,32 @@
 }
 
 .span-footer {
-    color: #ffffff;
+    color: var(--vaccinate-text-color);
 }
 
 .bg-dark {
-    background-color: #075290 !important;
+    background-color: var(--vaccinate-main-color) !important;
 }
 
 .btn-success {
-    color: #ffffff;
-    background-color: #075290;
-    background-image: none;
-    border-color: #075290;
+    color: var(--vaccinate-text-color);
+    background: var(--vaccinate-main-color) none;
+    border-color: var(--vaccinate-main-color);
 }
 
 .btn-success:hover {
-    color: #ffffff;
-    background-color: #064180;
-    background-image: none;
-    border-color: #075290;
+    color: var(--vaccinate-text-color);
+    background: var(--vaccinate-secondary-color) none;
+    border-color: var(--vaccinate-main-color);
 }
 
 .btn-success:active {
-    color: #ffffff;
-    background-color: #073190;
-    background-image: none;
-    border-color: #064180;
+    color: var(--vaccinate-text-color);
+    background: var(--vaccinate-tertiary-color) none;
+    border-color: var(--vaccinate-secondary-color);
 }
 
 .modal-header {
-    color: #ffffff;
-    background-color: #075290 !important;
+    color: var(--vaccinate-text-color);
+    background-color: var(--vaccinate-main-color) !important;
 }
