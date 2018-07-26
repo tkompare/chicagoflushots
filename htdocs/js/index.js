@@ -1,23 +1,22 @@
 function initMap() {
-	var
-	EventData,
-	Default,
-	Marker,
-	i;
+	var Map
+		,EventData
+		,ConfigData
+		,Marker
+		,i;
 
 	$.when(
 		$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454/values/Sheet1!A1:V?majorDimension=ROWS&key=AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU', function(events) {
 			EventData = events;
 		}),
-		$.getJSON("js/configure.json", function(config){
-			Default = config;
-			console.log(Default);
+		$.getJSON("js/configure.json", function(configs){
+			ConfigData = configs;
 		})
 	).then(function(){
-		var Map = new google.maps.Map(document.getElementById('map'), {
+		Map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 12,
-			center: Default.MapCenter,
-			styles: Default.MapStyle,
+			center: ConfigData.MapCenter,
+			styles: ConfigData.MapStyle,
 			clickableIcons: false,
 			mapTypeControl: false,
 			panControl: false,
