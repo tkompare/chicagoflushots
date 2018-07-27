@@ -1,4 +1,11 @@
 {
+  "GoogleMapsAPIKey": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU",
+  "GoogleSheets": {
+    "sheetID": "1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454",
+    "values": "Sheet1!A1:V",
+    "majorDimension": "ROWS",
+    "key": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU"
+  },
   "MapCenter": {
     "lat": 41.875,
     "lng": -87.6425
