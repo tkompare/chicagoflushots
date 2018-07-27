@@ -122,7 +122,7 @@ var Vaccinate = {
 						var beginDate = Vaccinate.mdyToDate(Vaccinate.Events[i]['BeginDate']),
 							formattedBeginDate = Vaccinate.intToDayName(beginDate.getUTCDay())+', '+Vaccinate.intToMonthName(beginDate.getUTCMonth())+' '+beginDate.getUTCDate()+', '+beginDate.getUTCFullYear();
 						body += '<hr>'+formattedBeginDate;
-						// Is this a single day event?
+						// If this is single day event...
 						if(Vaccinate.Events[i]['BeginDate'] === Vaccinate.Events[i]['EndDate']) {
 							body += '<hr>Hours: '+Vaccinate.Events[i]['BeginTime']+' to '+Vaccinate.Events[i]['EndTime'];
 							var cal = new ics(); // Make the ical! https://github.com/nwcell/ics.js
@@ -131,11 +131,12 @@ var Vaccinate = {
 								cal.download();
 							});
 						} else {
+							// If this is not a single day event...
 							var endDate = Vaccinate.mdyToDate(Vaccinate.Events[i]['EndDate']),
 								formattedEndDate = Vaccinate.intToDayName(endDate.getUTCDay())+', '+Vaccinate.intToMonthName(endDate.getUTCMonth())+' '+endDate.getUTCDate()+', '+endDate.getUTCFullYear();
 							body += ' to '+formattedEndDate;
 						}
-						body += '<p>';
+						body += '</p>';
 						$('#modal-event-detail-body').html(body);
 						$('#modal-event-detail').modal('show');
 					}
