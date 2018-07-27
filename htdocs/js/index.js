@@ -14,7 +14,7 @@ var Vaccinate = {
 		).then(function(){
 			var script = document.createElement('script');
 			script.type = 'text/javascript';
-			script.src = 'https://maps.googleapis.com/maps/api/js?key='+Vaccinate.Configs.GoogleMapsAPIKey+'&' +
+			script.src = 'https://maps.googleapis.com/maps/api/js?key='+Vaccinate.Configs.Google.key+'&' +
 				'callback=Vaccinate.initialize';
 			document.body.appendChild(script);
 		});
@@ -79,7 +79,7 @@ var Vaccinate = {
 
 	initialize: function(){
 		$.when(
-			$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/'+Vaccinate.Configs.GoogleSheets.sheetID+'/values/'+Vaccinate.Configs.GoogleSheets.values+'?majorDimension='+Vaccinate.Configs.GoogleSheets.majorDimension+'&key='+Vaccinate.Configs.GoogleSheets.key, function(events) {
+			$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/'+Vaccinate.Configs.Google.sheet.id+'/values/'+Vaccinate.Configs.Google.sheet.values+'?majorDimension='+Vaccinate.Configs.Google.sheet.majorDimension+'&key='+Vaccinate.Configs.Google.key, function(events) {
 				// Use map/reduce to transform Sheet data to an array of objects using the first 'row' to define properties
 				var keys = events.values.shift();
 				Vaccinate.Events = events.values.map(function(values) {

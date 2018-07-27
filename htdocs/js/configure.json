@@ -1,10 +1,11 @@
 {
-  "GoogleMapsAPIKey": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU",
-  "GoogleSheets": {
-    "sheetID": "1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454",
-    "values": "Sheet1!A1:V",
-    "majorDimension": "ROWS",
-    "key": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU"
+  "Google": {
+    "key": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU",
+    "sheet": {
+      "id": "1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454",
+      "values": "Sheet1!A1:V",
+      "majorDimension": "ROWS"
+    }
   },
   "MapCenter": {
     "lat": 41.875,
