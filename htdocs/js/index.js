@@ -119,6 +119,21 @@ var Vaccinate = {
 							body += ' '+Vaccinate.Events[i]['Address2'];
 						}
 						body += '<br>'+Vaccinate.Events[i]['City']+', '+Vaccinate.Events[i]['State']+' '+Vaccinate.Events[i]['PostalCode'];
+						if(Vaccinate.Events[i]['Phone'] !== '' || Vaccinate.Events[i]['Contact'] !== '') {
+							body += '<br>';
+							if(Vaccinate.Events[i]['Contact'] !== '') {
+								body += 'Contact: '+Vaccinate.Events[i]['Contact'];
+							}
+							if(Vaccinate.Events[i]['Phone'] !== '' && Vaccinate.Events[i]['Contact'] !== '') {
+								body += ' at ';
+							}
+							if(Vaccinate.Events[i]['Phone'] !== '') {
+								body += Vaccinate.Events[i]['Phone'];
+							}
+						}
+						if(Vaccinate.Events[i]['Url'] !== '') {
+							body += '<br><a href="'+Vaccinate.Events[i]['Url']+'" target="_blank">'+Vaccinate.Events[i]['Url']+'</a>';
+						}
 						var beginDate = Vaccinate.mdyToDate(Vaccinate.Events[i]['BeginDate']),
 							formattedBeginDate = Vaccinate.intToDayName(beginDate.getUTCDay())+', '+Vaccinate.intToMonthName(beginDate.getUTCMonth())+' '+beginDate.getUTCDate()+', '+beginDate.getUTCFullYear();
 						body += '<hr>'+formattedBeginDate;
@@ -126,7 +141,11 @@ var Vaccinate = {
 						if(Vaccinate.Events[i]['BeginDate'] === Vaccinate.Events[i]['EndDate']) {
 							body += '<hr>Hours: '+Vaccinate.Events[i]['BeginTime']+' to '+Vaccinate.Events[i]['EndTime'];
 							var cal = new ics(); // Make the ical! https://github.com/nwcell/ics.js
-							cal.addEvent(Vaccinate.Events[i]['LocationName'], Vaccinate.Events[i]['NotesText'], Vaccinate.Events[i]['FormattedAddress'], Vaccinate.Events[i]['BeginDate']+' '+Vaccinate.Events[i]['BeginTime'], Vaccinate.Events[i]['EndDate']+' '+Vaccinate.Events[i]['EndTime']);
+							cal.addEvent(Vaccinate.Events[i]['LocationName'],
+								Vaccinate.Events[i]['NotesText']+" "+Vaccinate.Events[i]['Contact']+" "+Vaccinate.Events[i]['Phone']+" "+Vaccinate.Events[i]['Url'],
+								Vaccinate.Events[i]['FormattedAddress'],
+								Vaccinate.Events[i]['BeginDate']+' '+Vaccinate.Events[i]['BeginTime'],
+								Vaccinate.Events[i]['EndDate']+' '+Vaccinate.Events[i]['EndTime']);
 							$('#modal-event-detail-ical').on('click', function(){
 								cal.download();
 							});
@@ -155,7 +174,7 @@ var Vaccinate = {
 		Listen to the Search Modal's Search button
 		 */
 		$('#modal-search-search').on('click', function(){
-			
+
 		});
 	},
 
