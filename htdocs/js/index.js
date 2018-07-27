@@ -4,7 +4,7 @@ var Vaccinate = {
 	Events: null,
 	Map: null,
 	Marker: null,
-	i: null,
+	i: null, // Events iterator
 
 	loadScript: function() {
 		$.when(
@@ -91,20 +91,20 @@ var Vaccinate = {
 			})
 		).then(function(){
 			Vaccinate.Map = new google.maps.Map(document.getElementById('map'), {
-				zoom: 12,
-				center: Vaccinate.Configs.MapCenter,
-				styles: Vaccinate.Configs.MapStyle,
-				clickableIcons: false,
-				mapTypeControl: false,
-				panControl: false,
-				streetViewControl: false,
-				zoomControl: true,
-				maxZoom: 18,
-				minZoom: 10,
+				zoom: Vaccinate.Configs.Map.zoom,
+				center: Vaccinate.Configs.Map.center,
+				styles: Vaccinate.Configs.Map.styles,
+				clickableIcons: Vaccinate.Configs.Map.clickableIcons,
+				mapTypeControl: Vaccinate.Configs.Map.mapTypeControl,
+				panControl: Vaccinate.Configs.Map.panControl,
+				streetViewControl: Vaccinate.Configs.Map.streetViewControl,
+				zoomControl: Vaccinate.Configs.Map.zoomControl,
+				maxZoom: Vaccinate.Configs.Map.maxZoom,
+				minZoom: Vaccinate.Configs.Map.minZoom,
 				zoomControlOptions: {
-					position: google.maps.ControlPosition.RIGHT_TOP
+					"position": google.maps.ControlPosition.RIGHT_TOP
 				},
-				fullscreenControl: false
+				fullscreenControl: Vaccinate.Configs.Map.fullscreenControl
 			});
 			for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
 				Vaccinate.Marker = new google.maps.Marker({
