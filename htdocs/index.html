@@ -34,9 +34,7 @@
     </footer>
 
     <!-- Event Detail Modal -->
-    <div class="modal fade" id="modal-event-detail" tabindex="-1" role="dialog"
-         aria-labelledby="Event Detail Modal"
-         aria-hidden="true">
+    <div class="modal fade" id="modal-event-detail" tabindex="-1" role="dialog" aria-labelledby="Event Detail Modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -49,6 +47,27 @@
                 <div class="modal-footer">
                     <button id="modal-event-detail-ical" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Add To My Calendar</button>
                     <button id="modal-event-detail-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="modal fade" id="modal-search" tabindex="-1" role="dialog" aria-labelledby="Search for an event" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="modal-search-title" class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="text-white" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modal-search-body" class="modal-body">
+                    <p id="modal-search-body-instructions"></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-search-search" type="button" class="btn btn-custom" data-dismiss="modal">Search</button>
+                    <button id="modal-search-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

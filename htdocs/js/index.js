@@ -143,6 +143,24 @@ var Vaccinate = {
 				})(Vaccinate.Marker, Vaccinate.i));
 			}
 		});
+		/*
+		Listen for clicks on the Search button in the header
+		 */
+		$('#search').on('click', function(){
+			$('#modal-search-title').html(Vaccinate.Configs.Modal.search.title);
+			$('#modal-search-body-instructions').html(Vaccinate.Configs.Modal.search.instructions);
+			$('#modal-search').modal('show');
+		});
+		/*
+		Listen to the Search Modal's Search button
+		 */
+		$('#modal-search-search').on('click', function(){
+			
+		});
+	},
+
+	searchByDate: function(Date) {
+
 	}
 
 };
