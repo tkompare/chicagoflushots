@@ -8,6 +8,9 @@ var Vaccinate = {
 
 	loadScript: function() {
 		$.when(
+			/*
+			 * Get the configuration for the application from the configuration JSON file.
+			 */
 			$.getJSON("js/configure.json", function(configs) {
 				Vaccinate.Configs = configs;
 			})
@@ -22,6 +25,12 @@ var Vaccinate = {
 
 	mdyToDate: function(mdy) {
 		var mdyArray = mdy.split("/");
+		// add in leading zero if month or date are one character in length
+		for(var j=0; j<mdyArray.length; j++){
+			if(mdyArray[j].length === 1 ){
+				mdyArray[j] = '0'+mdyArray[j];
+			}
+		}
 		return  new Date(mdyArray[2]+'-'+mdyArray[0]+'-'+mdyArray[1]);
 	},
 
@@ -79,6 +88,9 @@ var Vaccinate = {
 
 	initialize: function(){
 		$.when(
+			/*
+			 * Get event data from a Google Spreadsheet.
+			 */
 			$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/'+Vaccinate.Configs.Google.sheet.id+'/values/'+Vaccinate.Configs.Google.sheet.values+'?majorDimension='+Vaccinate.Configs.Google.sheet.majorDimension+'&key='+Vaccinate.Configs.Google.key, function(events) {
 				// Use map/reduce to transform Sheet data to an array of objects using the first 'row' to define properties
 				var keys = events.values.shift();
@@ -106,6 +118,7 @@ var Vaccinate = {
 				},
 				fullscreenControl: Vaccinate.Configs.Map.fullscreenControl
 			});
+
 			for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
 				Vaccinate.Marker = new google.maps.Marker({
 					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
@@ -179,6 +192,7 @@ var Vaccinate = {
 	},
 
 	searchByDate: function(Date) {
+
 
 	}
 
