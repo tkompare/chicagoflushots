@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				src: ['src/js/*.js'],
-				dest: 'src/js-concat/index-concat.js',
+				dest: 'src/js-concat/index-concat.js'
 			}
 		},
 
@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 
 		watch: {
 			scripts: {
-				files: 'src/*.js',
+				files: 'src/js/*.js',
 				tasks: ['concat', 'uglify:build'],
 				options: {
 					atBegin: true

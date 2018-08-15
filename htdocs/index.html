@@ -1,102 +1,125 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/index.css">
-
-    <title>Vaccinate Me</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-5Z/4A9O2iG86Ca27OwgMwLmRYt9bjLOoEpPXy7yhiSs=" crossorigin="anonymous" />
+	<link rel="stylesheet" href="css/index.css">
+	<title>Vaccinate Me</title>
 </head>
 <body>
-    <header>
-        <nav id="navbar-header" class="navbar navbar-dark fixed-top bg-dark">
-            <span class="navbar-brand mb-0 h1">Find Vaccinations</span>
-            <div class="btn-toolbar">
-                <button id="help" class="btn btn-custom my-1 ml-auto mr-3">Help</button>
-                <button id="search" class="btn btn-custom my-1 float-right">Search</button>
-            </div>
-        </nav>
-    </header>
-    <main role="main" class="container">
-        <div id="map-container">
-            <div id="map"></div>
-        </div>
-    </main>
-    <footer id="footer">
-        <nav id="navbar-footer" class="navbar navbar-dark fixed-bottom bg-dark">
-            <span id="span-footer" class="float-left span-footer"><small>Department of Public Health</small></span>
-            <button id="about" class="btn btn-custom my-1 float-right">About</button>
-        </nav>
-    </footer>
+<header>
+	<nav id="navbar-header" class="navbar navbar-dark fixed-top bg-dark">
+		<span class="navbar-brand mb-0 h1">Find Vaccinations</span>
+		<div class="btn-toolbar">
+			<button id="help" class="btn btn-custom my-1 ml-auto mr-3">Help</button>
+			<button id="search" class="btn btn-custom my-1 float-right">Search</button>
+		</div>
+	</nav>
+</header>
+<main role="main" class="container">
+	<div id="map-container">
+		<div id="map"></div>
+	</div>
+</main>
+<footer id="footer">
+	<nav id="navbar-footer" class="navbar navbar-dark fixed-bottom bg-dark">
+		<span id="span-footer" class="float-left span-footer"><small>Department of Public Health</small></span>
+		<button id="about" class="btn btn-custom my-1 float-right">About</button>
+	</nav>
+</footer>
 
-    <!-- Event Detail Modal -->
-    <div class="modal fade" id="modal-event-detail" tabindex="-1" role="dialog" aria-labelledby="Event Detail Modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 id="modal-event-detail-title" class="modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-white" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="modal-event-detail-body" class="modal-body"></div>
-                <div class="modal-footer">
-                    <button id="modal-event-detail-ical" type="button" class="btn btn-custom" data-dismiss="modal">Add To My Calendar</button>
-                    <button id="modal-event-detail-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Event Detail Modal -->
+<div class="modal fade" id="modal-event-detail" tabindex="-1" role="dialog" aria-labelledby="Event Detail Modal"
+		 aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-event-detail-title" class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="text-white" aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modal-event-detail-body" class="modal-body"></div>
+			<div class="modal-footer">
+				<button id="modal-event-detail-ical" type="button" class="btn btn-custom" data-dismiss="modal">Add To My
+					Calendar
+				</button>
+				<button id="modal-event-detail-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-    <!-- Search Modal -->
-    <div class="modal fade" id="modal-search" tabindex="-1" role="dialog" aria-labelledby="Search for an event" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 id="modal-search-title" class="modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-white" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="modal-search-body" class="modal-body">
-                    <p id="modal-search-body-instructions"></p>
-                </div>
-                <div class="modal-footer">
-                    <button id="modal-search-search" type="button" class="btn btn-custom" data-dismiss="modal">Search</button>
-                    <button id="modal-search-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Search Modal -->
+<div class="modal fade" id="modal-search" tabindex="-1" role="dialog" aria-labelledby="Search for an event"
+		 aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-search-title" class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="text-white" aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modal-search-body" class="modal-body">
+				<p id="modal-search-body-instructions"></p>
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6">
+							<input type="text" class="form-control datetimepicker-input" id="modal-search-date" data-toggle="datetimepicker" data-target="#modal-search-date" readonly="readonly"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="modal-search-search" type="button" class="btn btn-custom" data-dismiss="modal">Search</button>
+				<button id="modal-search-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-    <!-- Help Modal -->
-    <div class="modal fade" id="modal-help" tabindex="-1" role="dialog" aria-labelledby="Search for an event" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 id="modal-help-title" class="modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-white" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="modal-help-body" class="modal-body">
-                    <p id="modal-help-body-instructions"></p>
-                </div>
-                <div class="modal-footer">
-                    <button id="modal-help-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Help Modal -->
+<div class="modal fade" id="modal-help" tabindex="-1" role="dialog" aria-labelledby="Search for an event"
+		 aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-help-title" class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="text-white" aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modal-help-body" class="modal-body">
+				<p id="modal-help-body-instructions"></p>
+			</div>
+			<div class="modal-footer">
+				<button id="modal-help-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-    <script src="js/index.min.js"></script>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+				integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+				crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-jgMYw0Xf+iO0EYC4pnX8tS4vmDqyjtJ9dwfSMMjSZuY=" crossorigin="anonymous"></script>
+<script src="js/index.min.js"></script>
+
 </body>
+
 </html>

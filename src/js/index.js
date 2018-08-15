@@ -120,6 +120,10 @@ var Vaccinate = {
 			});
 
 			for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
+				Vaccinate.Events[Vaccinate.i]['Selected'] = false;
+				if(Vaccinate.Events[Vaccinate.i]['BeginTime'] === '') {
+					Vaccinate.Events[Vaccinate.i]['MomentBeginDateTime'] = moment(Vaccinate.Events[i]['BeginDate'], "M-D-YYYY");
+				}
 				Vaccinate.Marker = new google.maps.Marker({
 					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
 					map: Vaccinate.Map
@@ -147,9 +151,8 @@ var Vaccinate = {
 						if(Vaccinate.Events[i]['Url'] !== '') {
 							body += '<br><a href="'+Vaccinate.Events[i]['Url']+'" target="_blank">'+Vaccinate.Events[i]['Url']+'</a>';
 						}
-						var beginDate = Vaccinate.mdyToDate(Vaccinate.Events[i]['BeginDate']),
-							formattedBeginDate = Vaccinate.intToDayName(beginDate.getUTCDay())+', '+Vaccinate.intToMonthName(beginDate.getUTCMonth())+' '+beginDate.getUTCDate()+', '+beginDate.getUTCFullYear();
-						body += '<hr>'+formattedBeginDate;
+						var momentBeginDate = moment(Vaccinate.Events[i]['BeginDate'], "M-D-YYYY");
+						body += '<hr>'+momentBeginDate.format('dddd, MMMM Do, YYYY');
 						// If this is single day event...
 						if(Vaccinate.Events[i]['BeginDate'] === Vaccinate.Events[i]['EndDate']) {
 							body += '<hr>Hours: '+Vaccinate.Events[i]['BeginTime']+' to '+Vaccinate.Events[i]['EndTime'];
@@ -164,9 +167,8 @@ var Vaccinate = {
 							});
 						} else {
 							// If this is not a single day event...
-							var endDate = Vaccinate.mdyToDate(Vaccinate.Events[i]['EndDate']),
-								formattedEndDate = Vaccinate.intToDayName(endDate.getUTCDay())+', '+Vaccinate.intToMonthName(endDate.getUTCMonth())+' '+endDate.getUTCDate()+', '+endDate.getUTCFullYear();
-							body += ' to '+formattedEndDate;
+							var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "M-D-YYYY");
+							body += '<hr>'+momentEndDate.format('dddd, MMMM Do, YYYY');
 						}
 						body += '</p>';
 						$('#modal-event-detail-body').html(body);
@@ -189,11 +191,22 @@ var Vaccinate = {
 		$('#modal-search-search').on('click', function(){
 
 		});
+		/*
+			Listen for a click on the search date picker.
+		 */
+		$('#modal-search-date').datetimepicker({
+			format: 'L', // or 'l' (lowercase L) for non-zero-padded
+			date: moment().format('L'),
+			ignoreReadonly: true
+		}).blur();
 	},
 
 	searchByDate: function(Date) {
-
-
+		var searchDate = moment(Date);
+		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
+			var momentBeginDate = moment(Vaccinate.Events[i]['BeginDate'], "M-D-YYYY");
+			var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "M-D-YYYY");
+		}
 	}
 
 };
