@@ -122,7 +122,7 @@ var Vaccinate = {
 			for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
 				Vaccinate.Events[Vaccinate.i]['Selected'] = false;
 				if(Vaccinate.Events[Vaccinate.i]['BeginTime'] === '') {
-					Vaccinate.Events[Vaccinate.i]['MomentBeginDateTime'] = moment(Vaccinate.Events[i]['BeginDate'], "M-D-YYYY");
+					Vaccinate.Events[Vaccinate.i]['MomentBeginDateTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], "l");
 				}
 				Vaccinate.Marker = new google.maps.Marker({
 					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
@@ -151,7 +151,7 @@ var Vaccinate = {
 						if(Vaccinate.Events[i]['Url'] !== '') {
 							body += '<br><a href="'+Vaccinate.Events[i]['Url']+'" target="_blank">'+Vaccinate.Events[i]['Url']+'</a>';
 						}
-						var momentBeginDate = moment(Vaccinate.Events[i]['BeginDate'], "M-D-YYYY");
+						var momentBeginDate = moment(Vaccinate.Events[i]['BeginDate'], "l");
 						body += '<hr>'+momentBeginDate.format('dddd, MMMM Do, YYYY');
 						// If this is single day event...
 						if(Vaccinate.Events[i]['BeginDate'] === Vaccinate.Events[i]['EndDate']) {
@@ -167,7 +167,7 @@ var Vaccinate = {
 							});
 						} else {
 							// If this is not a single day event...
-							var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "M-D-YYYY");
+							var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "l");
 							body += '<hr>'+momentEndDate.format('dddd, MMMM Do, YYYY');
 						}
 						body += '</p>';
@@ -198,14 +198,14 @@ var Vaccinate = {
 			format: 'L', // or 'l' (lowercase L) for non-zero-padded
 			date: moment().format('L'),
 			ignoreReadonly: true
-		}).blur();
+		});
 	},
 
 	searchByDate: function(Date) {
 		var searchDate = moment(Date);
 		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
-			var momentBeginDate = moment(Vaccinate.Events[i]['BeginDate'], "M-D-YYYY");
-			var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "M-D-YYYY");
+			var momentBeginDate = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], "l");
+			var momentEndDate = moment(Vaccinate.Events[Vaccinate.i]['EndDate'], "l");
 		}
 	}
 
