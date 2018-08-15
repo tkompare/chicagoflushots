@@ -1,44 +1,52 @@
 #map-container {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    bottom: 60px;
-    right: 0;
+	position: fixed;
+	top: 60px;
+	left: 0;
+	bottom: 60px;
+	right: 0;
 }
 
 #map {
-    height: 100%;
-    width: 100%;
-    z-index: -1;
+	height: 100%;
+	width: 100%;
+	z-index: -1;
 }
 
 #navbar-header {
-    z-index: 100;
+	z-index: 100;
 }
 
 .span-footer {
-    color: #ffffff;
+	color: #ffffff;
 }
 
 .bg-dark {
-    background-color: #075290 !important;
+	background-color: #075290 !important;
 }
 
 .btn-custom {
-    color: #ffffff;
-    background: #075290;
-    border-color: #ffffff;
+	color: #ffffff;
+	background: #075290;
+	border-color: #ffffff;
 }
 
 .btn-custom:hover {
-    background: #053e6c;
+	background: #053e6c;
 }
 
 .btn-custom:active {
-    background: #032948 !important;
+	background: #032948 !important;
 }
 
 .modal-header {
-    color: #ffffff;
-    background-color: #075290 !important;
+	color: #ffffff;
+	background-color: #075290 !important;
+}
+
+.map-marker-alt {
+	fill: #032948;
+}
+
+.map-marker-alt:hover {
+	fill: #ffffff
 }

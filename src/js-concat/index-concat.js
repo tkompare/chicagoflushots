@@ -5,8 +5,16 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 	Configs: null,
 	Events: null,
 	Map: null,
-	Marker: null,
+	Markers: [],
 	i: null, // Events iterator
+	svgTemplate: [
+		'<?xml version="1.0"?>',
+		'<svg aria-hidden="true" data-prefix="fas" data-icon="map-marker-alt" class="svg-inline--fa fa-map-marker-alt fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">',
+		'<path class="map-marker-alt" fill="{{ color }}" d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"></path>',
+		'</svg>'
+	].join('\n'),
+	svgDefault: null,
+	svgHighlight: null,
 
 	loadScript: function() {
 		$.when(
@@ -23,69 +31,6 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 				'callback=Vaccinate.initialize';
 			document.body.appendChild(script);
 		});
-	},
-
-	mdyToDate: function(mdy) {
-		var mdyArray = mdy.split("/");
-		// add in leading zero if month or date are one character in length
-		for(var j=0; j<mdyArray.length; j++){
-			if(mdyArray[j].length === 1 ){
-				mdyArray[j] = '0'+mdyArray[j];
-			}
-		}
-		return  new Date(mdyArray[2]+'-'+mdyArray[0]+'-'+mdyArray[1]);
-	},
-
-	intToDayName: function(int) {
-		switch(int) {
-			case 0:
-				return 'Sunday';
-			case 1:
-				return 'Monday';
-			case 2:
-				return 'Tuesday';
-			case 3:
-				return 'Wednesday';
-			case 4:
-				return 'Thursday';
-			case 5:
-				return 'Friday';
-			case 6:
-				return 'Saturday';
-			default:
-				return 'ERROR';
-		}
-	},
-
-	intToMonthName: function(int) {
-		switch(int) {
-			case 0:
-				return 'January';
-			case 1:
-				return 'February';
-			case 2:
-				return 'March';
-			case 3:
-				return 'April';
-			case 4:
-				return 'May';
-			case 5:
-				return 'June';
-			case 6:
-				return 'July';
-			case 7:
-				return 'August';
-			case 8:
-				return 'September';
-			case 9:
-				return 'October';
-			case 10:
-				return 'November';
-			case 11:
-				return 'December';
-			default:
-				return 'ERROR';
-		}
 	},
 
 	initialize: function(){
@@ -121,16 +66,20 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 				fullscreenControl: Vaccinate.Configs.Map.fullscreenControl
 			});
 
+			Vaccinate.svgDefault = Vaccinate.svgTemplate.replace('{{ color }}', 'DarkBlue');
+			Vaccinate.svgHighlight = Vaccinate.svgTemplate.replace('{{ color }}', 'Crimson');
+
 			for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
 				Vaccinate.Events[Vaccinate.i]['Selected'] = false;
 				if(Vaccinate.Events[Vaccinate.i]['BeginTime'] === '') {
 					Vaccinate.Events[Vaccinate.i]['MomentBeginDateTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], "l");
 				}
-				Vaccinate.Marker = new google.maps.Marker({
+				Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
 					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
-					map: Vaccinate.Map
+					map: Vaccinate.Map,
+					icon: { url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault), scaledSize: new google.maps.Size(32, 24) }
 				});
-				google.maps.event.addListener(Vaccinate.Marker, 'click', (function(marker, i) {
+				google.maps.event.addListener(Vaccinate.Markers[Vaccinate.i], 'click', (function(marker, i) {
 					return function() {
 						$('#modal-event-detail-title').html(Vaccinate.Events[i]['LocationName']);
 						var body = '<p>'+Vaccinate.Events[i]['Address1'];
@@ -157,7 +106,9 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 						body += '<hr>'+momentBeginDate.format('dddd, MMMM Do, YYYY');
 						// If this is single day event...
 						if(Vaccinate.Events[i]['BeginDate'] === Vaccinate.Events[i]['EndDate']) {
-							body += '<hr>Hours: '+Vaccinate.Events[i]['BeginTime']+' to '+Vaccinate.Events[i]['EndTime'];
+							var momentBeginTime = moment(Vaccinate.Events[i]['BeginTime'], 'h:mm:ss A');
+							var momentEndTime = moment(Vaccinate.Events[i]['EndTime'], 'h:mm:ss A');
+							body += '<br>Hours: '+momentBeginTime.format('h:mm A')+' to '+momentEndTime.format('h:mm A');
 							var cal = new ics(); // Make the ical! https://github.com/nwcell/ics.js
 							cal.addEvent(Vaccinate.Events[i]['LocationName'],
 								Vaccinate.Events[i]['NotesText']+" "+Vaccinate.Events[i]['Contact']+" "+Vaccinate.Events[i]['Phone']+" "+Vaccinate.Events[i]['Url'],
@@ -168,46 +119,134 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 								cal.download();
 							});
 						} else {
-							// If this is not a single day event...
+							// not a single day event...
 							var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "l");
-							body += '<hr>'+momentEndDate.format('dddd, MMMM Do, YYYY');
+							body += '<br>through '+momentEndDate.format('dddd, MMMM Do, YYYY');
 						}
 						body += '</p>';
 						$('#modal-event-detail-body').html(body);
 						$('#modal-event-detail').modal('show');
 					}
-				})(Vaccinate.Marker, Vaccinate.i));
+				})(Vaccinate.Markers[Vaccinate.i], Vaccinate.i));
 			}
 		});
 		/*
 		Listen for clicks on the Search button in the header
 		 */
 		$('#search').on('click', function(){
+			Vaccinate.resetMarkers();
 			$('#modal-search-title').html(Vaccinate.Configs.Modal.search.title);
 			$('#modal-search-body-instructions').html(Vaccinate.Configs.Modal.search.instructions);
 			$('#modal-search').modal('show');
 		});
+
 		/*
 		Listen to the Search Modal's Search button
 		 */
 		$('#modal-search-search').on('click', function(){
-
+			Vaccinate.searchByDate(moment($('#modal-search-date').val(), 'ddd, LL'), null);
 		});
+
+		$('#modal-search-today').on('click', function() {
+			var Today = moment(moment().format('L'), 'L'); // use format() to get start of day, not "now"
+			$('#modal-search-date').val(Today.format('ddd, LL'));
+			Vaccinate.searchByDate(Today, null);
+		});
+
+		$('#modal-search-tomorrow').on('click', function() {
+			var Tomorrow = moment(moment().add(1, 'days').format('L'), 'L'); // use format() to get start of day
+			$('#modal-search-date').val(Tomorrow.format('ddd, LL')); // use format() to get start of day
+			Vaccinate.searchByDate(Tomorrow, null);
+		});
+
+		$('#modal-search-weekend').on('click', function() {
+			var Saturday = moment(moment().isoWeekday('Saturday').format('L'), 'L'); // use format() to get start of day
+			var Sunday = moment(moment().isoWeekday('Sunday').format('L'), 'L'); // use format() to get start of day
+			$('#modal-search-date').val(Saturday.format('ddd, LL'));
+			Vaccinate.searchByDate(Saturday, Sunday);
+		});
+
 		/*
 			Listen for a click on the search date picker.
 		 */
-		$('#modal-search-date').datetimepicker({
-			format: 'L', // or 'l' (lowercase L) for non-zero-padded
-			date: moment().format('L'),
+		$('#modal-search-date,#modal-search-date-append').datetimepicker({
+			format: 'ddd, LL',
+			date: moment().format('ddd, LL'),
 			ignoreReadonly: true
 		});
 	},
 
-	searchByDate: function(Date) {
-		var searchDate = moment(Date);
+	searchByDate: function(searchDate,toDate) {
 		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
+			var highlighted = false;
 			var momentBeginDate = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], "l");
 			var momentEndDate = moment(Vaccinate.Events[Vaccinate.i]['EndDate'], "l");
+			if(searchDate.isBetween(momentBeginDate, momentEndDate, null, '[]')) {
+				if(Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].length === 0){
+					Vaccinate.Markers[Vaccinate.i].setIcon({
+						url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
+						scaledSize: new google.maps.Size(32, 24)
+					});
+					highlighted = true;
+				} else {
+					var daysArray = Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].split(',');
+					for(var j=0; j<daysArray.length; j++) {
+						if(Vaccinate.matchDays(searchDate, daysArray[j].replace(/ /g,''))) {
+							Vaccinate.Markers[Vaccinate.i].setIcon({
+								url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
+								scaledSize: new google.maps.Size(32, 24)
+							});
+							highlighted = true;
+							break;
+						}
+					}
+				}
+			}
+			if(highlighted === false && toDate !== null && toDate.isBetween(momentBeginDate, momentEndDate, null, '[]')) {
+				if(Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].length === 0) {
+					Vaccinate.Markers[Vaccinate.i].setIcon({
+						url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
+						scaledSize: new google.maps.Size(32, 24)
+					});
+					highlighted = true;
+				} else {
+					var toDaysArray = Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].split(',');
+					for(var k=0; k<toDaysArray.length; k++) {
+						if(Vaccinate.matchDays(toDate, toDaysArray[k].replace(/ /g,''))) {
+							Vaccinate.Markers[Vaccinate.i].setIcon({
+								url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
+								scaledSize: new google.maps.Size(32, 24)
+							});
+							highlighted = true;
+							break;
+						}
+					}
+				}
+			}
+			if(highlighted === false) {
+				Vaccinate.Markers[Vaccinate.i].setVisible(false);
+			}
+		}
+	},
+
+	matchDays: function(search, match){
+		switch (match) {
+			case search.format('dddd'):
+			case search.format('ddd'):
+			case search.format('dd'):
+				return true;
+			default:
+				return false;
+		}
+	},
+
+	resetMarkers: function() {
+		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
+			Vaccinate.Markers[Vaccinate.i].setIcon({
+				url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault),
+				scaledSize: new google.maps.Size(32, 24)
+			});
+			Vaccinate.Markers[Vaccinate.i].setVisible(true);
 		}
 	}
 

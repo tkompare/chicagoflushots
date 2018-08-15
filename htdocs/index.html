@@ -73,8 +73,20 @@
 				<p id="modal-search-body-instructions"></p>
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-6">
-							<input type="text" class="form-control datetimepicker-input" id="modal-search-date" data-toggle="datetimepicker" data-target="#modal-search-date" readonly="readonly"/>
+						<div class="col-sm-9">
+							<div class="input-group">
+								<input type="text" class="form-control datetimepicker-input" id="modal-search-date" data-toggle="datetimepicker" data-target="#modal-search-date" readonly="readonly"/>
+								<div class="input-group-append" data-target="#modal-search-date" data-toggle="datetimepicker">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<button id="modal-search-today" type="button" class="btn btn-custom" data-dismiss="modal">Today</button>
+							<button id="modal-search-tomorrow" type="button" class="btn btn-custom" data-dismiss="modal">Tomorrow</button>
+							<button id="modal-search-weekend" type="button" class="btn btn-custom" data-dismiss="modal">This Weekend</button>
 						</div>
 					</div>
 				</div>
