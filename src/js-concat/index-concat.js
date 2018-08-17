@@ -3,7 +3,7 @@ var saveAs=saveAs||function(e){"use strict";if(typeof e==="undefined"||typeof na
 var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&&-1==navigator.userAgent.indexOf("MSIE 10"))){void 0===e&&(e="default"),void 0===t&&(t="Calendar");var r=-1!==navigator.appVersion.indexOf("Win")?"\r\n":"\n",n=[],i=["BEGIN:VCALENDAR","PRODID:"+t,"VERSION:2.0"].join(r),o=r+"END:VCALENDAR",a=["SU","MO","TU","WE","TH","FR","SA"];return{events:function(){return n},calendar:function(){return i+r+n.join(r)+o},addEvent:function(t,i,o,l,u,s){if(void 0===t||void 0===i||void 0===o||void 0===l||void 0===u)return!1;if(s&&!s.rrule){if("YEARLY"!==s.freq&&"MONTHLY"!==s.freq&&"WEEKLY"!==s.freq&&"DAILY"!==s.freq)throw"Recurrence rrule frequency must be provided and be one of the following: 'YEARLY', 'MONTHLY', 'WEEKLY', or 'DAILY'";if(s.until&&isNaN(Date.parse(s.until)))throw"Recurrence rrule 'until' must be a valid date string";if(s.interval&&isNaN(parseInt(s.interval)))throw"Recurrence rrule 'interval' must be an integer";if(s.count&&isNaN(parseInt(s.count)))throw"Recurrence rrule 'count' must be an integer";if(void 0!==s.byday){if("[object Array]"!==Object.prototype.toString.call(s.byday))throw"Recurrence rrule 'byday' must be an array";if(s.byday.length>7)throw"Recurrence rrule 'byday' array must not be longer than the 7 days in a week";s.byday=s.byday.filter(function(e,t){return s.byday.indexOf(e)==t});for(var c in s.byday)if(a.indexOf(s.byday[c])<0)throw"Recurrence rrule 'byday' values must include only the following: 'SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'"}}var g=new Date(l),d=new Date(u),f=new Date,S=("0000"+g.getFullYear().toString()).slice(-4),E=("00"+(g.getMonth()+1).toString()).slice(-2),v=("00"+g.getDate().toString()).slice(-2),y=("00"+g.getHours().toString()).slice(-2),A=("00"+g.getMinutes().toString()).slice(-2),T=("00"+g.getSeconds().toString()).slice(-2),b=("0000"+d.getFullYear().toString()).slice(-4),D=("00"+(d.getMonth()+1).toString()).slice(-2),N=("00"+d.getDate().toString()).slice(-2),h=("00"+d.getHours().toString()).slice(-2),I=("00"+d.getMinutes().toString()).slice(-2),R=("00"+d.getMinutes().toString()).slice(-2),M=("0000"+f.getFullYear().toString()).slice(-4),w=("00"+(f.getMonth()+1).toString()).slice(-2),L=("00"+f.getDate().toString()).slice(-2),O=("00"+f.getHours().toString()).slice(-2),p=("00"+f.getMinutes().toString()).slice(-2),Y=("00"+f.getMinutes().toString()).slice(-2),U="",V="";y+A+T+h+I+R!=0&&(U="T"+y+A+T,V="T"+h+I+R);var B,C=S+E+v+U,j=b+D+N+V,m=M+w+L+("T"+O+p+Y);if(s)if(s.rrule)B=s.rrule;else{if(B="rrule:FREQ="+s.freq,s.until){var x=new Date(Date.parse(s.until)).toISOString();B+=";UNTIL="+x.substring(0,x.length-13).replace(/[-]/g,"")+"000000Z"}s.interval&&(B+=";INTERVAL="+s.interval),s.count&&(B+=";COUNT="+s.count),s.byday&&s.byday.length>0&&(B+=";BYDAY="+s.byday.join(","))}(new Date).toISOString();var H=["BEGIN:VEVENT","UID:"+n.length+"@"+e,"CLASS:PUBLIC","DESCRIPTION:"+i,"DTSTAMP;VALUE=DATE-TIME:"+m,"DTSTART;VALUE=DATE-TIME:"+C,"DTEND;VALUE=DATE-TIME:"+j,"LOCATION:"+o,"SUMMARY;LANGUAGE=en-us:"+t,"TRANSP:TRANSPARENT","END:VEVENT"];return B&&H.splice(4,0,B),H=H.join(r),n.push(H),H},download:function(e,t){if(n.length<1)return!1;t=void 0!==t?t:".ics",e=void 0!==e?e:"calendar";var a,l=i+r+n.join(r)+o;if(-1===navigator.userAgent.indexOf("MSIE 10"))a=new Blob([l]);else{var u=new BlobBuilder;u.append(l),a=u.getBlob("text/x-vCalendar;charset="+document.characterSet)}return saveAs(a,e+t),l},build:function(){return!(n.length<1)&&i+r+n.join(r)+o}}}console.log("Unsupported Browser")}};;var Vaccinate = {
 
 	Configs: null,
-	Events: null,
+	Events: [],
 	Map: null,
 	Markers: [],
 	i: null, // Events iterator
@@ -27,109 +27,31 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 		).then(function(){
 			var script = document.createElement('script');
 			script.type = 'text/javascript';
-			script.src = 'https://maps.googleapis.com/maps/api/js?key='+Vaccinate.Configs.Google.key+'&' +
+			script.src = 'https://maps.googleapis.com/maps/api/js?key='+Vaccinate.Configs.Data.Google.key+'&' +
 				'callback=Vaccinate.initialize';
 			document.body.appendChild(script);
 		});
 	},
 
 	initialize: function(){
-		$.when(
-			/*
-			 * Get event data from a Google Spreadsheet.
-			 */
-			$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/'+Vaccinate.Configs.Google.sheet.id+'/values/'+Vaccinate.Configs.Google.sheet.values+'?majorDimension='+Vaccinate.Configs.Google.sheet.majorDimension+'&key='+Vaccinate.Configs.Google.key, function(events) {
-				// Use map/reduce to transform Sheet data to an array of objects using the first 'row' to define properties
-				var keys = events.values.shift();
-				Vaccinate.Events = events.values.map(function(values) {
-					return keys.reduce(function(object, key, i) {
-						object[key] = values[i];
-						return object;
-					}, {});
-				});
-			})
-		).then(function(){
-			Vaccinate.Map = new google.maps.Map(document.getElementById('map'), {
-				zoom: Vaccinate.Configs.Map.zoom,
-				center: Vaccinate.Configs.Map.center,
-				styles: Vaccinate.Configs.Map.styles,
-				clickableIcons: Vaccinate.Configs.Map.clickableIcons,
-				mapTypeControl: Vaccinate.Configs.Map.mapTypeControl,
-				panControl: Vaccinate.Configs.Map.panControl,
-				streetViewControl: Vaccinate.Configs.Map.streetViewControl,
-				zoomControl: Vaccinate.Configs.Map.zoomControl,
-				maxZoom: Vaccinate.Configs.Map.maxZoom,
-				minZoom: Vaccinate.Configs.Map.minZoom,
-				zoomControlOptions: {
-					"position": google.maps.ControlPosition.RIGHT_TOP
-				},
-				fullscreenControl: Vaccinate.Configs.Map.fullscreenControl
-			});
-
-			Vaccinate.svgDefault = Vaccinate.svgTemplate.replace('{{ color }}', 'DarkBlue');
-			Vaccinate.svgHighlight = Vaccinate.svgTemplate.replace('{{ color }}', 'Crimson');
-
-			for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
-				Vaccinate.Events[Vaccinate.i]['Selected'] = false;
-				if(Vaccinate.Events[Vaccinate.i]['BeginTime'] === '') {
-					Vaccinate.Events[Vaccinate.i]['MomentBeginDateTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], "l");
-				}
-				Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
-					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
-					map: Vaccinate.Map,
-					icon: { url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault), scaledSize: new google.maps.Size(32, 24) }
-				});
-				google.maps.event.addListener(Vaccinate.Markers[Vaccinate.i], 'click', (function(marker, i) {
-					return function() {
-						$('#modal-event-detail-title').html(Vaccinate.Events[i]['LocationName']);
-						var body = '<p>'+Vaccinate.Events[i]['Address1'];
-						if(Vaccinate.Events[i]['Address2'].trim() !== ''){
-							body += ' '+Vaccinate.Events[i]['Address2'];
-						}
-						body += '<br>'+Vaccinate.Events[i]['City']+', '+Vaccinate.Events[i]['State']+' '+Vaccinate.Events[i]['PostalCode'];
-						if(Vaccinate.Events[i]['Phone'] !== '' || Vaccinate.Events[i]['Contact'] !== '') {
-							body += '<br>';
-							if(Vaccinate.Events[i]['Contact'] !== '') {
-								body += 'Contact: '+Vaccinate.Events[i]['Contact'];
-							}
-							if(Vaccinate.Events[i]['Phone'] !== '' && Vaccinate.Events[i]['Contact'] !== '') {
-								body += ' at ';
-							}
-							if(Vaccinate.Events[i]['Phone'] !== '') {
-								body += Vaccinate.Events[i]['Phone'];
-							}
-						}
-						if(Vaccinate.Events[i]['Url'] !== '') {
-							body += '<br><a href="'+Vaccinate.Events[i]['Url']+'" target="_blank">'+Vaccinate.Events[i]['Url']+'</a>';
-						}
-						var momentBeginDate = moment(Vaccinate.Events[i]['BeginDate'], "l");
-						body += '<hr>'+momentBeginDate.format('dddd, MMMM Do, YYYY');
-						// If this is single day event...
-						if(Vaccinate.Events[i]['BeginDate'] === Vaccinate.Events[i]['EndDate']) {
-							var momentBeginTime = moment(Vaccinate.Events[i]['BeginTime'], 'h:mm:ss A');
-							var momentEndTime = moment(Vaccinate.Events[i]['EndTime'], 'h:mm:ss A');
-							body += '<br>Hours: '+momentBeginTime.format('h:mm A')+' to '+momentEndTime.format('h:mm A');
-							var cal = new ics(); // Make the ical! https://github.com/nwcell/ics.js
-							cal.addEvent(Vaccinate.Events[i]['LocationName'],
-								Vaccinate.Events[i]['NotesText']+" "+Vaccinate.Events[i]['Contact']+" "+Vaccinate.Events[i]['Phone']+" "+Vaccinate.Events[i]['Url'],
-								Vaccinate.Events[i]['FormattedAddress'],
-								Vaccinate.Events[i]['BeginDate']+' '+Vaccinate.Events[i]['BeginTime'],
-								Vaccinate.Events[i]['EndDate']+' '+Vaccinate.Events[i]['EndTime']);
-							$('#modal-event-detail-ical').on('click', function(){
-								cal.download();
-							});
-						} else {
-							// not a single day event...
-							var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "l");
-							body += '<br>through '+momentEndDate.format('dddd, MMMM Do, YYYY');
-						}
-						body += '</p>';
-						$('#modal-event-detail-body').html(body);
-						$('#modal-event-detail').modal('show');
-					}
-				})(Vaccinate.Markers[Vaccinate.i], Vaccinate.i));
-			}
-		});
+		if(Vaccinate.Configs.Data.Source === 'Google') {
+			$.when(
+					$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/'+Vaccinate.Configs.Data.Google.sheet.id+'/values/'+Vaccinate.Configs.Data.Google.sheet.values+'?majorDimension='+Vaccinate.Configs.Data.Google.sheet.majorDimension+'&key='+Vaccinate.Configs.Data.Google.key, function(events) {
+						// Use map/reduce to transform Sheet data to an array of objects using the first 'row' to define properties
+						var keys = events.values.shift();
+						Vaccinate.Events = events.values.map(function(values) {
+							return keys.reduce(function(object, key, i) {
+								object[key] = values[i];
+								return object;
+							}, {});
+						});
+					})
+			).then(Vaccinate.setMap);
+		} else if (Vaccinate.Configs.Data.Source === 'Socrata') {
+			alert('Socrata!');z
+		} else {
+			alert('No Valid Data Source identified.');
+		}
 		/*
 		Listen for clicks on the Search button in the header
 		 */
@@ -174,6 +96,89 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			date: moment().format('ddd, LL'),
 			ignoreReadonly: true
 		});
+	},
+
+	setMap: function(){
+		Vaccinate.Map = new google.maps.Map(document.getElementById('map'), {
+			zoom: Vaccinate.Configs.Map.zoom,
+			center: Vaccinate.Configs.Map.center,
+			styles: Vaccinate.Configs.Map.styles,
+			clickableIcons: Vaccinate.Configs.Map.clickableIcons,
+			mapTypeControl: Vaccinate.Configs.Map.mapTypeControl,
+			panControl: Vaccinate.Configs.Map.panControl,
+			streetViewControl: Vaccinate.Configs.Map.streetViewControl,
+			zoomControl: Vaccinate.Configs.Map.zoomControl,
+			maxZoom: Vaccinate.Configs.Map.maxZoom,
+			minZoom: Vaccinate.Configs.Map.minZoom,
+			zoomControlOptions: {
+				"position": google.maps.ControlPosition.RIGHT_TOP
+			},
+			fullscreenControl: Vaccinate.Configs.Map.fullscreenControl
+		});
+
+		Vaccinate.svgDefault = Vaccinate.svgTemplate.replace('{{ color }}', 'DarkBlue');
+		Vaccinate.svgHighlight = Vaccinate.svgTemplate.replace('{{ color }}', 'Crimson');
+
+		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
+			Vaccinate.Events[Vaccinate.i]['Selected'] = false;
+			if(Vaccinate.Events[Vaccinate.i]['BeginTime'] === '') {
+				Vaccinate.Events[Vaccinate.i]['MomentBeginDateTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], "l");
+			}
+			Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
+				position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
+				map: Vaccinate.Map,
+				icon: { url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault), scaledSize: new google.maps.Size(32, 24) }
+			});
+			google.maps.event.addListener(Vaccinate.Markers[Vaccinate.i], 'click', (function(marker, i) {
+				return function() {
+					$('#modal-event-detail-title').html(Vaccinate.Events[i]['LocationName']);
+					var body = '<p>'+Vaccinate.Events[i]['Address1'];
+					if(Vaccinate.Events[i]['Address2'].trim() !== ''){
+						body += ' '+Vaccinate.Events[i]['Address2'];
+					}
+					body += '<br>'+Vaccinate.Events[i]['City']+', '+Vaccinate.Events[i]['State']+' '+Vaccinate.Events[i]['PostalCode'];
+					if(Vaccinate.Events[i]['Phone'] !== '' || Vaccinate.Events[i]['Contact'] !== '') {
+						body += '<br>';
+						if(Vaccinate.Events[i]['Contact'] !== '') {
+							body += 'Contact: '+Vaccinate.Events[i]['Contact'];
+						}
+						if(Vaccinate.Events[i]['Phone'] !== '' && Vaccinate.Events[i]['Contact'] !== '') {
+							body += ' at ';
+						}
+						if(Vaccinate.Events[i]['Phone'] !== '') {
+							body += Vaccinate.Events[i]['Phone'];
+						}
+					}
+					if(Vaccinate.Events[i]['Url'] !== '') {
+						body += '<br><a href="'+Vaccinate.Events[i]['Url']+'" target="_blank">'+Vaccinate.Events[i]['Url']+'</a>';
+					}
+					var momentBeginDate = moment(Vaccinate.Events[i]['BeginDate'], "l");
+					body += '<hr>'+momentBeginDate.format('dddd, MMMM Do, YYYY');
+					// If this is single day event...
+					if(Vaccinate.Events[i]['BeginDate'] === Vaccinate.Events[i]['EndDate']) {
+						var momentBeginTime = moment(Vaccinate.Events[i]['BeginTime'], 'h:mm:ss A');
+						var momentEndTime = moment(Vaccinate.Events[i]['EndTime'], 'h:mm:ss A');
+						body += '<br>Hours: '+momentBeginTime.format('h:mm A')+' to '+momentEndTime.format('h:mm A');
+						var cal = new ics(); // Make the ical! https://github.com/nwcell/ics.js
+						cal.addEvent(Vaccinate.Events[i]['LocationName'],
+								Vaccinate.Events[i]['NotesText']+" "+Vaccinate.Events[i]['Contact']+" "+Vaccinate.Events[i]['Phone']+" "+Vaccinate.Events[i]['Url'],
+								Vaccinate.Events[i]['FormattedAddress'],
+								Vaccinate.Events[i]['BeginDate']+' '+Vaccinate.Events[i]['BeginTime'],
+								Vaccinate.Events[i]['EndDate']+' '+Vaccinate.Events[i]['EndTime']);
+						$('#modal-event-detail-ical').on('click', function(){
+							cal.download();
+						});
+					} else {
+						// not a single day event...
+						var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "l");
+						body += '<br>through '+momentEndDate.format('dddd, MMMM Do, YYYY');
+					}
+					body += '</p>';
+					$('#modal-event-detail-body').html(body);
+					$('#modal-event-detail').modal('show');
+				}
+			})(Vaccinate.Markers[Vaccinate.i], Vaccinate.i));
+		}
 	},
 
 	searchByDate: function(searchDate,toDate) {

@@ -1,87 +1,93 @@
 {
-  "Google": {
-    "key": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU",
-    "sheet": {
-      "id": "1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454",
-      "values": "Sheet1!A1:V",
-      "majorDimension": "ROWS"
-    }
-  },
-  "Map": {
-    "zoom": 12,
-    "clickableIcons": false,
-    "mapTypeControl": false,
-    "panControl": false,
-    "streetViewControl": false,
-    "zoomControl": true,
-    "maxZoom": 18,
-    "minZoom": 10,
-    "fullscreenControl": false,
-    "center": {
-      "lat": 41.875,
-      "lng": -87.6425
-    },
-    "styles": [
-      {
-        "featureType": "all",
-        "elementType": "all",
-        "stylers": [
-          {
-            "hue": "#075290"
-          }
-        ]
-      },
-      {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      },
-      {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-          {
-            "saturation": "0"
-          },
-          {
-            "lightness": "0"
-          }
-        ]
-      },
-      {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      },
-      {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "simplified"
-          },
-          {
-            "saturation": "-60"
-          },
-          {
-            "lightness": "-20"
-          }
-        ]
-      }
-    ]
-  },
-  "Modal": {
-    "search": {
-      "title": "Search for vaccinations",
-      "instructions": "Enter your address and click the search button."
-    }
-  }
+	"Data": {
+		"Source": "Google",
+		"Google": {
+			"key": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU",
+			"sheet": {
+				"id": "1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454",
+				"values": "Sheet1!A1:V",
+				"majorDimension": "ROWS"
+			}
+		},
+		"Socrata": {
+			"id": ""
+		}
+	},
+	"Map": {
+		"zoom": 12,
+		"clickableIcons": false,
+		"mapTypeControl": false,
+		"panControl": false,
+		"streetViewControl": false,
+		"zoomControl": true,
+		"maxZoom": 18,
+		"minZoom": 10,
+		"fullscreenControl": false,
+		"center": {
+			"lat": 41.875,
+			"lng": -87.6425
+		},
+		"styles": [
+			{
+				"featureType": "all",
+				"elementType": "all",
+				"stylers": [
+					{
+						"hue": "#075290"
+					}
+				]
+			},
+			{
+				"featureType": "poi",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "road",
+				"elementType": "all",
+				"stylers": [
+					{
+						"saturation": "0"
+					},
+					{
+						"lightness": "0"
+					}
+				]
+			},
+			{
+				"featureType": "transit",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "water",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "simplified"
+					},
+					{
+						"saturation": "-60"
+					},
+					{
+						"lightness": "-20"
+					}
+				]
+			}
+		]
+	},
+	"Modal": {
+		"search": {
+			"title": "Search for vaccinations",
+			"instructions": "Enter your address and click the search button."
+		}
+	}
 }
