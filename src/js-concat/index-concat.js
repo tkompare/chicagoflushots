@@ -48,7 +48,7 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 					})
 			).then(Vaccinate.setMap);
 		} else if (Vaccinate.Configs.Data.Source === 'Socrata') {
-			alert('Socrata!');z
+			alert('Socrata!');
 		} else {
 			alert('No Valid Data Source identified.');
 		}
@@ -172,7 +172,9 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 						// not a single day event...
 						var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "l");
 						body += '<br>through '+momentEndDate.format('dddd, MMMM Do, YYYY');
+						body += '<br>'+Vaccinate.Events[i]['HoursText'];
 					}
+					body += '<hr>'+Vaccinate.Events[i]['NotesText'];
 					body += '</p>';
 					$('#modal-event-detail-body').html(body);
 					$('#modal-event-detail').modal('show');

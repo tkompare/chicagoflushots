@@ -87,7 +87,7 @@
 	"Modal": {
 		"search": {
 			"title": "Search for vaccinations",
-			"instructions": "Enter your address and click the search button."
+			"instructions": "Choose a date and click the search button."
 		}
 	}
 }

@@ -43,10 +43,6 @@
 	background-color: #075290 !important;
 }
 
-.map-marker-alt {
-	fill: #032948;
-}
-
-.map-marker-alt:hover {
-	fill: #ffffff
+.margin-bottom {
+	margin-bottom: .5em;
 }
