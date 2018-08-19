@@ -47,8 +47,39 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 						});
 					})
 			).then(Vaccinate.setMap);
-		} else if (Vaccinate.Configs.Data.Source === 'Socrata') {
-			alert('Socrata!');
+		} else if (Vaccinate.Configs.Data.Source === 'CityOfChicago') {
+			$.when(
+					$.getJSON(Vaccinate.Configs.Data.CityOfChicago.url+'?$limit=5000', function(events){
+						// Translate City of Chicago value names to standard value names.
+						for (var i = 0; i < events.length; i++) {
+							var keys = Object.keys(Vaccinate.Configs.Data.CityOfChicago.alias);
+							for (var j = 0; j < keys.length; j++) {
+								if(i === 256) {
+									//alert(keys[j]+' | '+events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]]);
+								}
+								if(events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]] === undefined) {
+									events[i][keys[j]] = '';
+								} else if (keys[j] === 'Latitude') {
+									events[i][keys[j]] = events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]]['coordinates'][1];
+								} else if (keys[j] === "Longitude") {
+									events[i][keys[j]] = events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]]['coordinates'][0];
+								} else if (keys[j] === 'BeginDate' || keys[j] === 'EndDate') {
+									events[i][keys[j]] = moment(events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]]).format('M/D/YYYY');
+								} else if (keys[j] === 'BeginTime' || keys[j] === 'EndTime') {
+									if(i === 0) {
+										//alert(keys[j]+'|'+moment(events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]], 'HH:mm:ss').format('h:mm:ss A'));
+									}
+									events[i][keys[j]] = moment(events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]], 'HH:mm:ss').format('h:mm:ss A');
+								} else {
+									events[i][keys[j]] = events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]];
+								}
+							}
+						}
+						Vaccinate.Events = events;
+					})
+			).then(
+					Vaccinate.setMap
+			);
 		} else {
 			alert('No Valid Data Source identified.');
 		}
@@ -124,11 +155,27 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			if(Vaccinate.Events[Vaccinate.i]['BeginTime'] === '') {
 				Vaccinate.Events[Vaccinate.i]['MomentBeginDateTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], "l");
 			}
-			Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
-				position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
-				map: Vaccinate.Map,
-				icon: { url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault), scaledSize: new google.maps.Size(32, 24) }
-			});
+			if(Vaccinate.Events[Vaccinate.i]['CostText'].indexOf('No cost') > -1) {
+				Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
+					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
+					map: Vaccinate.Map,
+					// icon: { url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault), scaledSize: new google.maps.Size(32, 24) }
+					icon: {
+						url: 'img/blue.png',
+						scaledSize: new google.maps.Size(32, 32)
+					}
+				});
+			} else {
+				Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
+					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
+					map: Vaccinate.Map,
+					// icon: { url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault), scaledSize: new google.maps.Size(32, 24) }
+					icon: {
+						url: 'img/red.png',
+						scaledSize: new google.maps.Size(32, 32)
+					}
+				});
+			}
 			google.maps.event.addListener(Vaccinate.Markers[Vaccinate.i], 'click', (function(marker, i) {
 				return function() {
 					$('#modal-event-detail-title').html(Vaccinate.Events[i]['LocationName']);
@@ -190,19 +237,23 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			var momentEndDate = moment(Vaccinate.Events[Vaccinate.i]['EndDate'], "l");
 			if(searchDate.isBetween(momentBeginDate, momentEndDate, null, '[]')) {
 				if(Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].length === 0){
+					/*
 					Vaccinate.Markers[Vaccinate.i].setIcon({
 						url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
 						scaledSize: new google.maps.Size(32, 24)
 					});
+					*/
 					highlighted = true;
 				} else {
 					var daysArray = Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].split(',');
 					for(var j=0; j<daysArray.length; j++) {
 						if(Vaccinate.matchDays(searchDate, daysArray[j].replace(/ /g,''))) {
+							/*
 							Vaccinate.Markers[Vaccinate.i].setIcon({
 								url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
 								scaledSize: new google.maps.Size(32, 24)
 							});
+							*/
 							highlighted = true;
 							break;
 						}
@@ -211,19 +262,23 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			}
 			if(highlighted === false && toDate !== null && toDate.isBetween(momentBeginDate, momentEndDate, null, '[]')) {
 				if(Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].length === 0) {
+					/*
 					Vaccinate.Markers[Vaccinate.i].setIcon({
 						url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
 						scaledSize: new google.maps.Size(32, 24)
 					});
+					*/
 					highlighted = true;
 				} else {
 					var toDaysArray = Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].split(',');
 					for(var k=0; k<toDaysArray.length; k++) {
 						if(Vaccinate.matchDays(toDate, toDaysArray[k].replace(/ /g,''))) {
+							/*
 							Vaccinate.Markers[Vaccinate.i].setIcon({
 								url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
 								scaledSize: new google.maps.Size(32, 24)
 							});
+							*/
 							highlighted = true;
 							break;
 						}
@@ -249,10 +304,19 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 
 	resetMarkers: function() {
 		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
-			Vaccinate.Markers[Vaccinate.i].setIcon({
-				url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault),
-				scaledSize: new google.maps.Size(32, 24)
-			});
+			/*
+			if(Vaccinate.Events[Vaccinate.i]['CostText'].indexOf('No cost') > -1) {
+				Vaccinate.Markers[Vaccinate.i].setIcon({
+					url: 'img/blue.png',
+					scaledSize: new google.maps.Size(32, 32)
+				});
+			} else {
+				Vaccinate.Markers[Vaccinate.i].setIcon({
+					url: 'img/red.png',
+					scaledSize: new google.maps.Size(32, 32)
+				});
+			}
+			*/
 			Vaccinate.Markers[Vaccinate.i].setVisible(true);
 		}
 	}
