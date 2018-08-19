@@ -55,7 +55,6 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 							var keys = Object.keys(Vaccinate.Configs.Data.CityOfChicago.alias);
 							for (var j = 0; j < keys.length; j++) {
 								if(i === 256) {
-									//alert(keys[j]+' | '+events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]]);
 								}
 								if(events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]] === undefined) {
 									events[i][keys[j]] = '';
@@ -67,7 +66,6 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 									events[i][keys[j]] = moment(events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]]).format('M/D/YYYY');
 								} else if (keys[j] === 'BeginTime' || keys[j] === 'EndTime') {
 									if(i === 0) {
-										//alert(keys[j]+'|'+moment(events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]], 'HH:mm:ss').format('h:mm:ss A'));
 									}
 									events[i][keys[j]] = moment(events[i][Vaccinate.Configs.Data.CityOfChicago.alias[keys[j]]], 'HH:mm:ss').format('h:mm:ss A');
 								} else {
@@ -76,25 +74,34 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 							}
 						}
 						Vaccinate.Events = events;
+						// Create moment.js instances for Begin date&time, and End date&time
+						for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
+							Vaccinate.Events[Vaccinate.i]['MomentBeginDate'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], 'l');
+							Vaccinate.Events[Vaccinate.i]['MomentEndDate'] = moment(Vaccinate.Events[Vaccinate.i]['EndDate'], 'l');
+							Vaccinate.Events[Vaccinate.i]['MomentBeginTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginTime'], 'h:mm:ss A');
+							Vaccinate.Events[Vaccinate.i]['MomentEndTime'] = moment(Vaccinate.Events[Vaccinate.i]['EndTime'], 'h:mm:ss A');
+						}
 					})
 			).then(
 					Vaccinate.setMap
 			);
 		} else {
-			alert('No Valid Data Source identified.');
+			alert('No valid data source identified.');
 		}
 		/*
 		Listen for clicks on the Search button in the header
 		 */
 		$('#search').on('click', function(){
+			if($('#search').text() === 'Search'){
+				$('#modal-search-title').html(Vaccinate.Configs.Modal.search.title);
+				$('#modal-search-body-instructions').html(Vaccinate.Configs.Modal.search.instructions);
+				$('#modal-search').modal('show');
+			}
 			Vaccinate.resetMarkers();
-			$('#modal-search-title').html(Vaccinate.Configs.Modal.search.title);
-			$('#modal-search-body-instructions').html(Vaccinate.Configs.Modal.search.instructions);
-			$('#modal-search').modal('show');
 		});
 
 		/*
-		Listen to the Search Modal's Search button
+		Listen to the Search Modal's Search buttons
 		 */
 		$('#modal-search-search').on('click', function(){
 			Vaccinate.searchByDate(moment($('#modal-search-date').val(), 'ddd, LL'), null);
@@ -117,6 +124,19 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			var Sunday = moment(moment().isoWeekday('Sunday').format('L'), 'L'); // use format() to get start of day
 			$('#modal-search-date').val(Saturday.format('ddd, LL'));
 			Vaccinate.searchByDate(Saturday, Sunday);
+		});
+
+		$('#modal-search-free').on('click', function() {
+			for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
+				var highlighted = false;
+				if(Vaccinate.Events[Vaccinate.i]['CostText'].indexOf('No cost') > -1) {
+					highlighted = true;
+				}
+				if(highlighted === false) {
+					Vaccinate.Markers[Vaccinate.i].setVisible(false);
+				}
+			}
+			$('#search').html('Reset').removeClass('btn-custom').addClass('btn-danger');
 		});
 
 		/*
@@ -151,27 +171,33 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 		Vaccinate.svgHighlight = Vaccinate.svgTemplate.replace('{{ color }}', 'Crimson');
 
 		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
-			Vaccinate.Events[Vaccinate.i]['Selected'] = false;
-			if(Vaccinate.Events[Vaccinate.i]['BeginTime'] === '') {
-				Vaccinate.Events[Vaccinate.i]['MomentBeginDateTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], "l");
-			}
-			if(Vaccinate.Events[Vaccinate.i]['CostText'].indexOf('No cost') > -1) {
+			// if the event is in the past...
+			if(Vaccinate.Events[Vaccinate.i]['MomentEndDate'].isBefore(moment())){
 				Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
 					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
 					map: Vaccinate.Map,
-					// icon: { url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault), scaledSize: new google.maps.Size(32, 24) }
 					icon: {
-						url: 'img/blue.png',
+						url: 'img/grey.png',
 						scaledSize: new google.maps.Size(32, 32)
 					}
 				});
+				// if the event is "No cost"...
+			} else if(Vaccinate.Events[Vaccinate.i]['CostText'].indexOf('No cost') > -1) {
+				Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
+					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
+					map: Vaccinate.Map,
+					icon: {
+						url: 'img/red.png',
+						scaledSize: new google.maps.Size(32, 32)
+					}
+				});
+				// if the event is not "no cost"...
 			} else {
 				Vaccinate.Markers[Vaccinate.i] = new google.maps.Marker({
 					position: new google.maps.LatLng(Vaccinate.Events[Vaccinate.i]['Latitude'], Vaccinate.Events[Vaccinate.i]['Longitude']),
 					map: Vaccinate.Map,
-					// icon: { url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgDefault), scaledSize: new google.maps.Size(32, 24) }
 					icon: {
-						url: 'img/red.png',
+						url: 'img/blue.png',
 						scaledSize: new google.maps.Size(32, 32)
 					}
 				});
@@ -237,23 +263,11 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			var momentEndDate = moment(Vaccinate.Events[Vaccinate.i]['EndDate'], "l");
 			if(searchDate.isBetween(momentBeginDate, momentEndDate, null, '[]')) {
 				if(Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].length === 0){
-					/*
-					Vaccinate.Markers[Vaccinate.i].setIcon({
-						url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
-						scaledSize: new google.maps.Size(32, 24)
-					});
-					*/
 					highlighted = true;
 				} else {
 					var daysArray = Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].split(',');
 					for(var j=0; j<daysArray.length; j++) {
 						if(Vaccinate.matchDays(searchDate, daysArray[j].replace(/ /g,''))) {
-							/*
-							Vaccinate.Markers[Vaccinate.i].setIcon({
-								url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
-								scaledSize: new google.maps.Size(32, 24)
-							});
-							*/
 							highlighted = true;
 							break;
 						}
@@ -262,23 +276,11 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			}
 			if(highlighted === false && toDate !== null && toDate.isBetween(momentBeginDate, momentEndDate, null, '[]')) {
 				if(Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].length === 0) {
-					/*
-					Vaccinate.Markers[Vaccinate.i].setIcon({
-						url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
-						scaledSize: new google.maps.Size(32, 24)
-					});
-					*/
 					highlighted = true;
 				} else {
 					var toDaysArray = Vaccinate.Events[Vaccinate.i]['RecurrenceDays'].split(',');
 					for(var k=0; k<toDaysArray.length; k++) {
 						if(Vaccinate.matchDays(toDate, toDaysArray[k].replace(/ /g,''))) {
-							/*
-							Vaccinate.Markers[Vaccinate.i].setIcon({
-								url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(Vaccinate.svgHighlight),
-								scaledSize: new google.maps.Size(32, 24)
-							});
-							*/
 							highlighted = true;
 							break;
 						}
@@ -289,6 +291,7 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 				Vaccinate.Markers[Vaccinate.i].setVisible(false);
 			}
 		}
+		$('#search').html('Reset').removeClass('btn-custom').addClass('btn-danger');
 	},
 
 	matchDays: function(search, match){
@@ -304,21 +307,9 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 
 	resetMarkers: function() {
 		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
-			/*
-			if(Vaccinate.Events[Vaccinate.i]['CostText'].indexOf('No cost') > -1) {
-				Vaccinate.Markers[Vaccinate.i].setIcon({
-					url: 'img/blue.png',
-					scaledSize: new google.maps.Size(32, 32)
-				});
-			} else {
-				Vaccinate.Markers[Vaccinate.i].setIcon({
-					url: 'img/red.png',
-					scaledSize: new google.maps.Size(32, 32)
-				});
-			}
-			*/
 			Vaccinate.Markers[Vaccinate.i].setVisible(true);
 		}
+		$('#search').html('Search').removeClass('btn-danger').addClass('btn-custom');
 	}
 
 };
