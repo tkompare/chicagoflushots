@@ -2,17 +2,10 @@ var Vaccinate = {
 
 	Configs: null,
 	Events: [],
+	Cal: [],
 	Map: null,
 	Markers: [],
 	i: null, // Events iterator
-	svgTemplate: [
-		'<?xml version="1.0"?>',
-		'<svg aria-hidden="true" data-prefix="fas" data-icon="map-marker-alt" class="svg-inline--fa fa-map-marker-alt fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">',
-		'<path class="map-marker-alt" fill="{{ color }}" d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"></path>',
-		'</svg>'
-	].join('\n'),
-	svgDefault: null,
-	svgHighlight: null,
 
 	loadScript: function() {
 		$.when(
@@ -86,6 +79,25 @@ var Vaccinate = {
 		} else {
 			alert('No valid data source identified.');
 		}
+
+		/*
+		Listen for the Help button in the header
+		 */
+		$('#help').on('click', function() {
+			$('#modal-help-title').html(Vaccinate.Configs.Modal.help.title);
+			$('#modal-help-body-instructions').html(Vaccinate.Configs.Modal.help.instructions);
+			$('#modal-help').modal('show');
+		});
+
+		/*
+		 Listen for the About button in the header
+		 */
+		$('#about').on('click', function() {
+			$('#modal-about-title').html(Vaccinate.Configs.Modal.about.title);
+			$('#modal-about-body-instructions').html(Vaccinate.Configs.Modal.about.instructions);
+			$('#modal-about').modal('show');
+		});
+
 		/*
 		Listen for clicks on the Search button in the header
 		 */
@@ -165,9 +177,6 @@ var Vaccinate = {
 			fullscreenControl: Vaccinate.Configs.Map.fullscreenControl
 		});
 
-		Vaccinate.svgDefault = Vaccinate.svgTemplate.replace('{{ color }}', 'DarkBlue');
-		Vaccinate.svgHighlight = Vaccinate.svgTemplate.replace('{{ color }}', 'Crimson');
-
 		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
 			// if the event is in the past...
 			if(Vaccinate.Events[Vaccinate.i]['MomentEndDate'].isBefore(moment())){
@@ -203,7 +212,11 @@ var Vaccinate = {
 			google.maps.event.addListener(Vaccinate.Markers[Vaccinate.i], 'click', (function(marker, i) {
 				return function() {
 					$('#modal-event-detail-title').html(Vaccinate.Events[i]['LocationName']);
-					var body = '<p>'+Vaccinate.Events[i]['Address1'];
+					var body = '';
+					if(Vaccinate.Events[i]['MomentEndDate'].isBefore(moment())){
+						body += '<div class="alert alert-danger" role="alert">This date of this event has passed. Look for red or blue event pins on the map.</div>';
+					}
+					body += '<p>'+Vaccinate.Events[i]['Address1'];
 					if(Vaccinate.Events[i]['Address2'].trim() !== ''){
 						body += ' '+Vaccinate.Events[i]['Address2'];
 					}
@@ -217,35 +230,36 @@ var Vaccinate = {
 							body += ' at ';
 						}
 						if(Vaccinate.Events[i]['Phone'] !== '') {
-							body += Vaccinate.Events[i]['Phone'];
+							body += '<strong>'+Vaccinate.Events[i]['Phone']+'</strong>';
 						}
 					}
 					if(Vaccinate.Events[i]['Url'] !== '') {
 						body += '<br><a href="'+Vaccinate.Events[i]['Url']+'" target="_blank">'+Vaccinate.Events[i]['Url']+'</a>';
 					}
-					var momentBeginDate = moment(Vaccinate.Events[i]['BeginDate'], "l");
-					body += '<hr>'+momentBeginDate.format('dddd, MMMM Do, YYYY');
 					// If this is single day event...
 					if(Vaccinate.Events[i]['BeginDate'] === Vaccinate.Events[i]['EndDate']) {
-						var momentBeginTime = moment(Vaccinate.Events[i]['BeginTime'], 'h:mm:ss A');
-						var momentEndTime = moment(Vaccinate.Events[i]['EndTime'], 'h:mm:ss A');
-						body += '<br>Hours: '+momentBeginTime.format('h:mm A')+' to '+momentEndTime.format('h:mm A');
-						var cal = new ics(); // Make the ical! https://github.com/nwcell/ics.js
-						cal.addEvent(Vaccinate.Events[i]['LocationName'],
-								Vaccinate.Events[i]['NotesText']+" "+Vaccinate.Events[i]['Contact']+" "+Vaccinate.Events[i]['Phone']+" "+Vaccinate.Events[i]['Url'],
-								Vaccinate.Events[i]['FormattedAddress'],
-								Vaccinate.Events[i]['BeginDate']+' '+Vaccinate.Events[i]['BeginTime'],
-								Vaccinate.Events[i]['EndDate']+' '+Vaccinate.Events[i]['EndTime']);
-						$('#modal-event-detail-ical').on('click', function(){
-							cal.download();
+						body += '<hr>'+Vaccinate.Events[i]["MomentBeginDate"].format('dddd, MMMM Do, YYYY');
+						body += '<br>Hours: '+Vaccinate.Events[i]["MomentBeginTime"].format('h:mm A')+' to '+Vaccinate.Events[i]["MomentEndTime"].format('h:mm A');
+
+						// Make the ical! https://github.com/nwcell/ics.js
+						Vaccinate.Cal[i] = ics();
+						Vaccinate.Cal[i].addEvent(
+								Vaccinate.Events[i]['LocationName'],
+								Vaccinate.Events[i]['CostText']+' '+Vaccinate.Events[i]['Contact']+' '+Vaccinate.Events[i]['Phone']+' '+Vaccinate.Events[i]['Url'],
+								Vaccinate.Events[i]['Address1']+' '+Vaccinate.Events[i]['Address2']+' '+Vaccinate.Events[i]['City']+', '+Vaccinate.Events[i]['State']+' '+Vaccinate.Events[i]['PostalCode'],
+								Vaccinate.Events[i]['MomentBeginDate'].format('M/D/YYYY')+' '+Vaccinate.Events[i]['MomentBeginTime'].format('h:mm a'),
+								Vaccinate.Events[i]['MomentEndDate'].format('M/D/YYYY')+' '+Vaccinate.Events[i]['MomentEndTime'].format('h:mm a')
+						);
+
+						$('#modal-event-detail-ical').show().on('click', function(){
+							Vaccinate.Cal[i].download();
 						});
 					} else {
 						// not a single day event...
-						var momentEndDate = moment(Vaccinate.Events[i]['EndDate'], "l");
-						body += '<br>through '+momentEndDate.format('dddd, MMMM Do, YYYY');
-						body += '<br>'+Vaccinate.Events[i]['HoursText'];
+						body += '<hr>'+Vaccinate.Events[i]['HoursText'];
+						$('#modal-event-detail-ical').hide().off();
 					}
-					body += '<hr>'+Vaccinate.Events[i]['NotesText'];
+					body += '<hr>'+Vaccinate.Events[i]['CostText'];
 					body += '</p>';
 					$('#modal-event-detail-body').html(body);
 					$('#modal-event-detail').modal('show');

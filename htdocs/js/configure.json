@@ -111,6 +111,14 @@
 		"search": {
 			"title": "Search for vaccinations",
 			"instructions": "Choose a date and click the search button."
+		},
+		"about": {
+			"title": "About Vaccine Finder",
+			"instructions": "Built and hosted by <a href=\"https://github.com/tkompare/chicagoflushots\" target=\"_blank\">Tom Kompare</a> in partnership with the <a href=\"https://www.cityofchicago.org/city/en/depts/cdph.html\" target=\"_blank\">Chicago Department of Public Health</a> (CDPH). The flu shot event data is hosted by the City Of Chicago <a href=\"https://data.cityofchicago.org/\" target=\"_blank\">Data Portal</a>. This was not developed by CDPH and CDPH makes no representations as to the accuracy of the information provided by this map application. The code behind this web application is free, open, and under a MIT License."
+		},
+		"help": {
+			"title": "How to use Vaccine Finder",
+			"instructions": "<p>The vaccine finder is built with you in mind. Find a convenient flu shot event by clicking on a map pin or narrow your choices by using the search button. There are several ways to search: by date, today's events, tomorrow's events, this weekend, or look for all free events.</p><p>Red maps pins are Chicago Department of Public Health sponsored event locations offering flu shots at no cost to you. Red pins are other locations offering flu shots. Grey pins are location events that have already happened."
 		}
 	}
 }

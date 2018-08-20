@@ -7,7 +7,7 @@
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-5Z/4A9O2iG86Ca27OwgMwLmRYt9bjLOoEpPXy7yhiSs=" crossorigin="anonymous" />
 	<link rel="stylesheet" href="css/index.css">
 	<title>Vaccinate Me</title>
@@ -47,7 +47,7 @@
 			</div>
 			<div id="modal-event-detail-body" class="modal-body"></div>
 			<div class="modal-footer">
-				<button id="modal-event-detail-ical" type="button" class="btn btn-custom" data-dismiss="modal">Add To My
+				<button id="modal-event-detail-ical" type="button" class="btn btn-custom" data-dismiss="modal"><i class="fas fa-calendar-plus"></i> Add To
 					Calendar
 				</button>
 				<button id="modal-event-detail-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">
@@ -77,7 +77,7 @@
 							<div class="input-group">
 								<input type="text" class="form-control datetimepicker-input" id="modal-search-date" data-toggle="datetimepicker" data-target="#modal-search-date" readonly="readonly"/>
 								<div class="input-group-append" data-target="#modal-search-date" data-toggle="datetimepicker">
-									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+									<div class="input-group-text"><i class="fas fa-calendar"></i></div>
 									<button id="modal-search-search" type="button" class="btn btn-custom" data-dismiss="modal">Search</button>
 								</div>
 							</div>
@@ -121,6 +121,28 @@
 			</div>
 			<div class="modal-footer">
 				<button id="modal-help-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- About Modal -->
+<div class="modal fade" id="modal-about" tabindex="-1" role="dialog" aria-labelledby="About this web application."
+		 aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-about-title" class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="text-white" aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modal-about-body" class="modal-body">
+				<p id="modal-about-body-instructions"></p>
+			</div>
+			<div class="modal-footer">
+				<button id="modal-about-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close
 				</button>
 			</div>
 		</div>
