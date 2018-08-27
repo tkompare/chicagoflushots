@@ -81,7 +81,11 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 		Set the brand
 		 */
 		$('#header-brand').text(Vaccinate.Configs.Brand.header);
-		$('#footer-brand').text(Vaccinate.Configs.Brand.footer);
+		if(Vaccinate.Configs.Brand.footerURL === '') {
+			$('#footer-brand').text(Vaccinate.Configs.Brand.footer);
+		} else {
+			$('#footer-brand').html('<a id="footer-brand-link" href="'+Vaccinate.Configs.Brand.footerURL+'" target="_blank">'+Vaccinate.Configs.Brand.footer+"</a>");
+		}
 
 		/*
 		Listen for the Help button in the header

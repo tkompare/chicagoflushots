@@ -57,6 +57,18 @@
 	padding: .375rem .75rem;
 }
 
+#footer-brand-link:link {
+	color: #ffffff
+}
+
+#footer-brand-link:visited {
+	color: #ffffff
+}
+
+#footer-brand-link:hover {
+	color: #77aaff
+}
+
 .modal-header {
 	color: #ffffff;
 	background-color: #075290 !important;

@@ -109,6 +109,7 @@
 	},
 	"Brand": {
 		"footer": "Chicago Department of Public Health",
+		"footerURL": "https://www.cityofchicago.org/city/en/depts/cdph.html",
 		"header": "Get A Flu Shot"
 	},
 	"Modal": {
