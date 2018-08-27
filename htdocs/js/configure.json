@@ -1,6 +1,6 @@
 {
+	"Source": "CityOfChicago",
 	"Data": {
-		"Source": "CityOfChicago",
 		"Google": {
 			"key": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU",
 			"sheet": {
@@ -10,7 +10,7 @@
 			}
 		},
 		"CityOfChicago": {
-			"url": "https://data.cityofchicago.org/resource/6bnm-rcas.json",
+			"url": "https://data.cityofchicago.org/resource/6bnm-rcas.json?$limit=5000",
 			"alias": {
 				"Address1": "location_1_address",
 				"Address2": "street2",
@@ -106,6 +106,10 @@
 				]
 			}
 		]
+	},
+	"Brand": {
+		"footer": "Chicago Department of Public Health",
+		"header": "Get A Flu Shot"
 	},
 	"Modal": {
 		"search": {

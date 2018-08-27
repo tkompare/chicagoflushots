@@ -38,6 +38,25 @@
 	background: #032948 !important;
 }
 
+.find-me-div {
+	padding: 1em;
+}
+
+.find-me-ui {
+	background-color: #075290;
+	border: 1px solid #ffffff;
+	border-radius: .25rem;
+	cursor: pointer;
+	text-align: center;
+}
+
+.find-me-text {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 1rem;
+	color: #ffffff;
+	padding: .375rem .75rem;
+}
+
 .modal-header {
 	color: #ffffff;
 	background-color: #075290 !important;

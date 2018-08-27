@@ -5,6 +5,7 @@ var Vaccinate = {
 	Cal: [],
 	Map: null,
 	Markers: [],
+	AddressMarker: null,
 	i: null, // Events iterator
 
 	loadScript: function() {
@@ -25,7 +26,7 @@ var Vaccinate = {
 	},
 
 	initialize: function(){
-		if(Vaccinate.Configs.Data.Source === 'Google') {
+		if(Vaccinate.Configs.Source === 'Google') {
 			$.when(
 					$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/'+Vaccinate.Configs.Data.Google.sheet.id+'/values/'+Vaccinate.Configs.Data.Google.sheet.values+'?majorDimension='+Vaccinate.Configs.Data.Google.sheet.majorDimension+'&key='+Vaccinate.Configs.Data.Google.key, function(events) {
 						// Use map/reduce to transform Sheet data to an array of objects using the first 'row' to define properties
@@ -36,11 +37,12 @@ var Vaccinate = {
 								return object;
 							}, {});
 						});
+						Vaccinate.setMoment();
 					})
 			).then(Vaccinate.setMap);
-		} else if (Vaccinate.Configs.Data.Source === 'CityOfChicago') {
+		} else if (Vaccinate.Configs.Source === 'CityOfChicago') {
 			$.when(
-					$.getJSON(Vaccinate.Configs.Data.CityOfChicago.url+'?$limit=5000', function(events){
+					$.getJSON(Vaccinate.Configs.Data.CityOfChicago.url, function(events){
 						// Translate City of Chicago value names to standard value names.
 						for (var i = 0; i < events.length; i++) {
 							var keys = Object.keys(Vaccinate.Configs.Data.CityOfChicago.alias);
@@ -65,20 +67,18 @@ var Vaccinate = {
 							}
 						}
 						Vaccinate.Events = events;
-						// Create moment.js instances for Begin date&time, and End date&time
-						for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
-							Vaccinate.Events[Vaccinate.i]['MomentBeginDate'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], 'l');
-							Vaccinate.Events[Vaccinate.i]['MomentEndDate'] = moment(Vaccinate.Events[Vaccinate.i]['EndDate'], 'l');
-							Vaccinate.Events[Vaccinate.i]['MomentBeginTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginTime'], 'h:mm:ss A');
-							Vaccinate.Events[Vaccinate.i]['MomentEndTime'] = moment(Vaccinate.Events[Vaccinate.i]['EndTime'], 'h:mm:ss A');
-						}
+						Vaccinate.setMoment();
 					})
-			).then(
-					Vaccinate.setMap
-			);
+			).then(Vaccinate.setMap);
 		} else {
 			alert('No valid data source identified.');
 		}
+
+		/*
+		Set the brand
+		 */
+		$('#header-brand').text(Vaccinate.Configs.Brand.header);
+		$('#footer-brand').text(Vaccinate.Configs.Brand.footer);
 
 		/*
 		Listen for the Help button in the header
@@ -159,6 +159,16 @@ var Vaccinate = {
 		});
 	},
 
+	setMoment: function() {
+		// Create moment.js instances for Begin date&time, and End date&time
+		for (Vaccinate.i = 0; Vaccinate.i < Vaccinate.Events.length; Vaccinate.i++) {
+			Vaccinate.Events[Vaccinate.i]['MomentBeginDate'] = moment(Vaccinate.Events[Vaccinate.i]['BeginDate'], 'l');
+			Vaccinate.Events[Vaccinate.i]['MomentEndDate'] = moment(Vaccinate.Events[Vaccinate.i]['EndDate'], 'l');
+			Vaccinate.Events[Vaccinate.i]['MomentBeginTime'] = moment(Vaccinate.Events[Vaccinate.i]['BeginTime'], 'h:mm:ss A');
+			Vaccinate.Events[Vaccinate.i]['MomentEndTime'] = moment(Vaccinate.Events[Vaccinate.i]['EndTime'], 'h:mm:ss A');
+		}
+	},
+
 	setMap: function(){
 		Vaccinate.Map = new google.maps.Map(document.getElementById('map'), {
 			zoom: Vaccinate.Configs.Map.zoom,
@@ -186,7 +196,8 @@ var Vaccinate = {
 					icon: {
 						url: 'img/grey.png',
 						scaledSize: new google.maps.Size(32, 32)
-					}
+					},
+					opacity: .67
 				});
 				// if the event is "No cost"...
 			} else if(Vaccinate.Events[Vaccinate.i]['CostText'].indexOf('No cost') > -1) {
@@ -266,6 +277,80 @@ var Vaccinate = {
 				}
 			})(Vaccinate.Markers[Vaccinate.i], Vaccinate.i));
 		}
+		if(navigator.geolocation) {
+			var FindMeDiv = document.createElement('div');
+			Vaccinate.setFindMeControl(FindMeDiv);
+			FindMeDiv.index = 1;
+			Vaccinate.Map.controls[google.maps.ControlPosition.TOP_LEFT].push(FindMeDiv);
+		}
+	},
+
+	setFindMeControl: function(controlDiv)
+	{
+		// Set CSS styles for the DIV containing the control
+		// Setting padding to 5 px will offset the control
+		// from the edge of the map.
+		controlDiv.className += 'find-me-div';
+		// Set CSS for the control border.
+		var controlUI = document.createElement('div');
+		controlUI.className += 'find-me-ui';
+		controlUI.title = 'Click to find your location.';
+		controlDiv.appendChild(controlUI);
+		// Set CSS for the control interior.
+		var controlText = document.createElement('div');
+		controlText.className += 'find-me-text';
+		controlText.innerHTML = 'Find Me';
+		controlUI.appendChild(controlText);
+		// Setup the click event listeners.
+		google.maps.event.addDomListener(controlUI, 'click', function() {
+			if(navigator.geolocation)
+			{
+				navigator.geolocation.getCurrentPosition(
+						// Success
+						function(position)
+						{
+							var Latlng = new google.maps.LatLng(
+									position.coords.latitude,
+									position.coords.longitude
+							);
+							Vaccinate.Map.setCenter(Latlng);
+							Vaccinate.Map.setZoom(Vaccinate.Configs.Map.zoom);
+							// Make a map marker if none exists yet
+							if(Vaccinate.AddressMarker === null)
+							{
+								Vaccinate.AddressMarker = new google.maps.Marker({
+									position:Latlng,
+									map: Vaccinate.Map,
+									icon: {
+										url: 'img/yellow.png',
+										scaledSize: new google.maps.Size(32, 32)
+									},
+									clickable:false
+								});
+							}
+							else
+							{
+								// Move the marker to the new location
+								Vaccinate.AddressMarker.setPosition(Latlng);
+								// If the marker is hidden, unhide it
+								if(Vaccinate.AddressMarker.getMap() === null)
+								{
+									Vaccinate.AddressMarker.setMap(Map.Map);
+								}
+							}
+						},
+						// Failure
+						function()
+						{
+							alert('We\'re sorry. We could not find you. Please type in an address.');
+						},
+						{
+							timeout:5000,
+							enableHighAccuracy:true
+						}
+				);
+			}
+		});
 	},
 
 	searchByDate: function(searchDate,toDate) {
