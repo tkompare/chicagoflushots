@@ -1,0 +1,129 @@
+{
+	"Source": "CityOfChicago",
+	"Data": {
+		"Google": {
+			"key": "AIzaSyAixqsNXzEBfYRAvx1aPVeNqDSR5bIfBeU",
+			"sheet": {
+				"id": "1_HTPvKSlLnWP__Lq_r-mCYKGcLau4Z7MmlsSyCMc454",
+				"values": "Sheet1!A1:V",
+				"majorDimension": "ROWS"
+			}
+		},
+		"CityOfChicago": {
+			"url": "https://data.cityofchicago.org/resource/6bnm-rcas.json?$limit=5000",
+			"alias": {
+				"Address1": "location_1_address",
+				"Address2": "street2",
+				"City": "location_1_city",
+				"State": "location_1_state",
+				"PostalCode": "postal_code",
+				"Country": "country",
+				"LocationName": "facility_name",
+				"Url": "url",
+				"Phone": "phone",
+				"Contact": "contact",
+				"BeginDate": "begin_date",
+				"EndDate": "end_date",
+				"BeginTime": "begin_time",
+				"EndTime": "end_time",
+				"RecurrenceDays": "recurrence_days",
+				"HoursText": "hours",
+				"EligibilityText": "eligibility",
+				"CostText": "cost",
+				"NotesText": "notes",
+				"Latitude": "location_1",
+				"Longitude": "location_1"
+			}
+		}
+	},
+	"Map": {
+		"zoom": 13,
+		"clickableIcons": false,
+		"mapTypeControl": false,
+		"panControl": false,
+		"streetViewControl": false,
+		"zoomControl": true,
+		"maxZoom": 18,
+		"minZoom": 10,
+		"fullscreenControl": false,
+		"center": {
+			"lat": 41.875,
+			"lng": -87.6425
+		},
+		"styles": [
+			{
+				"featureType": "all",
+				"elementType": "all",
+				"stylers": [
+					{
+						"hue": "#075290"
+					}
+				]
+			},
+			{
+				"featureType": "poi",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "road",
+				"elementType": "all",
+				"stylers": [
+					{
+						"saturation": "0"
+					},
+					{
+						"lightness": "0"
+					}
+				]
+			},
+			{
+				"featureType": "transit",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "water",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "simplified"
+					},
+					{
+						"saturation": "-60"
+					},
+					{
+						"lightness": "-20"
+					}
+				]
+			}
+		]
+	},
+	"Brand": {
+		"footer": "Chicago Department of Public Health",
+		"footerURL": "https://www.cityofchicago.org/city/en/depts/cdph.html",
+		"header": "Get A Flu Shot"
+	},
+	"Modal": {
+		"search": {
+			"title": "Search for vaccinations",
+			"instructions": "Choose a date or a One Click option."
+		},
+		"about": {
+			"title": "About Vaccine Finder",
+			"instructions": "Built and hosted by <a href=\"https://github.com/tkompare/chicagoflushots\" target=\"_blank\">Tom Kompare</a> in partnership with the <a href=\"https://www.cityofchicago.org/city/en/depts/cdph.html\" target=\"_blank\">Chicago Department of Public Health</a> (CDPH). The flu shot event data is hosted by the City Of Chicago <a href=\"https://data.cityofchicago.org/\" target=\"_blank\">Data Portal</a>. This was not developed by CDPH and CDPH makes no representations as to the accuracy of the information provided by this map application. The code behind this web application is free, open, and under a MIT License."
+		},
+		"help": {
+			"title": "How to use Vaccine Finder",
+			"instructions": "<p>The vaccine finder is built with you in mind. Find a convenient flu shot event by clicking on a map pin or narrow your choices by using the search button. There are several ways to search: by date, today's events, tomorrow's events, this weekend, or look for all free events.</p><p>Red pins on the map are Chicago Department of Public Health sponsored event locations offering flu shots at no cost to you. Blue pins are other locations offering flu shots. Grey pins are location events that have already happened."
+		}
+	}
+}

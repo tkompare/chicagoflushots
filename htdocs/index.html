@@ -1,168 +1,170 @@
-<!DOCTYPE html>
-<html lang=en>
+<!doctype html>
+<html lang="en">
 <head>
-	<meta charset=utf-8>
-	<title>Get A Flu Shot</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
-	<meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1" />
-	<link rel="icon" href="img/favicon.ico" type=”image/x-icon”>
-	<link rel="apple-touch-icon-precomposed" href="img/CDPH_HC_Logo.jpg" />
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<!-- Bootstrap 3.0.0 (with a breakpoint adjustment to 900px & some custom CSS. Compiled from main.css -->
-	<link href="css/main-min.css" rel="stylesheet" media="screen">
-	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-	<script src="js/ltIE9.min.js"></script>
-	<![endif]-->
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-124734987-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-124734987-1');
+	</script>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-5Z/4A9O2iG86Ca27OwgMwLmRYt9bjLOoEpPXy7yhiSs=" crossorigin="anonymous" />
+	<link rel="stylesheet" href="css/index.css">
+	<title>Find Vaccinations</title>
 </head>
 <body>
-	<div id=map></div>
-	<nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
-		<div class="navbar-header">
-			<button id="navbar-button" type="button" class="navbar-toggle" data-toggle="collapse"
-			        data-target=".navbar-ex1-collapse">
-				<span id="navbar-button-text">Menu</span>
-			</button>
-			<a id="nav-brand" class="navbar-brand" data-toggle="modal" href="#modal-gafs">Get A Flu Shot</a>
-		</div>
-		<div class="collapse navbar-collapse navbar-ex1-collapse">
-			<ul class="nav navbar-nav">
-				<li id="nav-li-all" class="active"><a id="nav-all" href="#all">All</a></li>
-				<li id="nav-li-seven"><a id="nav-seven" href="#seven">Next 7 Days</a></li>
-				<li id="nav-li-days" class="dropdown">
-					<a id="nav-days" href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="nav-days-text">On A Day</span><b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="#today" id="nav-today" class="day">Today</a>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<a href="#sunday" id="nav-sunday" class="day">Sunday</a>
-						</li>
-						<li>
-							<a href="#monday" id="nav-monday" class="day">Monday</a>
-						</li>
-						<li>
-							<a href="#tuesday" id="nav-tuesday" class="day">Tuesday</a>
-						</li>
-						<li>
-							<a href="#wednesday" id="nav-wednesday" class="day">Wednesday</a>
-						</li>
-						<li>
-							<a href="#thursday" id="nav-thursday" class="day">Thursday</a>
-						</li>
-						<li>
-							<a href="#friday" id="nav-friday" class="day">Friday</a>
-						</li>
-						<li>
-							<a href="#saturday" id="nav-saturday" class="day">Saturday</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
-			<form class="navbar-form navbar-left" onSubmit="$('#nav-go').click(); return false;" role="search">
-				<div class="form-group">
-					<input id="nav-address" type="text" class="form-control navigate"
-						   placeholder="Enter an address">
-				</div>
-				<button id="nav-go" class="btn btn-default navigate" type="button">Go</button>
-			</form>
-			<a id="nav-agency" class="navbar-text pull-right" data-toggle="modal" href="#modal-cdph"><small>Chicago Department of Public Health</small></a>
+<header>
+	<nav id="navbar-header" class="navbar navbar-dark fixed-top bg-dark">
+		<span class="navbar-brand mb-0 h1" id="header-brand">Find Vaccinations</span>
+		<div class="btn-toolbar">
+			<button id="help" class="btn btn-custom my-1 ml-auto mr-3">Help</button>
+			<button id="search" class="btn btn-custom my-1 float-right">Search</button>
 		</div>
 	</nav>
-	<!-- CDPH Modal -->
-	<div class="modal fade" id="modal-cdph" data-backdrop="false" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Notes</h4>
-				</div>
-				<div class="modal-body">
-					<p>Built by <a href="http://about.me/tomkompare" target="_blank">Tom Kompare</a> in partnership with the <a href="http://www.cityofchicago.org/city/en/depts/cdph.html" target="_blank">Chicago Department of Public Health (CDPH)</a>. This was not developed by CDPH and CDPH makes no representations as to the accuracy of the information provided by this map application. This map application is hosted by the <a href="http://www.smartchicagocollaborative.org/" target="_blank">Smart Chicago Collaborative</a>. <a href="https://github.com/tkompare/chicagoflushots" target="_blank">The code behind this web application</a> is free, open, and under a <a href="https://github.com/tkompare/chicagoflushots/blob/master/LICENSE.TXT"target="_blank">MIT License</a>. Feel free to <a href="https://github.com/tkompare/chicagoflushots/issues" target="_blank">send me comments</a>.</p>
-					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
-				</div>
+</header>
+<main role="main" class="container">
+	<div id="map-container">
+		<div id="map"></div>
+	</div>
+</main>
+<footer id="footer">
+	<nav id="navbar-footer" class="navbar navbar-dark fixed-bottom bg-dark">
+		<span id="span-footer" class="float-left span-footer"><small id="footer-brand">Department of Public Health</small></span>
+		<button id="about" class="btn btn-custom my-1 float-right">About</button>
+	</nav>
+</footer>
+
+<!-- Event Detail Modal -->
+<div class="modal fade" id="modal-event-detail" tabindex="-1" role="dialog" aria-labelledby="Event Detail Modal"
+		 aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-event-detail-title" class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="text-white" aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modal-event-detail-body" class="modal-body"></div>
+			<div class="modal-footer">
+				<button id="modal-event-detail-ical" type="button" class="btn btn-custom" data-dismiss="modal"><i class="fas fa-calendar-plus"></i> Add To
+					Calendar
+				</button>
+				<button id="modal-event-detail-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+					Close
+				</button>
 			</div>
 		</div>
 	</div>
-	<!-- Get A Flu Shot Modal -->
-	<div class="modal fade" id="modal-gafs" data-backdrop="false" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Learn More</h4>
+</div>
+
+<!-- Search Modal -->
+<div class="modal fade" id="modal-search" tabindex="-1" role="dialog" aria-labelledby="Search for an event"
+		 aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-search-title" class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="text-white" aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modal-search-body" class="modal-body">
+				<div class="container">
+					<p id="modal-search-body-instructions"></p>
+					<div class="row margin-bottom">
+						<div class="col-sm-12">
+							<div class="input-group">
+								<input type="text" class="form-control datetimepicker-input" id="modal-search-date" data-toggle="datetimepicker" data-target="#modal-search-date" readonly="readonly"/>
+								<div class="input-group-append" data-target="#modal-search-date" data-toggle="datetimepicker">
+									<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+									<button id="modal-search-search" type="button" class="btn btn-custom" data-dismiss="modal">Search</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p>One Click Options</p>
+					<div class="row margin-bottom">
+						<div class="col-sm-12">
+							<button id="modal-search-today" type="button" class="btn btn-custom" data-dismiss="modal">Today</button>
+							<button id="modal-search-tomorrow" type="button" class="btn btn-custom" data-dismiss="modal">Tomorrow</button>
+							<button id="modal-search-weekend" type="button" class="btn btn-custom" data-dismiss="modal">This Weekend</button>
+							<button id="modal-search-free" type="button" class="btn btn-custom" data-dismiss="modal">Free Events</button>
+						</div>
+					</div>
 				</div>
-				<div class="modal-body">
-					<p>Welcome to the Chicago flu shot finder. If your device has GPS, you may click on the <b>Find Me</b> button to see locations near you. You may enter your address and click on <b>Go</b> to do the same. You may have to click on the <b>Menu</b>
-						button first, on a tablet or smartphone. Click on <b>All</b>, <b>Next 7 Days</b>, or <b>On A Day</b> of the week to highlight locations available on a certain day. Blue map locations offer free flu shots for anyone six months of age or older.<br><br><a href="http://www.cityofchicago.org/city/en/depts/cdph/provdrs/flu.html" target="_blank">Find out more information about flu shots from the Chicago Department of Public Health's website.</a></p>
-					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
-				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="modal-search-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close
+				</button>
 			</div>
 		</div>
 	</div>
-	<!-- Fee Information Modal -->
-	<div class="modal fade" id="modal-fee" data-backdrop="false" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">No Cost Flu Shots</h4>
-				</div>
-				<div class="modal-body">
-					<p>Locations marked with a blue icon are Chicago Department of Public Health (CDPH) clinic events. There is no cost to individual.	If insured, insurance will be billed.</p>
-					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
-				</div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal fade" id="modal-help" tabindex="-1" role="dialog" aria-labelledby="Search for an event"
+		 aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-help-title" class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="text-white" aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modal-help-body" class="modal-body">
+				<p id="modal-help-body-instructions"></p>
+			</div>
+			<div class="modal-footer">
+				<button id="modal-help-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close
+				</button>
 			</div>
 		</div>
 	</div>
-	<!-- Event Modal -->
-	<div class="modal fade" id="modal-event" data-backdrop="false" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 id="modal-event-title" class="modal-title"></h4>
-				</div>
-				<div class="modal-body">
-					<span id="modal-body-span"></span>
-					<p><br><img src="img/healthychicago_small_trans.png"> <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button><br></p>
-				</div>
+</div>
+
+<!-- About Modal -->
+<div class="modal fade" id="modal-about" tabindex="-1" role="dialog" aria-labelledby="About this web application."
+		 aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="modal-about-title" class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="text-white" aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modal-about-body" class="modal-body">
+				<p id="modal-about-body-instructions"></p>
+			</div>
+			<div class="modal-footer">
+				<button id="modal-about-close" type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close
+				</button>
 			</div>
 		</div>
 	</div>
-	<div id="fb-root"></div>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script>
-		window.jQuery
-			|| document.write('<script src="js/jquery-1.10.2.min.js"><\/script>')
-	</script>
-	<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDRVus9kkg8mr6M7EZUmXZsdoM7JSFbvC8&sensor=true"></script>
-	<!-- These scripts are catenated and minified into main-min.js
-	<script src="js/jquery-migrate-1.2.1.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/date.js"></script>
-	<script src="js/jquery.icalendar.js"></script>
-	<script src="js/tkmap.4.0.0.js"></script>
-	<script src="js/fusiontable.js"></script>
-	<script src="js/event.js"></script>
-	<script src="js/flushots.js"></script>
-	<script src="js/main.js"></script>
-	-->
-	<script src="js/main-min.js"></script>
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-42855450-2']);
-		_gaq.push(['_trackPageview']);
-		// SCC Analytics
-		_gaq.push(['scc._setAccount', 'UA-37739534-17']);
-		_gaq.push(['scc._trackPageview']);
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
+</div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+				integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+				crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-jgMYw0Xf+iO0EYC4pnX8tS4vmDqyjtJ9dwfSMMjSZuY=" crossorigin="anonymous"></script>
+<script src="js/index.min.js"></script>
 </body>
+
 </html>
