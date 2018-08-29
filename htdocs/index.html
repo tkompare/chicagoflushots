@@ -5,12 +5,22 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-124734987-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-124734987-1');
+	</script>
+
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-5Z/4A9O2iG86Ca27OwgMwLmRYt9bjLOoEpPXy7yhiSs=" crossorigin="anonymous" />
 	<link rel="stylesheet" href="css/index.css">
-	<title>Vaccinate Me</title>
+	<title>Find Vaccinations</title>
 </head>
 <body>
 <header>
@@ -70,8 +80,8 @@
 				</button>
 			</div>
 			<div id="modal-search-body" class="modal-body">
-				<p id="modal-search-body-instructions"></p>
 				<div class="container">
+					<p id="modal-search-body-instructions"></p>
 					<div class="row margin-bottom">
 						<div class="col-sm-12">
 							<div class="input-group">
@@ -83,15 +93,12 @@
 							</div>
 						</div>
 					</div>
+					<p>One Click Options</p>
 					<div class="row margin-bottom">
 						<div class="col-sm-12">
 							<button id="modal-search-today" type="button" class="btn btn-custom" data-dismiss="modal">Today</button>
 							<button id="modal-search-tomorrow" type="button" class="btn btn-custom" data-dismiss="modal">Tomorrow</button>
 							<button id="modal-search-weekend" type="button" class="btn btn-custom" data-dismiss="modal">This Weekend</button>
-						</div>
-					</div>
-					<div class="row margin-bottom">
-						<div class="col-sm-12">
 							<button id="modal-search-free" type="button" class="btn btn-custom" data-dismiss="modal">Free Events</button>
 						</div>
 					</div>
@@ -158,7 +165,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-jgMYw0Xf+iO0EYC4pnX8tS4vmDqyjtJ9dwfSMMjSZuY=" crossorigin="anonymous"></script>
 <script src="js/index.min.js"></script>
-
 </body>
 
 </html>
