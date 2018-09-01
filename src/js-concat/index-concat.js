@@ -94,6 +94,13 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			$('#modal-help-title').html(Vax.Configs.Modal.help.title);
 			$('#modal-help-body-instructions').html(Vax.Configs.Modal.help.instructions);
 			$('#modal-help').modal('show');
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Button', {
+				'event_label': 'Help',
+				'event_category': 'Open help text'
+			});
 		});
 
 		/*
@@ -103,6 +110,13 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			$('#modal-about-title').html(Vax.Configs.Modal.about.title);
 			$('#modal-about-body-instructions').html(Vax.Configs.Modal.about.instructions);
 			$('#modal-about').modal('show');
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Button', {
+				'event_label': 'About',
+				'event_category': 'Open about text'
+			});
 		});
 
 		/*
@@ -113,6 +127,21 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 				$('#modal-search-title').html(Vax.Configs.Modal.search.title);
 				$('#modal-search-body-instructions').html(Vax.Configs.Modal.search.instructions);
 				$('#modal-search').modal('show');
+				/*
+				 Google Analytics - Record Event
+				 */
+				gtag('event', 'Button', {
+					'event_label': 'Search',
+					'event_category': 'Open search modal'
+				});
+			} else {
+				/*
+				 Google Analytics - Record Event
+				 */
+				gtag('event', 'Button', {
+					'event_label': 'Reset',
+					'event_category': 'Reset map markers'
+				});
 			}
 			Vax.resetMarkers();
 		});
@@ -125,18 +154,39 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 				$('#modal-search-date').val(moment().format('ddd, LL'));
 			}
 			Vax.searchByDate(moment($('#modal-search-date').val(), 'ddd, LL'), null);
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Button', {
+				'event_label': 'Search',
+				'event_category': $('#modal-search-date').val()
+			});
 		});
 
 		$('#modal-search-today').on('click', function() {
 			var Today = moment(moment().format('L'), 'L'); // use format() to get start of day, not "now"
 			$('#modal-search-date').val(Today.format('ddd, LL'));
 			Vax.searchByDate(Today, null);
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Button', {
+				'event_label': 'Search',
+				'event_category': 'Today'
+			});
 		});
 
 		$('#modal-search-tomorrow').on('click', function() {
 			var Tomorrow = moment(moment().add(1, 'days').format('L'), 'L'); // use format() to get start of day
 			$('#modal-search-date').val(Tomorrow.format('ddd, LL')); // use format() to get start of day
 			Vax.searchByDate(Tomorrow, null);
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Button', {
+				'event_label': 'Search',
+				'event_category': 'Tomorrow'
+			});
 		});
 
 		$('#modal-search-weekend').on('click', function() {
@@ -144,6 +194,13 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 			var Sunday = moment(moment().isoWeekday('Sunday').format('L'), 'L'); // use format() to get start of day
 			$('#modal-search-date').val(Saturday.format('ddd, LL'));
 			Vax.searchByDate(Saturday, Sunday);
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Button', {
+				'event_label': 'Search',
+				'event_category': 'Weekend'
+			});
 		});
 
 		$('#modal-search-free').on('click', function() {
@@ -157,6 +214,13 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 				}
 			}
 			$('#search').html('Reset').removeClass('btn-custom').addClass('btn-danger');
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Button', {
+				'event_label': 'Search',
+				'event_category': 'Free Events'
+			});
 		});
 
 		/*
@@ -274,6 +338,13 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 
 						$('#modal-event-detail-ical').show().on('click', function(){
 							Vax.Cal[i].download();
+							/*
+							 Google Analytics - Record Event
+							 */
+							gtag('event', 'Button', {
+								'event_label': 'Add To Calendar',
+								'event_category': Vax.Events[i]['LocationName']+' - '+Vax.Events[i]['MomentBeginDate'].format('M/D/YYYY')
+							});
 						});
 					} else {
 						// not a single day event...
@@ -284,7 +355,9 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 					body += '</p>';
 					$('#modal-event-detail-body').html(body);
 					$('#modal-event-detail').modal('show');
-
+					/*
+					Google Analytics - Record Event
+					 */
 					gtag('event', 'Modal', {
 						'event_label': 'Vaccination Detail',
 						'event_category': Vax.Events[i]['LocationName']+' - '+Vax.Events[i]['Address1']+' '+Vax.Events[i]['Address2']+' '+Vax.Events[i]['City']+', '+Vax.Events[i]['State']+' '+Vax.Events[i]['PostalCode']
@@ -318,6 +391,7 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 		controlText.className += 'find-me-text';
 		controlText.innerHTML = 'Find Me';
 		controlUI.appendChild(controlText);
+		var Geocoder = new google.maps.Geocoder;
 		// Setup the click event listeners.
 		google.maps.event.addDomListener(controlUI, 'click', function() {
 			if(navigator.geolocation)
@@ -330,6 +404,24 @@ var ics=function(e,t){"use strict";{if(!(navigator.userAgent.indexOf("MSIE")>-1&
 									position.coords.latitude,
 									position.coords.longitude
 							);
+							Geocoder.geocode({'location': Latlng}, function(results, status) {
+								if (status === 'OK') {
+									if(results instanceof Array) {
+										for(var i=0; results[0].address_components.length; i++) {
+											if(results[0].address_components[i].types.includes('postal_code')) {
+												/*
+												 Google Analytics - Record Event
+												 */
+												gtag('event', 'Button', {
+													'event_label': 'Find Me',
+													'event_category': results[0].address_components[i].short_name
+												});
+												break;
+											}
+										}
+									}
+								}
+							});
 							Vax.Map.setCenter(Latlng);
 							Vax.Map.setZoom(Vax.Configs.Map.zoom);
 							// Make a map marker if none exists yet
