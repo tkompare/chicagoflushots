@@ -69,6 +69,11 @@
 	color: #77aaff
 }
 
+.help-pin {
+	height:16px;
+	width: 16px;
+}
+
 .modal-header {
 	color: #ffffff;
 	background-color: #075290 !important;
