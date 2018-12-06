@@ -10,12 +10,12 @@
 			}
 		},
 		"CityOfChicago": {
-			"url": "https://data.cityofchicago.org/resource/6bnm-rcas.json?$limit=5000",
+			"url": "https://data.cityofchicago.org/resource/tn8j-nyyi.json?season=2018-2019",
 			"alias": {
-				"Address1": "location_1_address",
+				"Address1": "street1",
 				"Address2": "street2",
-				"City": "location_1_city",
-				"State": "location_1_state",
+				"City": "city",
+				"State": "state",
 				"PostalCode": "postal_code",
 				"Country": "country",
 				"LocationName": "facility_name",
@@ -31,8 +31,8 @@
 				"EligibilityText": "eligibility",
 				"CostText": "cost",
 				"NotesText": "notes",
-				"Latitude": "location_1",
-				"Longitude": "location_1"
+				"Latitude": "latitude",
+				"Longitude": "longitude"
 			}
 		}
 	},
@@ -118,12 +118,20 @@
 			"instructions": "Choose a date or a One Click option."
 		},
 		"about": {
-			"title": "About Vaccine Finder",
-			"instructions": "Built and hosted by <a href=\"https://github.com/tkompare/chicagoflushots\" target=\"_blank\">Tom Kompare</a> in partnership with the <a href=\"https://www.cityofchicago.org/city/en/depts/cdph.html\" target=\"_blank\">Chicago Department of Public Health</a> (CDPH). The flu shot event data is hosted by the City Of Chicago <a href=\"https://data.cityofchicago.org/\" target=\"_blank\">Data Portal</a>. This was not developed by CDPH and CDPH makes no representations as to the accuracy of the information provided by this map application. The code behind this web application is free, open, and under a MIT License."
+			"title": "About the Flu Shot Finder",
+			"instructions": "<p>For information about the flu or the flu shot, head over to the  <a href=\"https://www.cityofchicago.org/city/en/depts/cdph/supp_info/health-protection/influenza.html\" target=\"_blank\">Chicago Department of Public Health's web site</a></p><p>This web application was built and hosted by <a href=\"https://github.com/tkompare/chicagoflushots\" target=\"_blank\">Tom Kompare</a> in partnership with the <a href=\"https://www.cityofchicago.org/city/en/depts/cdph.html\" target=\"_blank\">Chicago Department of Public Health</a> (CDPH). The flu shot event data is hosted by the City Of Chicago <a href=\"https://data.cityofchicago.org/\" target=\"_blank\">Data Portal</a>. This was not developed by CDPH and CDPH makes no representations as to the accuracy of the information provided by this map application. The code behind this web application is free, open, and under an MIT License (see below).</p><p>Copyright 2018 Thomas N. Kompare</p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.<br><br>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>"
 		},
 		"help": {
-			"title": "How to use Vaccine Finder",
-			"instructions": "<p>The vaccine finder is built with you in mind. Find a convenient flu shot event by clicking on a map pin or narrow your choices by using the search button. There are several ways to search: by date, today's events, tomorrow's events, this weekend, or look for all free events.</p><p>Red pins on the map are Chicago Department of Public Health sponsored event locations offering flu shots at no cost to you. Blue pins are other locations offering flu shots. Grey pins are location events that have already happened."
+			"title": "How to use the Flu Shot Finder",
+			"instructions": "<p>For information about the flu or the flu shot, head over to the <a href=\"https://www.cityofchicago.org/city/en/depts/cdph/supp_info/health-protection/influenza.html\" target=\"_blank\">Chicago Department of Public Health's web site</a></p><p>The vaccine finder is built with you in mind. Find a convenient flu shot event by clicking on a map pin <img class=\"help-pin\" src=\"img/red.png\"><img class=\"help-pin\" src=\"img/blue.png\"> or narrow your choices by using the search button. There are several ways to search: by date, today's events, tomorrow's events, this weekend, or look for all free events.</p><p>Red pins <img class=\"help-pin\" src=\"img/red.png\"> on the map are Chicago Department of Public Health sponsored event locations offering flu shots at no cost to you. Blue pins <img class=\"help-pin\" src=\"img/blue.png\"> are other locations offering flu shots. Grey pins <img class=\"help-pin\" src=\"img/grey.png\"> are location events that have already happened.</p>"
+		},
+		"errordata": {
+			"title": "Error: No valid data source identified.",
+			"instructions": "<p>Please check \"Source\" in your Vaccinate configure.json file, and consult the web application installation instructions found at, <a href=\"https://github.com/githubtkompare/vaccinate\" target=\"_blank\">Tom Kompare's Vaccinate Github project.</a></p>"
+		},
+		"errorlocate": {
+			"title": "We're sorry. We could not find you.",
+			"instructions": "<p>Check your device's settings to make sure location services are turned on. You may be in an area where your device cannot be conveniently located.</p>"
 		}
 	}
 }

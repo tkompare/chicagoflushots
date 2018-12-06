@@ -1,12 +1,11 @@
 var Vax = {
-
 	Configs: null,
 	Events: [],
 	Cal: [],
 	Map: null,
 	Markers: [],
 	AddressMarker: null,
-	i: null, // Events iterator
+	i: null, // iterator
 
 	loadScript: function() {
 		$.when(
@@ -47,23 +46,21 @@ var Vax = {
 						for (var i = 0; i < events.length; i++) {
 							var keys = Object.keys(Vax.Configs.Data.CityOfChicago.alias);
 							for (var j = 0; j < keys.length; j++) {
-								if(i === 256) {
+								if(i === 0) {
+									console.log(keys[j]);
 								}
 								if(events[i][Vax.Configs.Data.CityOfChicago.alias[keys[j]]] === undefined) {
 									events[i][keys[j]] = '';
-								} else if (keys[j] === 'Latitude') {
-									events[i][keys[j]] = events[i][Vax.Configs.Data.CityOfChicago.alias[keys[j]]]['coordinates'][1];
-								} else if (keys[j] === "Longitude") {
-									events[i][keys[j]] = events[i][Vax.Configs.Data.CityOfChicago.alias[keys[j]]]['coordinates'][0];
 								} else if (keys[j] === 'BeginDate' || keys[j] === 'EndDate') {
 									events[i][keys[j]] = moment(events[i][Vax.Configs.Data.CityOfChicago.alias[keys[j]]]).format('M/D/YYYY');
 								} else if (keys[j] === 'BeginTime' || keys[j] === 'EndTime') {
-									if(i === 0) {
-									}
 									events[i][keys[j]] = moment(events[i][Vax.Configs.Data.CityOfChicago.alias[keys[j]]], 'HH:mm:ss').format('h:mm:ss A');
 								} else {
 									events[i][keys[j]] = events[i][Vax.Configs.Data.CityOfChicago.alias[keys[j]]];
 								}
+							}
+							if(i === 0) {
+								console.log(events[i]);
 							}
 						}
 						Vax.Events = events;
@@ -71,7 +68,16 @@ var Vax = {
 					})
 			).then(Vax.setMap);
 		} else {
-			alert('No valid data source identified.');
+			$('#modal-error-title').html(Vax.Configs.Modal.errordata.title);
+			$('#modal-error-body-instructions').html(Vax.Configs.Modal.errordata.instructions);
+			$('#modal-error').modal('show');
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Error', {
+				'event_label': 'Error-Data',
+				'event_category': 'Error no valid data source.'
+			});
 		}
 
 		/*
@@ -201,13 +207,13 @@ var Vax = {
 		});
 
 		$('#modal-search-free').on('click', function() {
-			for (Vax.i = 0; Vax.i < Vax.Events.length; Vax.i++) {
+			for (var i = 0; i < Vax.Events.length; i++) {
 				var highlighted = false;
-				if(Vax.Events[Vax.i]['CostText'].indexOf('No cost') > -1) {
+				if(Vax.Events[i]['CostText'].indexOf('No cost') > -1) {
 					highlighted = true;
 				}
 				if(highlighted === false) {
-					Vax.Markers[Vax.i].setVisible(false);
+					Vax.Markers[i].setVisible(false);
 				}
 			}
 			$('#search').html('Reset').removeClass('btn-custom').addClass('btn-danger');
@@ -232,11 +238,11 @@ var Vax = {
 
 	setMoment: function() {
 		// Create moment.js instances for Begin date&time, and End date&time
-		for (Vax.i = 0; Vax.i < Vax.Events.length; Vax.i++) {
-			Vax.Events[Vax.i]['MomentBeginDate'] = moment(Vax.Events[Vax.i]['BeginDate'], 'l');
-			Vax.Events[Vax.i]['MomentEndDate'] = moment(Vax.Events[Vax.i]['EndDate'], 'l');
-			Vax.Events[Vax.i]['MomentBeginTime'] = moment(Vax.Events[Vax.i]['BeginTime'], 'h:mm:ss A');
-			Vax.Events[Vax.i]['MomentEndTime'] = moment(Vax.Events[Vax.i]['EndTime'], 'h:mm:ss A');
+		for (var i = 0; i < Vax.Events.length; i++) {
+			Vax.Events[i]['MomentBeginDate'] = moment(Vax.Events[i]['BeginDate'], 'l');
+			Vax.Events[i]['MomentEndDate'] = moment(Vax.Events[i]['EndDate'], 'l');
+			Vax.Events[i]['MomentBeginTime'] = moment(Vax.Events[i]['BeginTime'], 'h:mm:ss A');
+			Vax.Events[i]['MomentEndTime'] = moment(Vax.Events[i]['EndTime'], 'h:mm:ss A');
 		}
 	},
 
@@ -277,6 +283,7 @@ var Vax = {
 					map: Vax.Map,
 					icon: {
 						url: 'img/red.png',
+
 						scaledSize: new google.maps.Size(32, 32)
 					}
 				});
@@ -312,7 +319,7 @@ var Vax = {
 							body += ' at ';
 						}
 						if(Vax.Events[i]['Phone'] !== '') {
-							body += '<strong>'+Vax.Events[i]['Phone']+'</strong>';
+							body += Vax.Events[i]['Phone'];
 						}
 					}
 					if(Vax.Events[i]['Url'] !== '') {
@@ -342,12 +349,26 @@ var Vax = {
 								'event_label': 'Add To Calendar',
 								'event_category': Vax.Events[i]['LocationName']+' - '+Vax.Events[i]['MomentBeginDate'].format('M/D/YYYY')
 							});
+
+							$('#modal-event-detail-ical').off();
 						});
 					} else {
 						// not a single day event...
 						body += '<hr>'+Vax.Events[i]['HoursText'];
 						$('#modal-event-detail-ical').hide().off();
 					}
+					$('#modal-event-detail-directions').on('click', function(){
+						/*
+						 Google Analytics - Record Event
+						 */
+						gtag('event', 'Button', {
+							'event_label': 'Directions',
+							'event_category': Vax.Events[i]['LocationName']+' - '+Vax.Events[i]['Address1']+' '+Vax.Events[i]['Address2']+' '+Vax.Events[i]['City']+', '+Vax.Events[i]['State']+' '+Vax.Events[i]['PostalCode']
+						});
+						window.open('https://maps.google.com/?q='+Vax.Events[i]['Address1']+' '+Vax.Events[i]['City']+', '+Vax.Events[i]['State']+' '+Vax.Events[i]['PostalCode']+' '+Vax.Events[i]['Country'], '_blank');
+						$('#modal-event-detail-directions').off();
+					});
+
 					body += '<hr>'+Vax.Events[i]['CostText'];
 					body += '</p>';
 					$('#modal-event-detail-body').html(body);
@@ -359,8 +380,6 @@ var Vax = {
 						'event_label': 'Vaccination Detail',
 						'event_category': Vax.Events[i]['LocationName']+' - '+Vax.Events[i]['Address1']+' '+Vax.Events[i]['Address2']+' '+Vax.Events[i]['City']+', '+Vax.Events[i]['State']+' '+Vax.Events[i]['PostalCode']
 					});
-
-
 				}
 			})(Vax.Markers[Vax.i], Vax.i));
 		}
@@ -448,7 +467,16 @@ var Vax = {
 						// Failure
 						function()
 						{
-							alert('We\'re sorry. We could not find you. Please type in an address.');
+							$('#modal-error-title').html(Vax.Configs.Modal.errorlocate.title);
+							$('#modal-error-body-instructions').html(Vax.Configs.Modal.errorlocate.instructions);
+							$('#modal-error').modal('show');
+							/*
+							 Google Analytics - Record Event
+							 */
+							gtag('event', 'Error', {
+								'event_label': 'Error-Data',
+								'event_category': 'Error no valid data source.'
+							});
 						},
 						{
 							timeout:5000,
