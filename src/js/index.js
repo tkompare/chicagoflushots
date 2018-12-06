@@ -5,7 +5,7 @@ var Vax = {
 	Map: null,
 	Markers: [],
 	AddressMarker: null,
-	i: null, // Events iterator
+	i: null, // iterator
 
 	loadScript: function() {
 		$.when(
@@ -68,7 +68,16 @@ var Vax = {
 					})
 			).then(Vax.setMap);
 		} else {
-			alert('No valid data source identified.');
+			$('#modal-error-title').html(Vax.Configs.Modal.errordata.title);
+			$('#modal-error-body-instructions').html(Vax.Configs.Modal.errordata.instructions);
+			$('#modal-error').modal('show');
+			/*
+			 Google Analytics - Record Event
+			 */
+			gtag('event', 'Error', {
+				'event_label': 'Error-Data',
+				'event_category': 'Error no valid data source.'
+			});
 		}
 
 		/*
@@ -458,7 +467,16 @@ var Vax = {
 						// Failure
 						function()
 						{
-							alert('We\'re sorry. We could not find you. Please type in an address.');
+							$('#modal-error-title').html(Vax.Configs.Modal.errorlocate.title);
+							$('#modal-error-body-instructions').html(Vax.Configs.Modal.errorlocate.instructions);
+							$('#modal-error').modal('show');
+							/*
+							 Google Analytics - Record Event
+							 */
+							gtag('event', 'Error', {
+								'event_label': 'Error-Data',
+								'event_category': 'Error no valid data source.'
+							});
 						},
 						{
 							timeout:5000,

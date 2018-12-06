@@ -124,6 +124,14 @@
 		"help": {
 			"title": "How to use the Flu Shot Finder",
 			"instructions": "<p>For information about the flu or the flu shot, head over to the <a href=\"https://www.cityofchicago.org/city/en/depts/cdph/supp_info/health-protection/influenza.html\" target=\"_blank\">Chicago Department of Public Health's web site</a></p><p>The vaccine finder is built with you in mind. Find a convenient flu shot event by clicking on a map pin <img class=\"help-pin\" src=\"img/red.png\"><img class=\"help-pin\" src=\"img/blue.png\"> or narrow your choices by using the search button. There are several ways to search: by date, today's events, tomorrow's events, this weekend, or look for all free events.</p><p>Red pins <img class=\"help-pin\" src=\"img/red.png\"> on the map are Chicago Department of Public Health sponsored event locations offering flu shots at no cost to you. Blue pins <img class=\"help-pin\" src=\"img/blue.png\"> are other locations offering flu shots. Grey pins <img class=\"help-pin\" src=\"img/grey.png\"> are location events that have already happened.</p>"
+		},
+		"errordata": {
+			"title": "Error: No valid data source identified.",
+			"instructions": "<p>Please check \"Source\" in your Vaccinate configure.json file, and consult the web application installation instructions found at, <a href=\"https://github.com/githubtkompare/vaccinate\" target=\"_blank\">Tom Kompare's Vaccinate Github project.</a></p>"
+		},
+		"errorlocate": {
+			"title": "We're sorry. We could not find you.",
+			"instructions": "<p>Check your device's settings to make sure location services are turned on. You may be in an area where your device cannot be conveniently located.</p>"
 		}
 	}
 }
